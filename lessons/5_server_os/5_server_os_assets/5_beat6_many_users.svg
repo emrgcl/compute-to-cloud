@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 500" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <rect x="0" y="0" width="920" height="500" fill="#1a1a1d"/>
+
+  <!-- Title -->
+  <text x="460" y="32" text-anchor="middle" fill="#fde68a" font-size="18" font-weight="500">One user · vs · thousands of users</text>
+  <text x="460" y="54" text-anchor="middle" fill="#9a9888" font-size="13" font-style="italic">same kernel mechanism — just stretched</text>
+
+  <!-- ===== LEFT: Laptop ===== -->
+  <g transform="translate(40, 90)">
+    <text x="200" y="0" text-anchor="middle" fill="#7fc7f5" font-size="13" font-weight="600" letter-spacing="0.5">YOUR LAPTOP</text>
+
+    <rect x="0" y="20" width="400" height="270" rx="10" fill="#0d2240" stroke="#5a8fcc" stroke-width="1.5"/>
+
+    <!-- Single user -->
+    <circle cx="200" cy="100" r="32" fill="#1e3a5f" stroke="#7fc7f5" stroke-width="2.5"/>
+    <text x="200" y="108" text-anchor="middle" fill="#dbe9f7" font-size="22">👤</text>
+
+    <text x="200" y="160" text-anchor="middle" fill="#dbe9f7" font-size="14" font-weight="500">You</text>
+    <text x="200" y="180" text-anchor="middle" fill="#9a9888" font-size="11" font-style="italic">the only user</text>
+
+    <!-- the processes -->
+    <text x="200" y="220" text-anchor="middle" fill="#9a9888" font-size="11" font-style="italic">all running processes are yours</text>
+    <text x="200" y="240" text-anchor="middle" fill="#9a9888" font-size="11" font-style="italic">no isolation needed</text>
+    <text x="200" y="260" text-anchor="middle" fill="#9a9888" font-size="11" font-style="italic">no fairness to enforce</text>
+
+    <text x="200" y="312" text-anchor="middle" fill="#a5c3e0" font-size="13" font-style="italic">1 user · simple</text>
+  </g>
+
+  <!-- ===== RIGHT: Server with thousands of users ===== -->
+  <g transform="translate(480, 90)">
+    <text x="200" y="0" text-anchor="middle" fill="#7fcfa0" font-size="13" font-weight="600" letter-spacing="0.5">A SERVER (RIGHT NOW)</text>
+
+    <rect x="0" y="20" width="400" height="270" rx="10" fill="#0d2e1a" stroke="#4ba377" stroke-width="1.5"/>
+
+    <!-- A grid of many user dots -->
+    <g transform="translate(40, 50)">
+      <!-- 8 wide x 6 tall = 48 dots -->
+      <g fill="#7fcfa0">
+        <!-- row 1 -->
+        <circle cx="0" cy="0" r="6"/><circle cx="40" cy="0" r="6"/><circle cx="80" cy="0" r="6"/><circle cx="120" cy="0" r="6"/>
+        <circle cx="160" cy="0" r="6"/><circle cx="200" cy="0" r="6"/><circle cx="240" cy="0" r="6"/><circle cx="280" cy="0" r="6"/>
+        <!-- row 2 -->
+        <circle cx="0" cy="28" r="6"/><circle cx="40" cy="28" r="6"/><circle cx="80" cy="28" r="6"/><circle cx="120" cy="28" r="6"/>
+        <circle cx="160" cy="28" r="6"/><circle cx="200" cy="28" r="6"/><circle cx="240" cy="28" r="6"/><circle cx="280" cy="28" r="6"/>
+        <!-- row 3 -->
+        <circle cx="0" cy="56" r="6"/><circle cx="40" cy="56" r="6"/><circle cx="80" cy="56" r="6"/><circle cx="120" cy="56" r="6"/>
+        <circle cx="160" cy="56" r="6"/><circle cx="200" cy="56" r="6"/><circle cx="240" cy="56" r="6"/><circle cx="280" cy="56" r="6"/>
+        <!-- row 4 -->
+        <circle cx="0" cy="84" r="6"/><circle cx="40" cy="84" r="6"/><circle cx="80" cy="84" r="6"/><circle cx="120" cy="84" r="6"/>
+        <circle cx="160" cy="84" r="6"/><circle cx="200" cy="84" r="6"/><circle cx="240" cy="84" r="6"/><circle cx="280" cy="84" r="6"/>
+        <!-- row 5 -->
+        <circle cx="0" cy="112" r="6"/><circle cx="40" cy="112" r="6"/><circle cx="80" cy="112" r="6"/><circle cx="120" cy="112" r="6"/>
+        <circle cx="160" cy="112" r="6"/><circle cx="200" cy="112" r="6"/><circle cx="240" cy="112" r="6"/><circle cx="280" cy="112" r="6"/>
+        <!-- row 6 partial / fading -->
+        <circle cx="0" cy="140" r="6" opacity="0.6"/><circle cx="40" cy="140" r="6" opacity="0.5"/><circle cx="80" cy="140" r="6" opacity="0.4"/><circle cx="120" cy="140" r="6" opacity="0.3"/>
+        <circle cx="160" cy="140" r="6" opacity="0.25"/><circle cx="200" cy="140" r="6" opacity="0.2"/>
+      </g>
+    </g>
+
+    <text x="200" y="225" text-anchor="middle" fill="#fde68a" font-size="14" font-weight="500">…and many more</text>
+
+    <text x="200" y="255" text-anchor="middle" fill="#9a9888" font-size="11" font-style="italic">each user is isolated from the others</text>
+    <text x="200" y="272" text-anchor="middle" fill="#9a9888" font-size="11" font-style="italic">the kernel enforces it (Layer 2 privilege boundary)</text>
+
+    <text x="200" y="312" text-anchor="middle" fill="#a5d8c5" font-size="13" font-style="italic">thousands of simultaneous sessions</text>
+  </g>
+
+  <!-- Bottom takeaway -->
+  <rect x="40" y="395" width="840" height="80" rx="10" fill="#2a2520" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="60" y="418" fill="#fde68a" font-size="13" font-weight="600" letter-spacing="0.5">SAME MECHANISM — STRETCHED</text>
+  <text x="60" y="438" fill="#c2c0b6" font-size="13">
+    Remember Layer 2 — the kernel keeps programs isolated from each other.
+  </text>
+  <text x="60" y="458" fill="#c2c0b6" font-size="13" font-style="italic">
+    A server OS uses <tspan fill="#fde68a">the same isolation mechanism</tspan> — just for thousands of users at once. <tspan fill="#fde68a">No new idea. Just scaled.</tspan>
+  </text>
+</svg>

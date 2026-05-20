@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 580" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <rect x="0" y="0" width="920" height="580" fill="#1a1a1d"/>
+
+  <text x="460" y="32" text-anchor="middle" fill="#fde68a" font-size="18" font-weight="500">Same question — wildly different answer</text>
+  <text x="460" y="54" text-anchor="middle" fill="#9a9888" font-size="13" font-style="italic">three things that go from hard to trivial when hardware can be faked</text>
+
+  <!-- ===== Column headers ===== -->
+  <text x="180" y="92" text-anchor="middle" fill="#7fc7f5" font-size="13" font-weight="600" letter-spacing="0.5">PHYSICAL SERVER</text>
+  <text x="640" y="92" text-anchor="middle" fill="#a89df5" font-size="13" font-weight="600" letter-spacing="0.5">VIRTUAL MACHINE</text>
+
+  <!-- ===== Question 1: NEW SERVER ===== -->
+  <g transform="translate(30, 105)">
+    <!-- Question label -->
+    <rect x="0" y="0" width="860" height="28" rx="4" fill="#2a2520" stroke="#fde68a" stroke-width="1"/>
+    <text x="20" y="19" fill="#fde68a" font-size="13" font-weight="600">Q1.  How do I get a new server?</text>
+
+    <!-- Physical side -->
+    <rect x="0" y="35" width="420" height="95" rx="6" fill="#0d2240" stroke="#5a8fcc" stroke-width="1.5"/>
+    <text x="15" y="55" fill="#a5c3e0" font-size="11" font-style="italic">Order from a vendor →</text>
+    <text x="15" y="73" fill="#a5c3e0" font-size="11" font-style="italic">Ship across the world →</text>
+    <text x="15" y="91" fill="#a5c3e0" font-size="11" font-style="italic">Rack it, cable it, configure it →</text>
+    <text x="15" y="109" fill="#a5c3e0" font-size="11" font-style="italic">Install OS, networking, security</text>
+    <text x="280" y="122" fill="#fda4a4" font-size="14" font-weight="600">⏱ weeks</text>
+
+    <!-- Virtual side -->
+    <rect x="440" y="35" width="420" height="95" rx="6" fill="#2d1b69" stroke="#a89df5" stroke-width="1.5"/>
+    <text x="455" y="55" fill="#cec5f5" font-size="11" font-style="italic">Click "create VM" →</text>
+    <text x="455" y="73" fill="#cec5f5" font-size="11" font-style="italic">Pick size, OS →</text>
+    <text x="455" y="91" fill="#cec5f5" font-size="11" font-style="italic">Wait ~30 seconds</text>
+    <text x="455" y="120" fill="#7fcfa0" font-size="14" font-weight="600">⚡ minutes</text>
+  </g>
+
+  <!-- ===== Question 2: DATACENTER SPACE ===== -->
+  <g transform="translate(30, 250)">
+    <rect x="0" y="0" width="860" height="28" rx="4" fill="#2a2520" stroke="#fde68a" stroke-width="1"/>
+    <text x="20" y="19" fill="#fde68a" font-size="13" font-weight="600">Q2.  How much physical space does it take in the datacenter?</text>
+
+    <rect x="0" y="35" width="420" height="80" rx="6" fill="#0d2240" stroke="#5a8fcc" stroke-width="1.5"/>
+    <text x="15" y="55" fill="#a5c3e0" font-size="11" font-style="italic">Real metal box, real rack slot,</text>
+    <text x="15" y="73" fill="#a5c3e0" font-size="11" font-style="italic">real power, real cooling, real floor space</text>
+    <text x="280" y="105" fill="#fda4a4" font-size="14" font-weight="600">📦 square meters</text>
+
+    <rect x="440" y="35" width="420" height="80" rx="6" fill="#2d1b69" stroke="#a89df5" stroke-width="1.5"/>
+    <text x="455" y="55" fill="#cec5f5" font-size="11" font-style="italic">Bits inside another server's RAM.</text>
+    <text x="455" y="73" fill="#cec5f5" font-size="11" font-style="italic">No new building, no new rack.</text>
+    <text x="455" y="105" fill="#7fcfa0" font-size="14" font-weight="600">✨ zero</text>
+  </g>
+
+  <!-- ===== Question 3: MOVING ===== -->
+  <g transform="translate(30, 380)">
+    <rect x="0" y="0" width="860" height="28" rx="4" fill="#2a2520" stroke="#fde68a" stroke-width="1"/>
+    <text x="20" y="19" fill="#fde68a" font-size="13" font-weight="600">Q3.  How do I move my server to a different datacenter?</text>
+
+    <rect x="0" y="35" width="420" height="80" rx="6" fill="#0d2240" stroke="#5a8fcc" stroke-width="1.5"/>
+    <text x="15" y="55" fill="#a5c3e0" font-size="11" font-style="italic">Unplug → crate → ship → re-rack →</text>
+    <text x="15" y="73" fill="#a5c3e0" font-size="11" font-style="italic">re-cable → reconfigure → hope nothing broke</text>
+    <text x="280" y="105" fill="#fda4a4" font-size="14" font-weight="600">⏱ days, sometimes weeks</text>
+
+    <rect x="440" y="35" width="420" height="80" rx="6" fill="#2d1b69" stroke="#a89df5" stroke-width="1.5"/>
+    <text x="455" y="55" fill="#cec5f5" font-size="11" font-style="italic">A VM is just a file.</text>
+    <text x="455" y="73" fill="#cec5f5" font-size="11" font-style="italic">Copy it to another hypervisor → import → done.</text>
+    <text x="455" y="105" fill="#7fcfa0" font-size="14" font-weight="600">⚡ minutes</text>
+  </g>
+
+  <!-- ===== Bottom: DENSITY as the conclusion + pin payoff ===== -->
+  <rect x="30" y="510" width="860" height="55" rx="10" fill="#2a2520" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="50" y="533" fill="#fde68a" font-size="13" font-weight="600" letter-spacing="0.5">THE INEVITABLE CONCLUSION — DENSITY</text>
+  <text x="50" y="555" fill="#c2c0b6" font-size="12" font-style="italic">
+    Because virtual is faster, smaller, and movable — you naturally <tspan fill="#fde68a">pack many VMs onto each server.</tspan> Layer 1's pin: <tspan fill="#fde68a">a VM has the four roles, but isn't a machine.</tspan> Now you know.
+  </text>
+</svg>

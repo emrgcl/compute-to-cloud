@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 500" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <rect x="0" y="0" width="920" height="500" fill="#1a1a1d"/>
+
+  <!-- Title -->
+  <text x="460" y="32" text-anchor="middle" fill="#fde68a" font-size="18" font-weight="500">Two flavors of the same shape</text>
+  <text x="460" y="54" text-anchor="middle" fill="#9a9888" font-size="13" font-style="italic">solving the same problems differently — not opposites, variants</text>
+
+  <!-- LEFT: Linux -->
+  <g transform="translate(60, 90)">
+    <rect x="0" y="0" width="380" height="320" rx="14" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="2"/>
+    <!-- Header -->
+    <text x="190" y="32" text-anchor="middle" fill="#fde68a" font-size="20" font-weight="700" letter-spacing="0.5">LINUX</text>
+    <text x="190" y="52" text-anchor="middle" fill="#7fcfa0" font-size="11" font-style="italic">Ubuntu · Red Hat · Debian · Alpine</text>
+
+    <line x1="30" y1="68" x2="350" y2="68" stroke="#3a3a3e" stroke-width="0.5"/>
+
+    <!-- Stats / properties -->
+    <text x="30" y="95" fill="#9a9888" font-size="10" letter-spacing="0.5">PERSONALITY</text>
+    <text x="30" y="115" fill="#f3f1ea" font-size="12">free, open-source</text>
+    <text x="30" y="133" fill="#f3f1ea" font-size="12">CLI-first by design</text>
+    <text x="30" y="151" fill="#f3f1ea" font-size="12">thousands of distributions</text>
+    <text x="30" y="169" fill="#f3f1ea" font-size="12">runs on everything</text>
+    <text x="50" y="186" fill="#9a9888" font-size="11" font-style="italic">phones, cars, satellites, supercomputers</text>
+
+    <text x="30" y="220" fill="#9a9888" font-size="10" letter-spacing="0.5">SERVICES MANAGED VIA</text>
+    <text x="30" y="240" fill="#fde68a" font-size="12" font-family="ui-monospace, monospace">systemctl start nginx</text>
+
+    <text x="30" y="278" fill="#9a9888" font-size="10" font-style="italic">a huge share of internet</text>
+    <text x="30" y="294" fill="#9a9888" font-size="10" font-style="italic">infrastructure runs on this.</text>
+  </g>
+
+  <!-- RIGHT: Windows Server -->
+  <g transform="translate(480, 90)">
+    <rect x="0" y="0" width="380" height="320" rx="14" fill="#0d2240" stroke="#7fc7f5" stroke-width="2"/>
+    <text x="190" y="32" text-anchor="middle" fill="#fde68a" font-size="20" font-weight="700" letter-spacing="0.5">WINDOWS SERVER</text>
+    <text x="190" y="52" text-anchor="middle" fill="#7fc7f5" font-size="11" font-style="italic">Server 2019 · 2022 · 2025</text>
+
+    <line x1="30" y1="68" x2="350" y2="68" stroke="#3a3a3e" stroke-width="0.5"/>
+
+    <text x="30" y="95" fill="#9a9888" font-size="10" letter-spacing="0.5">PERSONALITY</text>
+    <text x="30" y="115" fill="#f3f1ea" font-size="12">paid product, from Microsoft</text>
+    <text x="30" y="133" fill="#f3f1ea" font-size="12">GUI + CLI (PowerShell)</text>
+    <text x="30" y="151" fill="#f3f1ea" font-size="12">strong in corporate environments</text>
+    <text x="30" y="169" fill="#f3f1ea" font-size="12">deep Active Directory integration</text>
+    <text x="50" y="186" fill="#9a9888" font-size="11" font-style="italic">how big companies manage employee logins</text>
+
+    <text x="30" y="220" fill="#9a9888" font-size="10" letter-spacing="0.5">SERVICES MANAGED VIA</text>
+    <text x="30" y="240" fill="#fde68a" font-size="12" font-family="ui-monospace, monospace">Start-Service nginx</text>
+
+    <text x="30" y="278" fill="#9a9888" font-size="10" font-style="italic">runs much of what enterprises</text>
+    <text x="30" y="294" fill="#9a9888" font-size="10" font-style="italic">use inside their own walls.</text>
+  </g>
+
+  <!-- Bottom takeaway -->
+  <rect x="40" y="430" width="840" height="55" rx="10" fill="#2a2520" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="60" y="453" fill="#fde68a" font-size="13" font-weight="600" letter-spacing="0.5">BOTH ARE SERVER OSES — DIFFERENT FLAVORS</text>
+  <text x="60" y="475" fill="#c2c0b6" font-size="13" font-style="italic">
+    In Azure, deploying a VM asks you: <tspan fill="#fde68a" font-family="ui-monospace, monospace">"Windows Server or Linux?"</tspan> — now you know what the question means.
+  </text>
+</svg>

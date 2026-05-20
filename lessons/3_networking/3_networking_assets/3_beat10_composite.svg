@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 520" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arrC" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0 0, 8 5, 0 10" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="880" height="520" fill="#1a1a1d"/>
+
+  <text x="440" y="35" text-anchor="middle" fill="#fde68a" font-size="17" font-weight="500">You just designed a network.</text>
+
+  <!-- Home subnet (top left) -->
+  <rect x="40" y="65" width="350" height="200" rx="14" fill="none" stroke="#7fcfa0" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="55" y="85" fill="#7fcfa0" font-size="11" font-weight="600" letter-spacing="0.5">SUBNET — your home</text>
+  <text x="55" y="100" fill="#5a9c75" font-size="10" font-family="ui-monospace, monospace">192.168.1.0/24</text>
+
+  <rect x="70" y="120" width="80" height="100" rx="4" fill="#1e3a5f" stroke="#7fc7f5" stroke-width="1.5"/>
+  <polygon points="65,120 110,90 155,120" fill="#1e3a5f" stroke="#7fc7f5" stroke-width="1.5"/>
+  <text x="110" y="240" text-anchor="middle" fill="#dbe9f7" font-size="10">laptop</text>
+  <text x="110" y="255" text-anchor="middle" fill="#fde68a" font-size="9" font-family="ui-monospace, monospace">.1.5</text>
+
+  <rect x="170" y="120" width="80" height="100" rx="4" fill="#2d1b69" stroke="#a89df5" stroke-width="1.5"/>
+  <polygon points="165,120 210,90 255,120" fill="#2d1b69" stroke="#a89df5" stroke-width="1.5"/>
+  <text x="210" y="240" text-anchor="middle" fill="#dcd5f5" font-size="10">phone</text>
+  <text x="210" y="255" text-anchor="middle" fill="#fde68a" font-size="9" font-family="ui-monospace, monospace">.1.8</text>
+
+  <rect x="270" y="120" width="80" height="100" rx="4" fill="#5c3d1a" stroke="#e9b76a" stroke-width="1.5"/>
+  <polygon points="265,120 310,90 355,120" fill="#5c3d1a" stroke="#e9b76a" stroke-width="1.5"/>
+  <text x="310" y="240" text-anchor="middle" fill="#f5e0c2" font-size="10">TV</text>
+  <text x="310" y="255" text-anchor="middle" fill="#fde68a" font-size="9" font-family="ui-monospace, monospace">.1.12</text>
+
+  <!-- Gateway 1 (home router) -->
+  <rect x="135" y="285" width="140" height="50" rx="8" fill="#3c2f0a" stroke="#f59e0b" stroke-width="2"/>
+  <text x="205" y="306" text-anchor="middle" fill="#fde68a" font-size="12" font-weight="600">Gateway</text>
+  <text x="205" y="324" text-anchor="middle" fill="#9a9888" font-size="10" font-style="italic">home router</text>
+
+  <line x1="205" y1="265" x2="205" y2="285" stroke="#f59e0b" stroke-width="2"/>
+
+  <!-- The internet (middle) -->
+  <ellipse cx="440" cy="310" rx="80" ry="42" fill="#2a2520" stroke="#9a9888" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="440" y="307" text-anchor="middle" fill="#c2c0b6" font-size="14" font-weight="500">internet</text>
+  <text x="440" y="326" text-anchor="middle" fill="#7a7872" font-size="10" font-style="italic">~5B devices</text>
+
+  <line x1="280" y1="310" x2="358" y2="310" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrC)"/>
+
+  <!-- Azure VNet subnet (top right) -->
+  <rect x="490" y="65" width="350" height="200" rx="14" fill="none" stroke="#7fcfa0" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="505" y="85" fill="#7fcfa0" font-size="11" font-weight="600" letter-spacing="0.5">SUBNET — Azure datacenter</text>
+  <text x="505" y="100" fill="#5a9c75" font-size="10" font-family="ui-monospace, monospace">10.0.0.0/24</text>
+
+  <!-- Firewall (NSG) at the edge of Azure subnet -->
+  <rect x="510" y="120" width="60" height="130" rx="6" fill="#2e0d0d" stroke="#ef4444" stroke-width="2"/>
+  <text x="540" y="150" text-anchor="middle" fill="#fda4a4" font-size="10" font-weight="600">NSG</text>
+  <text x="540" y="167" text-anchor="middle" fill="#fda4a4" font-size="9" font-style="italic">(firewall)</text>
+  <text x="540" y="187" text-anchor="middle" fill="#7fcfa0" font-size="9">443 ✓</text>
+  <text x="540" y="200" text-anchor="middle" fill="#7fcfa0" font-size="9">80 ✓</text>
+  <text x="540" y="213" text-anchor="middle" fill="#fda4a4" font-size="9">22 ✗</text>
+  <text x="540" y="226" text-anchor="middle" fill="#fda4a4" font-size="9">all ✗</text>
+
+  <!-- Azure VM 1 -->
+  <rect x="600" y="120" width="100" height="120" rx="4" fill="#1a4d2e" stroke="#7fcfa0" stroke-width="1.5"/>
+  <polygon points="595,120 650,90 705,120" fill="#1a4d2e" stroke="#7fcfa0" stroke-width="1.5"/>
+  <rect x="615" y="135" width="70" height="14" rx="2" fill="#0d2e1a"/>
+  <text x="650" y="146" text-anchor="middle" fill="#fde68a" font-size="9" font-family="ui-monospace, monospace">:443</text>
+  <rect x="615" y="153" width="70" height="14" rx="2" fill="#0d2e1a"/>
+  <text x="650" y="164" text-anchor="middle" fill="#fde68a" font-size="9" font-family="ui-monospace, monospace">:80</text>
+  <rect x="615" y="171" width="70" height="14" rx="2" fill="#0d2e1a"/>
+  <text x="650" y="182" text-anchor="middle" fill="#fde68a" font-size="9" font-family="ui-monospace, monospace">:22</text>
+  <text x="650" y="220" text-anchor="middle" fill="#c4f0d4" font-size="10">web server</text>
+  <text x="650" y="235" text-anchor="middle" fill="#fde68a" font-size="9" font-family="ui-monospace, monospace">10.0.0.4</text>
+
+  <!-- Azure VM 2 -->
+  <rect x="720" y="120" width="100" height="120" rx="4" fill="#1a4d2e" stroke="#7fcfa0" stroke-width="1.5"/>
+  <polygon points="715,120 770,90 825,120" fill="#1a4d2e" stroke="#7fcfa0" stroke-width="1.5"/>
+  <rect x="735" y="135" width="70" height="14" rx="2" fill="#0d2e1a"/>
+  <text x="770" y="146" text-anchor="middle" fill="#fde68a" font-size="9" font-family="ui-monospace, monospace">:5432</text>
+  <text x="770" y="220" text-anchor="middle" fill="#c4f0d4" font-size="10">database</text>
+  <text x="770" y="235" text-anchor="middle" fill="#fde68a" font-size="9" font-family="ui-monospace, monospace">10.0.0.5</text>
+
+  <!-- Gateway 2 (Azure side) -->
+  <rect x="595" y="285" width="140" height="50" rx="8" fill="#3c2f0a" stroke="#f59e0b" stroke-width="2"/>
+  <text x="665" y="306" text-anchor="middle" fill="#fde68a" font-size="12" font-weight="600">Gateway</text>
+  <text x="665" y="324" text-anchor="middle" fill="#9a9888" font-size="10" font-style="italic">Azure VNet</text>
+
+  <line x1="665" y1="265" x2="665" y2="285" stroke="#f59e0b" stroke-width="2"/>
+
+  <line x1="522" y1="310" x2="595" y2="310" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrC)"/>
+
+  <!-- Azure label box translating concepts -->
+  <rect x="40" y="370" width="800" height="120" rx="10" fill="#1e3a5f" stroke="#4a9eed" stroke-width="1.5"/>
+  <text x="60" y="395" fill="#a5d8ff" font-size="13" font-weight="600" letter-spacing="0.5">IN AZURE, THIS EXACT SHAPE GETS THESE NAMES</text>
+
+  <text x="60" y="420" fill="#f3f1ea" font-size="12">The whole private network:</text>
+  <text x="270" y="420" fill="#a5d8ff" font-size="13" font-weight="600">VNet</text>
+  <text x="320" y="420" fill="#7a7872" font-size="11" font-style="italic">(Virtual Network)</text>
+
+  <text x="60" y="442" fill="#f3f1ea" font-size="12">A group inside it:</text>
+  <text x="270" y="442" fill="#a5d8ff" font-size="13" font-weight="600">Subnet</text>
+
+  <text x="60" y="464" fill="#f3f1ea" font-size="12">The firewall rules:</text>
+  <text x="270" y="464" fill="#a5d8ff" font-size="13" font-weight="600">NSG</text>
+  <text x="305" y="464" fill="#7a7872" font-size="11" font-style="italic">(Network Security Group)</text>
+
+  <text x="460" y="420" fill="#f3f1ea" font-size="12">The door to outside:</text>
+  <text x="670" y="420" fill="#a5d8ff" font-size="13" font-weight="600">Gateway</text>
+
+  <text x="460" y="442" fill="#f3f1ea" font-size="12">An address:</text>
+  <text x="670" y="442" fill="#a5d8ff" font-size="13" font-weight="600">IP address</text>
+
+  <text x="460" y="464" fill="#f3f1ea" font-size="12">A service slot:</text>
+  <text x="670" y="464" fill="#a5d8ff" font-size="13" font-weight="600">Port</text>
+</svg>

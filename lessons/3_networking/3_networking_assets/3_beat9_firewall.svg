@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 500" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arrOk" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0 0, 8 5, 0 10" fill="#7fcfa0"/>
+    </marker>
+    <marker id="arrNo" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0 0, 8 5, 0 10" fill="#ef4444"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="880" height="500" fill="#1a1a1d"/>
+
+  <text x="440" y="35" text-anchor="middle" fill="#9a9888" font-size="14" letter-spacing="1">EVERY DOOR HAS A DOORMAN — FIREWALL</text>
+
+  <!-- The protected server (right side) -->
+  <rect x="540" y="90" width="280" height="320" rx="6" fill="#1a4d2e" stroke="#7fcfa0" stroke-width="2"/>
+  <polygon points="535,90 680,40 825,90" fill="#1a4d2e" stroke="#7fcfa0" stroke-width="2"/>
+  <text x="680" y="77" text-anchor="middle" fill="#c4f0d4" font-size="13" font-weight="500">Web server</text>
+  <text x="680" y="395" text-anchor="middle" fill="#fde68a" font-size="12" font-family="ui-monospace, monospace">10.0.0.4</text>
+
+  <!-- Mailbox slots -->
+  <rect x="565" y="115" width="230" height="38" rx="4" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1"/>
+  <text x="585" y="139" fill="#fde68a" font-size="13" font-family="ui-monospace, monospace" font-weight="600">:443</text>
+  <text x="675" y="139" fill="#c4f0d4" font-size="12">secure web</text>
+
+  <rect x="565" y="163" width="230" height="38" rx="4" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1"/>
+  <text x="585" y="187" fill="#fde68a" font-size="13" font-family="ui-monospace, monospace" font-weight="600">:80</text>
+  <text x="670" y="187" fill="#c4f0d4" font-size="12">web</text>
+
+  <rect x="565" y="211" width="230" height="38" rx="4" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1"/>
+  <text x="585" y="235" fill="#fde68a" font-size="13" font-family="ui-monospace, monospace" font-weight="600">:22</text>
+  <text x="670" y="235" fill="#c4f0d4" font-size="12">SSH</text>
+
+  <rect x="565" y="259" width="230" height="38" rx="4" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1"/>
+  <text x="585" y="283" fill="#fde68a" font-size="13" font-family="ui-monospace, monospace" font-weight="600">:3389</text>
+  <text x="670" y="283" fill="#c4f0d4" font-size="12">RDP</text>
+
+  <rect x="565" y="307" width="230" height="38" rx="4" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1"/>
+  <text x="585" y="331" fill="#fde68a" font-size="13" font-family="ui-monospace, monospace" font-weight="600">:5432</text>
+  <text x="670" y="331" fill="#c4f0d4" font-size="12">Postgres database</text>
+
+  <!-- The doorman / firewall ruleset on left -->
+  <rect x="60" y="90" width="430" height="320" rx="10" fill="#23232a" stroke="#ef4444" stroke-width="2"/>
+  <text x="80" y="115" fill="#fda4a4" font-size="13" font-weight="600" letter-spacing="0.5">FIREWALL — the doorman</text>
+  <text x="80" y="132" fill="#9a9888" font-size="11" font-style="italic">checks every incoming visitor</text>
+
+  <line x1="75" y1="148" x2="475" y2="148" stroke="#3a3a3e" stroke-width="1"/>
+
+  <!-- Rules header -->
+  <text x="80" y="172" fill="#7a7872" font-size="10" letter-spacing="0.5">RULE</text>
+  <text x="170" y="172" fill="#7a7872" font-size="10" letter-spacing="0.5">PORT</text>
+  <text x="240" y="172" fill="#7a7872" font-size="10" letter-spacing="0.5">FROM</text>
+  <text x="400" y="172" fill="#7a7872" font-size="10" letter-spacing="0.5">ACTION</text>
+
+  <!-- Rule 1: allow https from anywhere -->
+  <rect x="75" y="180" width="410" height="36" rx="4" fill="#0d2e1a" stroke="#1a4d2e" stroke-width="1"/>
+  <text x="80" y="203" fill="#c4f0d4" font-size="12">1</text>
+  <text x="170" y="203" fill="#fde68a" font-size="12" font-family="ui-monospace, monospace">443</text>
+  <text x="240" y="203" fill="#f3f1ea" font-size="12">anywhere</text>
+  <text x="395" y="203" fill="#7fcfa0" font-size="12" font-weight="600">✓ ALLOW</text>
+
+  <!-- Rule 2: allow port 80 -->
+  <rect x="75" y="220" width="410" height="36" rx="4" fill="#0d2e1a" stroke="#1a4d2e" stroke-width="1"/>
+  <text x="80" y="243" fill="#c4f0d4" font-size="12">2</text>
+  <text x="170" y="243" fill="#fde68a" font-size="12" font-family="ui-monospace, monospace">80</text>
+  <text x="240" y="243" fill="#f3f1ea" font-size="12">anywhere</text>
+  <text x="395" y="243" fill="#7fcfa0" font-size="12" font-weight="600">✓ ALLOW</text>
+
+  <!-- Rule 3: allow ssh from my IP only -->
+  <rect x="75" y="260" width="410" height="36" rx="4" fill="#0d2e1a" stroke="#1a4d2e" stroke-width="1"/>
+  <text x="80" y="283" fill="#c4f0d4" font-size="12">3</text>
+  <text x="170" y="283" fill="#fde68a" font-size="12" font-family="ui-monospace, monospace">22</text>
+  <text x="240" y="283" fill="#f3f1ea" font-size="12" font-family="ui-monospace, monospace">192.168.1.5</text>
+  <text x="395" y="283" fill="#7fcfa0" font-size="12" font-weight="600">✓ ALLOW</text>
+
+  <!-- Rule 4: deny rdp -->
+  <rect x="75" y="300" width="410" height="36" rx="4" fill="#2e0d0d" stroke="#5c1a1a" stroke-width="1"/>
+  <text x="80" y="323" fill="#f5cfcf" font-size="12">4</text>
+  <text x="170" y="323" fill="#fde68a" font-size="12" font-family="ui-monospace, monospace">3389</text>
+  <text x="240" y="323" fill="#f3f1ea" font-size="12">anywhere</text>
+  <text x="395" y="323" fill="#fda4a4" font-size="12" font-weight="600">✗ DENY</text>
+
+  <!-- Rule 5: default deny all -->
+  <rect x="75" y="340" width="410" height="36" rx="4" fill="#2e0d0d" stroke="#5c1a1a" stroke-width="1"/>
+  <text x="80" y="363" fill="#f5cfcf" font-size="12">99</text>
+  <text x="170" y="363" fill="#9a9888" font-size="12" font-style="italic">everything else</text>
+  <text x="240" y="363" fill="#9a9888" font-size="12" font-style="italic">—</text>
+  <text x="395" y="363" fill="#fda4a4" font-size="12" font-weight="600">✗ DENY</text>
+
+  <!-- Arrows: allowed and denied -->
+  <line x1="495" y1="200" x2="560" y2="135" stroke="#7fcfa0" stroke-width="1.5" marker-end="url(#arrOk)"/>
+  <line x1="495" y1="320" x2="560" y2="280" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrNo)"/>
+
+  <!-- Caption -->
+  <text x="440" y="455" text-anchor="middle" fill="#f3f1ea" font-size="14">Three columns: <tspan fill="#fde68a">port</tspan> · <tspan fill="#fde68a">where it's from</tspan> · <tspan fill="#fde68a">allow or deny</tspan>. That's <tspan font-style="italic">basically all a firewall is.</tspan></text>
+  <text x="440" y="480" text-anchor="middle" fill="#9a9888" font-size="13" font-style="italic">In Azure, this list is called an NSG — Network Security Group.</text>
+</svg>

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 540" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <rect x="0" y="0" width="920" height="540" fill="#1a1a1d"/>
+
+  <text x="460" y="32" text-anchor="middle" fill="#fde68a" font-size="18" font-weight="500">What you just saw — in the language of Layers 1-6</text>
+  <text x="460" y="54" text-anchor="middle" fill="#9a9888" font-size="13" font-style="italic">Azure portal action → what it actually is</text>
+
+  <!-- Column headers -->
+  <rect x="40" y="80" width="840" height="36" rx="6" fill="#2a2520" stroke="#fde68a" stroke-width="1"/>
+  <text x="80" y="103" fill="#fde68a" font-size="12" font-weight="700" letter-spacing="0.5">WHEN YOU SAW ME...</text>
+  <text x="500" y="103" fill="#fde68a" font-size="12" font-weight="700" letter-spacing="0.5">WHAT WAS ACTUALLY HAPPENING</text>
+
+  <!-- Row 1 -->
+  <g transform="translate(40, 128)">
+    <rect x="0" y="0" width="840" height="56" rx="4" fill="#1e3a5f" stroke="#7fc7f5" stroke-width="0.5"/>
+    <text x="40" y="24" fill="#dbe9f7" font-size="13" font-weight="500">Pick a region (Amsterdam, Sweden, ...)</text>
+    <text x="40" y="44" fill="#a5c3e0" font-size="11" font-style="italic">click "West Europe"</text>
+    <text x="460" y="24" fill="#c4f0d4" font-size="13">You chose <tspan fill="#fde68a">a specific datacenter building</tspan> from ~400</text>
+    <text x="460" y="44" fill="#9a9888" font-size="11" font-style="italic">Layer 4 — the building of tens of thousands of servers</text>
+  </g>
+
+  <!-- Row 2 -->
+  <g transform="translate(40, 195)">
+    <rect x="0" y="0" width="840" height="56" rx="4" fill="#1e3a5f" stroke="#7fc7f5" stroke-width="0.5"/>
+    <text x="40" y="24" fill="#dbe9f7" font-size="13" font-weight="500">Pick an OS (Ubuntu, Windows Server, ...)</text>
+    <text x="40" y="44" fill="#a5c3e0" font-size="11" font-style="italic">dropdown menu of images</text>
+    <text x="460" y="24" fill="#c4f0d4" font-size="13">You picked which <tspan fill="#fde68a">server OS</tspan> the VM will boot</text>
+    <text x="460" y="44" fill="#9a9888" font-size="11" font-style="italic">Layer 5 — Windows Server or Linux flavor</text>
+  </g>
+
+  <!-- Row 3 -->
+  <g transform="translate(40, 262)">
+    <rect x="0" y="0" width="840" height="56" rx="4" fill="#1e3a5f" stroke="#7fc7f5" stroke-width="0.5"/>
+    <text x="40" y="24" fill="#dbe9f7" font-size="13" font-weight="500">Pick a size (2 vCPU, 8 GB RAM, ...)</text>
+    <text x="40" y="44" fill="#a5c3e0" font-size="11" font-style="italic">dropdown of VM sizes</text>
+    <text x="460" y="24" fill="#c4f0d4" font-size="13">You told the <tspan fill="#fde68a">hypervisor</tspan> how big to make the VM</text>
+    <text x="460" y="44" fill="#9a9888" font-size="11" font-style="italic">Layer 6 — slicing the real hardware into shares</text>
+  </g>
+
+  <!-- Row 4 -->
+  <g transform="translate(40, 329)">
+    <rect x="0" y="0" width="840" height="56" rx="4" fill="#1e3a5f" stroke="#7fc7f5" stroke-width="0.5"/>
+    <text x="40" y="24" fill="#dbe9f7" font-size="13" font-weight="500">Click "Create"</text>
+    <text x="40" y="44" fill="#a5c3e0" font-size="11" font-style="italic">submit the form</text>
+    <text x="460" y="24" fill="#c4f0d4" font-size="13">The <tspan fill="#fde68a">hypervisor</tspan> on a physical server somewhere built a VM</text>
+    <text x="460" y="44" fill="#9a9888" font-size="11" font-style="italic">Layer 6 — software pretending to be hardware</text>
+  </g>
+
+  <!-- Row 5 -->
+  <g transform="translate(40, 396)">
+    <rect x="0" y="0" width="840" height="56" rx="4" fill="#1e3a5f" stroke="#7fc7f5" stroke-width="0.5"/>
+    <text x="40" y="24" fill="#dbe9f7" font-size="13" font-weight="500">SSH / RDP into it</text>
+    <text x="40" y="44" fill="#a5c3e0" font-size="11" font-style="italic">terminal opened, login worked</text>
+    <text x="460" y="24" fill="#c4f0d4" font-size="13">A packet went from this room to that VM — <tspan fill="#fde68a">Layer 3 routing</tspan></text>
+    <text x="460" y="44" fill="#9a9888" font-size="11" font-style="italic">Layer 3 + Layer 4 — same SSH/RDP from beat 6 of Layer 4</text>
+  </g>
+
+  <!-- Bottom takeaway -->
+  <rect x="40" y="467" width="840" height="55" rx="10" fill="#2a2520" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="60" y="492" fill="#fde68a" font-size="13" font-weight="600" letter-spacing="0.5">EVERY CLICK WAS A LAYER YOU ALREADY UNDERSTOOD</text>
+  <text x="60" y="512" fill="#c2c0b6" font-size="13" font-style="italic">
+    There was no magic in any of that. Just <tspan fill="#fde68a">a portal that calls a hypervisor</tspan>, which builds a VM, which boots an OS, which joins a network — all owned by Microsoft, all rented to me by the minute.
+  </text>
+</svg>

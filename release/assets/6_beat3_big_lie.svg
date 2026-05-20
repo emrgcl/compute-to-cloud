@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 540" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <defs>
+    <marker id="arrLie" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0 0, 8 5, 0 10" fill="#a89df5"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="920" height="540" fill="#1a1a1d"/>
+
+  <text x="460" y="32" text-anchor="middle" fill="#fde68a" font-size="18" font-weight="500">The big lie</text>
+  <text x="460" y="54" text-anchor="middle" fill="#9a9888" font-size="13" font-style="italic">what if the OS could be fooled about what hardware exists?</text>
+
+  <!-- ===== LEFT: BEFORE (no virtualization) ===== -->
+  <g transform="translate(40, 90)">
+    <text x="180" y="0" text-anchor="middle" fill="#7fc7f5" font-size="13" font-weight="600" letter-spacing="0.5">BEFORE — DIRECT</text>
+
+    <!-- OS box -->
+    <rect x="60" y="25" width="240" height="60" rx="8" fill="#1e3a5f" stroke="#7fc7f5" stroke-width="2"/>
+    <text x="180" y="50" text-anchor="middle" fill="#dbe9f7" font-size="14" font-weight="600">Operating System</text>
+    <text x="180" y="70" text-anchor="middle" fill="#a5c3e0" font-size="11" font-style="italic">sees real hardware</text>
+
+    <!-- Arrow down -->
+    <line x1="180" y1="92" x2="180" y2="130" stroke="#7fc7f5" stroke-width="2" marker-end="url(#arrLie)"/>
+    <text x="195" y="115" fill="#a5c3e0" font-size="11" font-style="italic">directly</text>
+
+    <!-- Hardware box -->
+    <rect x="60" y="140" width="240" height="100" rx="8" fill="#0d2240" stroke="#7fc7f5" stroke-width="2"/>
+    <text x="180" y="170" text-anchor="middle" fill="#dbe9f7" font-size="13" font-weight="600">Real Hardware</text>
+    <text x="180" y="194" text-anchor="middle" fill="#fde68a" font-size="11" font-family="ui-monospace, monospace">96 cores · 1 TB RAM</text>
+    <text x="180" y="214" text-anchor="middle" fill="#fde68a" font-size="11" font-family="ui-monospace, monospace">8× 2 TB disks · 4 NICs</text>
+    <text x="180" y="230" text-anchor="middle" fill="#9a9888" font-size="10" font-style="italic">what the OS sees == what's there</text>
+
+    <text x="180" y="278" text-anchor="middle" fill="#9a9888" font-size="11" font-style="italic">one OS</text>
+    <text x="180" y="294" text-anchor="middle" fill="#9a9888" font-size="11" font-style="italic">one whole server</text>
+    <text x="180" y="310" text-anchor="middle" fill="#fda4a4" font-size="11">wasteful (see beat 2)</text>
+  </g>
+
+  <!-- ===== RIGHT: AFTER (with hypervisor) ===== -->
+  <g transform="translate(480, 90)">
+    <text x="200" y="0" text-anchor="middle" fill="#a89df5" font-size="13" font-weight="600" letter-spacing="0.5">AFTER — WITH HYPERVISOR</text>
+
+    <!-- Guest OS box -->
+    <rect x="40" y="25" width="320" height="60" rx="8" fill="#1e3a5f" stroke="#7fc7f5" stroke-width="2"/>
+    <text x="200" y="50" text-anchor="middle" fill="#dbe9f7" font-size="14" font-weight="600">Operating System</text>
+    <text x="200" y="70" text-anchor="middle" fill="#fde68a" font-size="11" font-style="italic">sees what the hypervisor SHOWS it</text>
+
+    <!-- Arrow down to hypervisor -->
+    <line x1="200" y1="92" x2="200" y2="110" stroke="#a89df5" stroke-width="2" marker-end="url(#arrLie)"/>
+
+    <!-- Hypervisor box (NEW layer between OS and HW) -->
+    <rect x="40" y="118" width="320" height="60" rx="8" fill="#2d1b69" stroke="#fde68a" stroke-width="2.5"/>
+    <text x="200" y="143" text-anchor="middle" fill="#fde68a" font-size="14" font-weight="600">HYPERVISOR</text>
+    <text x="200" y="163" text-anchor="middle" fill="#cec5f5" font-size="11" font-style="italic">"here's your hardware" — but it's a lie</text>
+
+    <!-- Arrow down to real HW -->
+    <line x1="200" y1="186" x2="200" y2="206" stroke="#a89df5" stroke-width="2" marker-end="url(#arrLie)"/>
+
+    <!-- Real Hardware -->
+    <rect x="40" y="214" width="320" height="100" rx="8" fill="#0d2240" stroke="#7fc7f5" stroke-width="2"/>
+    <text x="200" y="244" text-anchor="middle" fill="#dbe9f7" font-size="13" font-weight="600">Real Hardware</text>
+    <text x="200" y="268" text-anchor="middle" fill="#fde68a" font-size="11" font-family="ui-monospace, monospace">96 cores · 1 TB RAM</text>
+    <text x="200" y="288" text-anchor="middle" fill="#fde68a" font-size="11" font-family="ui-monospace, monospace">8× 2 TB disks · 4 NICs</text>
+    <text x="200" y="304" text-anchor="middle" fill="#9a9888" font-size="10" font-style="italic">hypervisor sees it all</text>
+  </g>
+
+  <!-- ===== BOTTOM: explanation box ===== -->
+  <rect x="40" y="420" width="840" height="105" rx="10" fill="#2a2520" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="60" y="445" fill="#fde68a" font-size="13" font-weight="600" letter-spacing="0.5">THE HYPERVISOR IS SOFTWARE THAT PRETENDS TO BE HARDWARE</text>
+
+  <text x="60" y="472" fill="#f3f1ea" font-size="13">
+    It sits between the OS and the real hardware. It tells the OS: <tspan fill="#fde68a" font-style="italic">"you have 4 CPU cores, 8 GB RAM, one 50 GB disk."</tspan>
+  </text>
+  <text x="60" y="493" fill="#f3f1ea" font-size="13">
+    The OS believes it — runs normally, makes its 'system calls' to what it thinks is hardware.
+  </text>
+  <text x="60" y="516" fill="#c2c0b6" font-size="13" font-style="italic">
+    <tspan fill="#fde68a">Layer 2 said: programs can't touch hardware directly — the kernel sits in between.</tspan> Now we do the same trick to the kernel itself.
+  </text>
+</svg>

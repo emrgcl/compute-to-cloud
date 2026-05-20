@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 670" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <rect x="0" y="0" width="920" height="670" fill="#1a1a1d"/>
+
+  <!-- Headline -->
+  <text x="460" y="42" text-anchor="middle" fill="#fde68a" font-size="20" font-weight="500">Azure isn't magic</text>
+  <text x="460" y="68" text-anchor="middle" fill="#9a9888" font-size="14" font-style="italic">it's the same computer you have at home — plus five ideas stacked on top</text>
+
+  <!-- The five layers as a stacked column -->
+  <g transform="translate(140, 110)">
+    <!-- Layer 1 -->
+    <rect x="0" y="0" width="640" height="60" rx="8" fill="#1e1e23" stroke="#5F5E5A" stroke-width="1"/>
+    <text x="20" y="25" fill="#c2c0b6" font-size="11" font-weight="600" letter-spacing="1">LAYER 1 — COMPUTER</text>
+    <text x="20" y="48" fill="#dbd9d0" font-size="14" font-style="italic">five physical things — CPU, RAM, storage, network, motherboard</text>
+
+    <!-- Layer 2 -->
+    <rect x="0" y="70" width="640" height="60" rx="8" fill="#1e1e23" stroke="#5F5E5A" stroke-width="1"/>
+    <text x="20" y="95" fill="#c2c0b6" font-size="11" font-weight="600" letter-spacing="1">LAYER 2 — OS</text>
+    <text x="20" y="118" fill="#dbd9d0" font-size="14" font-style="italic">a coordinator — the kernel keeps programs apart, shares hardware</text>
+
+    <!-- Layer 3 -->
+    <rect x="0" y="140" width="640" height="60" rx="8" fill="#0d2e1a" stroke="#3B6D11" stroke-width="1"/>
+    <text x="20" y="165" fill="#7fcfa0" font-size="11" font-weight="600" letter-spacing="1">LAYER 3 — NETWORK</text>
+    <text x="20" y="188" fill="#c4f0d4" font-size="14" font-style="italic">how computers find each other — IPs, ports, packets, firewalls</text>
+
+    <!-- Layer 4 -->
+    <rect x="0" y="210" width="640" height="60" rx="8" fill="#0d2e1a" stroke="#3B6D11" stroke-width="1"/>
+    <text x="20" y="235" fill="#7fcfa0" font-size="11" font-weight="600" letter-spacing="1">LAYER 4 — SERVER</text>
+    <text x="20" y="258" fill="#c4f0d4" font-size="14" font-style="italic">a stronger version of it — built to serve, never stop, no screen</text>
+
+    <!-- Layer 5 -->
+    <rect x="0" y="280" width="640" height="60" rx="8" fill="#0d2e1a" stroke="#3B6D11" stroke-width="1"/>
+    <text x="20" y="305" fill="#7fcfa0" font-size="11" font-weight="600" letter-spacing="1">LAYER 5 — SERVER OS</text>
+    <text x="20" y="328" fill="#c4f0d4" font-size="14" font-style="italic">an OS that runs without a screen — services, not apps; CLI, not GUI</text>
+
+    <!-- Layer 6 -->
+    <rect x="0" y="350" width="640" height="60" rx="8" fill="#1a1346" stroke="#534AB7" stroke-width="1"/>
+    <text x="20" y="375" fill="#a89df5" font-size="11" font-weight="600" letter-spacing="1">LAYER 6 — VIRTUALIZATION</text>
+    <text x="20" y="398" fill="#cec5f5" font-size="14" font-style="italic">a way to slice one into many — software pretending to be hardware</text>
+
+    <!-- Layer 7 -->
+    <rect x="0" y="420" width="640" height="60" rx="8" fill="#0d2240" stroke="#185FA5" stroke-width="2"/>
+    <text x="20" y="445" fill="#7fc7f5" font-size="11" font-weight="600" letter-spacing="1">LAYER 7 — AZURE</text>
+    <text x="20" y="468" fill="#dbe9f7" font-size="14" font-style="italic">someone else owning the building — rented by the minute</text>
+  </g>
+
+  <!-- Closing sentence — clearly separated below the stack -->
+  <text x="460" y="625" text-anchor="middle" fill="#fde68a" font-size="16" font-weight="500" font-style="italic">That's all the cloud is.</text>
+  <text x="460" y="652" text-anchor="middle" fill="#fde68a" font-size="16" font-weight="500" font-style="italic">You now know enough to build on it.</text>
+</svg>

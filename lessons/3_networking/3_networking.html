@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Training — Networking</title>
+<style>
+  :root {
+    --bg-page: #0e0e10;
+    --bg-surface: #1a1a1d;
+    --bg-muted: #2a2a2e;
+    --text-primary: #f3f1ea;
+    --text-secondary: #b0aea4;
+    --text-tertiary: #7a7872;
+    --border: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.25);
+
+    --blue-50:  #E6F1FB;
+    --blue-600: #4a9eed;
+    --blue-800: #185FA5;
+    --amber-50:  #FAEEDA;
+    --amber-600: #f59e0b;
+    --amber-800: #BA7517;
+    --green-600: #22c55e;
+    --purple-600: #8b5cf6;
+
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-page);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 20px 24px;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 14px;
+  }
+  h1 { font-size: 18px; font-weight: 500; margin: 0; color: var(--text-secondary); }
+  .module-tag {
+    font-size: 12px; color: var(--text-tertiary);
+    font-family: var(--font-mono);
+  }
+
+  .controls {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 16px; flex-wrap: wrap;
+  }
+
+  button {
+    font-family: inherit; font-size: 13px;
+    padding: 8px 16px;
+    background: var(--bg-surface); color: var(--text-primary);
+    border: 1px solid var(--border-strong); border-radius: 8px;
+    cursor: pointer; transition: background 120ms, transform 80ms;
+  }
+  button:hover:not(:disabled) { background: var(--bg-muted); }
+  button:active:not(:disabled) { transform: scale(0.98); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  button.primary {
+    font-weight: 500;
+    background: var(--blue-600);
+    color: #ffffff;
+    border-color: var(--blue-600);
+  }
+  button.primary:hover:not(:disabled) { background: #5fb0f5; }
+
+  .step-counter {
+    margin-left: 8px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+  }
+
+  .stage {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    min-height: 560px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+
+  .beat {
+    display: none;
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+    animation: fadein 480ms ease;
+  }
+  .beat.active { display: flex; }
+
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Beat 0 — title */
+  .beat-title {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .beat-title .big-title {
+    font-size: 48px;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    margin: 0 0 16px;
+  }
+  .beat-title .big-sub {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 640px;
+    line-height: 1.5;
+  }
+  .beat-title .timer {
+    margin-top: 32px;
+    font-family: var(--font-mono);
+    color: var(--text-tertiary);
+    font-size: 13px;
+  }
+
+  /* Beat 1 — hook */
+  .beat-hook {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+  }
+  .beat-hook .question {
+    font-size: 32px;
+    font-weight: 300;
+    text-align: center;
+    line-height: 1.4;
+    max-width: 880px;
+  }
+  .beat-hook .question .highlight {
+    color: var(--amber-600);
+    font-weight: 400;
+  }
+  .beat-hook .followup {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 760px;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* Beat 2 — phone-to-datacenter image */
+  .beat-bridge {
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+  }
+  .beat-bridge img {
+    max-width: 100%;
+    max-height: 460px;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-bridge .caption {
+    font-size: 18px;
+    color: var(--text-primary);
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-bridge .caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Beat 3 — datacenter aerial */
+  .beat-scale {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+  .beat-scale img {
+    max-width: 100%;
+    max-height: 380px;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-scale .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    width: 100%;
+    max-width: 980px;
+    margin-top: 8px;
+  }
+  @media (max-width: 800px) { .beat-scale .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat {
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 320ms ease, transform 320ms ease;
+  }
+  .stat.show { opacity: 1; transform: translateY(0); }
+  .stat .num {
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--amber-600);
+    font-family: var(--font-mono);
+    line-height: 1.1;
+  }
+  .stat .lbl {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    line-height: 1.35;
+  }
+
+  /* Beat 4 — punchline */
+  .beat-punch {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+  }
+  .beat-punch .lead {
+    font-size: 26px;
+    line-height: 1.4;
+    max-width: 880px;
+    color: var(--text-primary);
+    font-weight: 300;
+  }
+  .beat-punch .lead .hl {
+    color: var(--purple-600);
+    font-weight: 500;
+  }
+  .beat-punch .teaser {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 720px;
+    line-height: 1.5;
+    padding: 16px 24px;
+    border-left: 3px solid var(--purple-600);
+    background: rgba(139, 92, 246, 0.08);
+    border-radius: 0 8px 8px 0;
+    text-align: left;
+  }
+  .beat-punch .teaser .pin {
+    color: var(--purple-600);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Beat 5 — roadmap */
+  .beat-roadmap {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .beat-roadmap .roadmap-intro {
+    font-size: 18px;
+    color: var(--text-secondary);
+    text-align: center;
+    max-width: 880px;
+    line-height: 1.5;
+  }
+  .beat-roadmap .roadmap-wrap {
+    background: transparent;
+    border-radius: 10px;
+    padding: 0;
+    width: 100%;
+    max-width: 900px;
+    max-height: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .beat-roadmap .roadmap-wrap img,
+  .beat-roadmap .roadmap-wrap object {
+    width: 100%;
+    height: auto;
+    max-height: 620px;
+  }
+
+  /* Beat 6 — through-line */
+  .beat-throughline {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 28px;
+  }
+  .beat-throughline .promise {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 720px;
+    line-height: 1.5;
+  }
+  .beat-throughline .sentence {
+    font-size: 24px;
+    line-height: 1.5;
+    max-width: 920px;
+    font-weight: 300;
+    color: var(--text-primary);
+    padding: 28px 36px;
+    background: linear-gradient(135deg, rgba(74, 158, 237, 0.10), rgba(139, 92, 246, 0.10));
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .beat-throughline .sentence strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+  .beat-throughline .footnote {
+    color: var(--text-tertiary);
+    font-size: 14px;
+    font-style: italic;
+    max-width: 640px;
+  }
+
+  /* Beat — ancestors (dual photo: Apple II + IBM PC side by side) */
+  .beat-ancestors {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .beat-ancestors .photo-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    width: 100%;
+    max-width: 980px;
+    align-items: end;
+  }
+  .beat-ancestors .photo-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .beat-ancestors .photo-year {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--amber-600);
+    letter-spacing: 1px;
+  }
+  .beat-ancestors .photo-name {
+    font-size: 16px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .beat-ancestors img {
+    max-width: 100%;
+    max-height: 320px;
+    border-radius: 8px;
+    background: #fafaf7;
+    padding: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-ancestors .ancestors-caption {
+    font-size: 17px;
+    color: var(--text-primary);
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.55;
+    margin-top: 8px;
+  }
+  .beat-ancestors .ancestors-caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Spec strip — small mono-font specs displayed under each ancestor photo */
+  .spec-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .spec-strip .spec-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .spec-strip .spec-key {
+    color: var(--text-tertiary);
+  }
+  .spec-strip .spec-val {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  /* Beat 2 "today's monster" — spec comparison strip below the exploded view */
+  .monster-specs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    width: 100%;
+    max-width: 920px;
+    margin-top: 10px;
+  }
+  @media (max-width: 720px) {
+    .monster-specs { grid-template-columns: 1fr; }
+  }
+  .monster-spec {
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .monster-spec .spec-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .monster-spec .spec-value {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .monster-spec .spec-multiplier {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Beat — timeline (SVG embed sized for the 3-card mini-timeline) */
+  .beat-timeline {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .beat-timeline .timeline-intro {
+    font-size: 17px;
+    color: var(--text-secondary);
+    text-align: center;
+    max-width: 880px;
+    line-height: 1.5;
+  }
+  .beat-timeline .timeline-wrap {
+    width: 100%;
+    max-width: 880px;
+    max-height: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .beat-timeline .timeline-wrap object {
+    width: 100%;
+    height: auto;
+    max-height: 620px;
+  }
+
+  /* Beat — exploded view of a computer (large photo, single caption) */
+  .beat-exploded {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .beat-exploded .monster-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+  .beat-exploded .monster-year {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--amber-600);
+    letter-spacing: 1px;
+  }
+  .beat-exploded .monster-name {
+    font-size: 22px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .beat-exploded img {
+    max-width: 100%;
+    max-height: 440px;
+    border-radius: 8px;
+    background: #fafaf7;
+    padding: 6px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-exploded .exploded-caption {
+    font-size: 17px;
+    color: var(--text-primary);
+    max-width: 920px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-exploded .exploded-caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Beat — roles (4-row table, animated row-by-row reveal) */
+  .beat-roles {
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+  }
+  .beat-roles .roles-lead {
+    font-size: 20px;
+    color: var(--text-primary);
+    text-align: center;
+    max-width: 880px;
+    line-height: 1.4;
+    font-weight: 300;
+  }
+  .beat-roles .roles-lead .hl {
+    color: var(--purple-600);
+    font-weight: 500;
+  }
+  .beat-roles .role-table {
+    width: 100%;
+    max-width: 880px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+  }
+  .beat-roles .role-table th {
+    text-align: left;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    color: var(--text-tertiary);
+    letter-spacing: 0.5px;
+    padding: 0 18px 4px;
+    text-transform: uppercase;
+  }
+  .beat-roles .role-table tr.role-row {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 360ms ease, transform 360ms ease;
+  }
+  .beat-roles .role-table tr.role-row.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .beat-roles .role-table td {
+    padding: 14px 18px;
+    background: var(--bg-muted);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .beat-roles .role-table td:first-child {
+    border-left: 1px solid var(--border);
+    border-radius: 8px 0 0 8px;
+    width: 22%;
+  }
+  .beat-roles .role-table td:last-child {
+    border-right: 1px solid var(--border);
+    border-radius: 0 8px 8px 0;
+    width: 22%;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .beat-roles .role-name {
+    color: var(--amber-600);
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .beat-roles .role-desc {
+    color: var(--text-primary);
+    font-size: 15px;
+  }
+  .beat-roles .roles-teaser {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 760px;
+    text-align: center;
+    line-height: 1.5;
+    padding: 14px 22px;
+    border-left: 3px solid var(--purple-600);
+    background: rgba(139, 92, 246, 0.08);
+    border-radius: 0 8px 8px 0;
+    margin-top: 4px;
+  }
+  .beat-roles .roles-teaser .pin {
+    color: var(--purple-600);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== Layer 2 beat styles ===== */
+
+  /* Beat — problem: single image + caption */
+  .beat-problem {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .beat-problem .problem-wrap {
+    width: 100%;
+    max-width: 880px;
+    max-height: 460px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .beat-problem .problem-wrap object {
+    width: 100%;
+    height: auto;
+    max-height: 460px;
+  }
+  .beat-problem .problem-caption {
+    font-size: 18px;
+    color: var(--text-primary);
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-problem .problem-caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Code blocks — shared by beat-heart and beat-wall */
+  .code-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    width: 100%;
+    max-width: 940px;
+  }
+  .code-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .code-col-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .code-block {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.55;
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--text-secondary);
+    white-space: pre;
+    overflow-x: auto;
+    margin: 0;
+  }
+  .code-block .tok-kw    { color: var(--amber-600);   }
+  .code-block .tok-str   { color: #6ee7a8; }
+  .code-block .tok-num   { color: var(--purple-600); }
+  .code-block .tok-com   { color: var(--text-tertiary); font-style: italic; }
+  .code-block .tok-instr { color: var(--text-primary); font-weight: 500; }
+  .code-block .tok-reg   { color: #7fc7f5; }
+  .code-block .tok-dim   { color: #6a6862; font-style: italic; }
+  .code-block .tok-call  { color: #8b5cf6; font-weight: 500; }  /* function calls + system calls */
+  .code-block .tok-hl    { background: rgba(139, 92, 246, 0.18); border-radius: 3px; padding: 0 2px; }
+
+  /* Beat — heart: top diagram + bottom code comparison */
+  .beat-heart {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .beat-heart .heart-intro {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 920px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-heart .heart-intro strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+  .beat-heart .heart-wrap {
+    width: 100%;
+    max-width: 820px;
+    max-height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .beat-heart .heart-wrap object {
+    width: 100%;
+    height: auto;
+    max-height: 380px;
+  }
+
+  /* Beat — wall: code comparison with the unreadable explosion */
+  .beat-wall {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .beat-wall .wall-intro {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 920px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-wall .wall-intro strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+  .beat-wall .wall-closer {
+    font-size: 14px;
+    color: var(--text-tertiary);
+    max-width: 920px;
+    text-align: center;
+    line-height: 1.5;
+    font-family: var(--font-mono);
+    margin-top: 6px;
+  }
+  .beat-wall .wall-closer strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Beat — four jobs table */
+  .beat-jobs {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .beat-jobs .jobs-intro {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-jobs .jobs-intro strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .beat-jobs .jobs-table {
+    width: 100%;
+    max-width: 900px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+  }
+  .beat-jobs .jobs-table th {
+    text-align: left;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    color: var(--text-tertiary);
+    letter-spacing: 0.5px;
+    padding: 0 18px 4px;
+    text-transform: uppercase;
+  }
+  .beat-jobs .jobs-table tr.jobs-row {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 360ms ease, transform 360ms ease;
+  }
+  .beat-jobs .jobs-table tr.jobs-row.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .beat-jobs .jobs-table td {
+    padding: 14px 18px;
+    background: var(--bg-muted);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .beat-jobs .jobs-table td:first-child {
+    border-left: 1px solid var(--border);
+    border-radius: 8px 0 0 8px;
+    width: 16%;
+    color: var(--amber-600);
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .beat-jobs .jobs-table td:nth-child(2) {
+    width: 28%;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 14px;
+  }
+  .beat-jobs .jobs-table td:last-child {
+    border-right: 1px solid var(--border);
+    border-radius: 0 8px 8px 0;
+    color: var(--text-primary);
+    font-size: 14px;
+  }
+  .beat-jobs .jobs-table td:last-child strong {
+    color: var(--purple-600);
+    font-weight: 500;
+  }
+
+  /* Beat — EKG: large screenshot + caption */
+  .beat-ekg {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .beat-ekg .ekg-wrap {
+    max-width: 940px;
+    max-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-ekg .ekg-wrap object,
+  .beat-ekg .ekg-wrap img {
+    max-width: 100%;
+    max-height: 480px;
+    width: auto;
+    height: auto;
+    display: block;
+  }
+  .beat-ekg .ekg-caption {
+    font-size: 17px;
+    color: var(--text-primary);
+    max-width: 920px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-ekg .ekg-caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Beat — policy machine: 2-column comparison + PIN */
+  .beat-policy {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .beat-policy .policy-banner {
+    font-size: 20px;
+    color: var(--text-primary);
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.4;
+    font-weight: 300;
+  }
+  .beat-policy .policy-banner .hl {
+    color: var(--purple-600);
+    font-weight: 500;
+  }
+  .beat-policy .policy-table {
+    width: 100%;
+    max-width: 900px;
+    border-collapse: separate;
+    border-spacing: 8px 6px;
+  }
+  .beat-policy .policy-table th {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    padding: 8px 14px;
+    text-align: left;
+  }
+  .beat-policy .policy-table th:first-child {
+    color: var(--text-secondary);
+  }
+  .beat-policy .policy-table th:last-child {
+    color: var(--purple-600);
+  }
+  .beat-policy .policy-table td {
+    padding: 10px 14px;
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.4;
+  }
+  .beat-policy .policy-table td:last-child {
+    color: var(--purple-600);
+    font-weight: 500;
+  }
+  .beat-policy .policy-teaser {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 760px;
+    text-align: center;
+    line-height: 1.5;
+    padding: 14px 22px;
+    border-left: 3px solid var(--purple-600);
+    background: rgba(139, 92, 246, 0.08);
+    border-radius: 0 8px 8px 0;
+    margin-top: 4px;
+  }
+  .beat-policy .policy-teaser .pin {
+    color: var(--purple-600);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== Layer 3 beat styles ===== */
+
+  /* Generic network-frame beat: large centered SVG + caption below */
+  .beat-netframe {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .beat-netframe .net-wrap {
+    width: 100%;
+    max-width: 920px;
+    max-height: 540px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .beat-netframe .net-wrap object {
+    width: 100%;
+    height: auto;
+    max-height: 540px;
+  }
+  .beat-netframe .net-caption {
+    font-size: 16px;
+    color: var(--text-primary);
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-netframe .net-caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+  .beat-netframe .net-caption em {
+    color: var(--text-secondary);
+  }
+  .beat-netframe .azure-plant {
+    font-size: 13px;
+    color: #5d9bd4;
+    font-style: italic;
+    max-width: 880px;
+    text-align: center;
+    margin-top: -4px;
+  }
+  .beat-netframe .azure-plant code {
+    font-family: var(--font-mono);
+    color: #a5d8ff;
+    background: rgba(74, 158, 237, 0.10);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-style: normal;
+  }
+
+  /* speaker notes */
+  .notes {
+    margin-top: 14px;
+    padding: 14px 18px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber-600);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    display: none;
+  }
+  .notes.show { display: block; }
+  .notes strong { color: var(--text-primary); font-weight: 500; }
+  .notes-label {
+    color: var(--amber-600);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .footer-hint {
+    margin-top: 14px;
+    color: var(--text-tertiary);
+    font-size: 12px;
+    text-align: center;
+  }
+  .footer-hint code {
+    font-family: var(--font-mono);
+    background: var(--bg-muted);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* Session timer */
+  .timer-block {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 6px 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .timer-block.paused { opacity: 0.5; }
+  .timer-elapsed {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .timer-target { color: var(--text-tertiary); }
+  .timer-delta { font-weight: 500; }
+  .timer-delta.ahead  { color: var(--green-600); }
+  .timer-delta.behind { color: var(--amber-600); }
+  .timer-delta.on     { color: var(--text-tertiary); }
+
+  .log-badge {
+    margin-left: 4px;
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  /* Log panel — slides up from bottom when open */
+  .log-panel {
+    margin-top: 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: none;
+  }
+  .log-panel.show { display: block; }
+  .log-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .log-panel-title {
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .log-panel-meta {
+    color: var(--text-tertiary);
+    font-size: 12px;
+    font-family: var(--font-mono);
+  }
+  .log-panel-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .log-panel-actions button {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+  .log-content {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-height: 240px;
+    overflow-y: auto;
+    background: var(--bg-page);
+    border-radius: 6px;
+    padding: 10px 12px;
+    white-space: pre;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Cloud Training Roadmap — Networking</h1>
+    <span class="module-tag">Layer 3 · 11 minutes</span>
+  </header>
+
+  <div class="controls">
+    <button id="prev-btn">&larr; Back</button>
+    <button id="next-btn" class="primary">Next &rarr;</button>
+    <button id="notes-btn">Speaker notes</button>
+    <button id="log-btn">📋 Log <span class="log-badge" id="log-badge">0</span></button>
+    <button id="reset-btn">Reset</button>
+    <span id="step-counter" class="step-counter">Beat 1 of 11</span>
+    <div class="timer-block" id="timer-block">
+      <span><span class="timer-elapsed" id="timer-elapsed">00:00</span> elapsed</span>
+      <span>target <span class="timer-target" id="timer-target">05:00</span></span>
+      <span class="timer-delta on" id="timer-delta">on time</span>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+
+    <!-- Beat 0: Title -->
+    <div class="beat beat-title active" data-beat="0">
+      <h2 class="big-title">How computers find each other</h2>
+      <p class="big-sub">Out of billions. Five concepts. One metaphor: mail.</p>
+      <p class="timer">Layer 3 · Networking · 9 min</p>
+    </div>
+
+    <!-- Beat 1: The problem — how do billions of computers find each other? -->
+    <div class="beat beat-netframe" data-beat="1">
+      <div class="net-wrap">
+        <object data="3_networking_assets/3_beat1_problem.svg" type="image/svg+xml" aria-label="Your laptop, the internet, and a specific server somewhere in the world"></object>
+      </div>
+      <p class="net-caption">
+        You type <em>youtube.com</em> and a video arrives from a computer maybe on another continent. <strong>Out of billions, how does your laptop find that one?</strong>
+      </p>
+    </div>
+
+    <!-- Beat 2: IP address — the building's address -->
+    <div class="beat beat-netframe" data-beat="2">
+      <div class="net-wrap">
+        <object data="3_networking_assets/3_beat2_ip.svg" type="image/svg+xml" aria-label="Three computers with their IP addresses — public and private"></object>
+      </div>
+      <p class="net-caption">
+        Every computer on a network has an <strong>IP address</strong> — four numbers, like a street address. <em>Public</em> addresses anyone in the world can find. <em>Private</em> addresses only work inside one network.
+      </p>
+      <p class="azure-plant">
+        In Azure, this is just called an <code>IP address</code> — same concept.
+      </p>
+    </div>
+
+    <!-- Beat 3: Subnet — the neighborhood -->
+    <div class="beat beat-netframe" data-beat="3">
+      <div class="net-wrap">
+        <object data="3_networking_assets/3_beat3_subnet.svg" type="image/svg+xml" aria-label="Three devices grouped inside a subnet boundary, with another device outside in a different subnet"></object>
+      </div>
+      <p class="net-caption">
+        Computers with similar addresses live in the same <strong>subnet</strong> — a neighborhood. They reach each other <em>directly</em>. Different neighborhood? Different rules.
+      </p>
+      <p class="azure-plant">
+        In Azure, this is called a <code>Subnet</code> — same concept, same name.
+      </p>
+    </div>
+
+    <!-- Beat 4: Gateway — the door between networks -->
+    <div class="beat beat-netframe" data-beat="4">
+      <div class="net-wrap">
+        <object data="3_networking_assets/3_beat4_gateway.svg" type="image/svg+xml" aria-label="Two subnets connected through a gateway, with traffic routed through it"></object>
+      </div>
+      <p class="net-caption">
+        To reach a different subnet — or anywhere on the internet — traffic goes through a <strong>gateway</strong>. Your home router is one. Your school has one. Every cloud network has one. <em>Same job every time.</em>
+      </p>
+      <p class="azure-plant">
+        In Azure, this is called a <code>Gateway</code> — same concept.
+      </p>
+    </div>
+
+    <!-- Beat 5: The math under the mask — bitwise AND walkthrough -->
+    <div class="beat beat-netframe" data-beat="5">
+      <div class="net-wrap">
+        <object data="3_networking_assets/3_beat5_bitwise_and.svg" type="image/svg+xml" aria-label="Bitwise AND of an IP address and a subnet mask, showing how the network address is computed"></object>
+      </div>
+      <p class="net-caption">
+        How does the gateway <em>actually decide</em>? It does a <strong>bitwise AND</strong> of the IP and the mask. The mask "covers" the network bits — the rest gets erased. Result: the network address.
+      </p>
+    </div>
+
+    <!-- Beat 6 (counter: Beat 7 of 11): Packet journey — how it actually reaches Minecraft or Azure -->
+    <div class="beat beat-netframe" data-beat="6">
+      <div class="net-wrap">
+        <object data="3_networking_assets/3_beat7_packet_journey.svg" type="image/svg+xml" aria-label="Packet journey from your laptop through home router, ISP gateway, backbone router, and then either an edge router to a Minecraft server or an Azure gateway to a VM"></object>
+      </div>
+      <p class="net-caption">
+        Your laptop's packets hop through <strong>multiple gateways</strong>, each one checking its <em>own routing table</em> and forwarding to the next. Same mechanism we just saw — repeated at every hop. <em>That's how the internet works.</em>
+      </p>
+    </div>
+
+    <!-- Beat 7 (counter: Beat 8 of 11): Port — the mailbox slot -->
+    <div class="beat beat-netframe" data-beat="7">
+      <div class="net-wrap">
+        <object data="3_networking_assets/3_beat8_ports.svg" type="image/svg+xml" aria-label="A single server with multiple ports as mailbox slots for different services"></object>
+      </div>
+      <p class="net-caption">
+        One computer runs many services. <strong>Ports</strong> are the numbered mailbox slots — pick the right one. <code style="font-family: var(--font-mono); color: var(--amber-600);">443</code> = secure web. <code style="font-family: var(--font-mono); color: var(--amber-600);">22</code> = SSH. <code style="font-family: var(--font-mono); color: var(--amber-600);">3389</code> = Windows RDP. Universal numbers.
+      </p>
+    </div>
+
+    <!-- Beat 8 (counter: Beat 9 of 11): Firewall — the doorman -->
+    <div class="beat beat-netframe" data-beat="8">
+      <div class="net-wrap">
+        <object data="3_networking_assets/3_beat9_firewall.svg" type="image/svg+xml" aria-label="A firewall ruleset showing allow and deny rules for various ports and source addresses"></object>
+      </div>
+      <p class="net-caption">
+        A <strong>firewall</strong> is a list of rules: <em>port · from where · allow or deny.</em> That's it. Every computer has one. Every network has one. <em>Three columns.</em>
+      </p>
+      <p class="azure-plant">
+        In Azure, this list is called an <code>NSG</code> (Network Security Group) — same three columns.
+      </p>
+    </div>
+
+    <!-- Beat 9 (counter: Beat 10 of 11): Composite — you just designed a network -->
+    <div class="beat beat-netframe" data-beat="9">
+      <div class="net-wrap">
+        <object data="3_networking_assets/3_beat10_composite.svg" type="image/svg+xml" aria-label="The complete network composite: home subnet, gateway, internet, Azure subnet with firewall, with Azure terminology mapped"></object>
+      </div>
+      <p class="net-caption">
+        Computers with <strong>IPs</strong>, grouped in <strong>subnets</strong>, exposing services on <strong>ports</strong>, protected by <strong>firewalls</strong>, reaching outside through <strong>gateways</strong>. <em>You just designed a network.</em>
+      </p>
+    </div>
+
+    <!-- Beat 10 (counter: Beat 11 of 11): Handoff to Layer 4 -->
+    <div class="beat beat-throughline" data-beat="10">
+      <p class="promise">
+        Two computers can talk. The network finds them, the firewall guards them, the gateway connects them.
+      </p>
+      <p class="sentence">
+        But this whole story assumes the <strong>other computer</strong> on the line is something built to handle thousands of these conversations at once.
+      </p>
+      <p class="footnote">
+        What makes that computer different from your laptop? Layer 4.
+      </p>
+    </div>
+
+  </div>
+
+  <div id="notes" class="notes">
+    <span class="notes-label">SPEAKER NOTES</span>
+    <div id="notes-content"></div>
+  </div>
+
+  <div id="log-panel" class="log-panel">
+    <div class="log-panel-header">
+      <span class="log-panel-title">Session log</span>
+      <span class="log-panel-meta" id="log-meta">0 events</span>
+      <div class="log-panel-actions">
+        <button id="log-pause-btn">⏸ Pause</button>
+        <button id="log-download-btn">⬇ Download</button>
+        <button id="log-copy-btn">📋 Copy</button>
+        <button id="log-clear-btn">🗑 Clear</button>
+      </div>
+    </div>
+    <div class="log-content" id="log-content">No events yet. Click Next to begin.</div>
+  </div>
+
+  <p class="footer-hint">
+    <code>&larr;</code> / <code>&rarr;</code> to navigate &middot; <code>N</code> notes &middot; <code>L</code> log &middot; <code>P</code> pause &middot; <code>R</code> reset
+  </p>
+</div>
+
+<script>
+(function() {
+  const NOTES = [
+    {
+      title: "Beat 0 — Title (~15 sec)",
+      body: "Quick landing. Read the subtitle aloud — it sets the contract: \"Out of billions. Five concepts. One metaphor: mail.\" That last word is the promise — we'll use the postal metaphor for everything. Click Next."
+    },
+    {
+      title: "Beat 1 — The problem (~75 sec)",
+      body: "<strong>Pause after the question on the slide.</strong> Let it sit. Open with the callback: \"At the end of Layer 2 we said the kernel manages one more thing — the network. Here it is.\" Then: \"You can type youtube.com and watch a video from a computer maybe on another continent. <strong>How does your laptop find that one server, out of billions?</strong>\" Wait. Don't answer immediately. After ~5 seconds: \"That's what networking solves. By the end of this layer you'll know how every computer in the world has a unique address, how they're grouped together, and how you keep the wrong ones out. Five ideas. We'll use the same metaphor for all of them — <strong>mail</strong>.\""
+    },
+    {
+      title: "Beat 2 — IP, the building's address (~90 sec)",
+      body: "<strong>Three buildings, three addresses.</strong> Walk them quickly: <ul style='margin: 8px 0 0 18px; padding: 0;'><li>Point at the laptop's IP: \"That's your laptop right now on your home WiFi. <code>192.168.1.5</code>. It's a <em>private</em> address — only works inside your house.\"</li><li>Point at YouTube's IP: \"<code>142.250.80.46</code> — that's a <em>real</em> address. Anyone in the world can reach it. That's public.\"</li><li>Point at the Azure VM: \"And this is what a cloud server looks like — also public.\"</li></ul> Then the DNS sidebar: <strong>\"One thing I should mention. You don't type numbers — you type youtube.com. There's a service that translates names to IPs, called <em>DNS</em>. The internet's phone book. Every time you type a URL, your computer asks a DNS server <em>what's the IP for this name?</em> and uses the answer. That's all you need to know about DNS today.\"</strong> Drop the Azure plant: \"In Azure, an IP is just called an IP. Same word.\""
+    },
+    {
+      title: "Beat 3 — Subnet, the neighborhood (~75 sec)",
+      body: "<strong>The grouping concept.</strong> Point at the boundary: \"These three devices — your laptop, your phone, your TV — they're all in the same neighborhood. <em>Same subnet.</em> Look at their addresses: <code>192.168.1.5</code>, <code>.1.8</code>, <code>.1.12</code> — all start with <code>192.168.1</code>. Same prefix. <strong>Same subnet means they reach each other directly.</strong>\"</li> Point at the Azure VM outside the boundary: \"This one's <code>52.114.128.10</code>. Different prefix. <em>Different subnet.</em>\" Then the cliffhanger: \"So how does your laptop reach <em>that</em> one? Next beat.\" Drop the Azure plant: \"In Azure, this is also called a Subnet. Same word, same idea.\" <strong>If the room is glazing</strong>, you can drop: \"Don't worry about the math — just remember every computer has an address, and similar addresses live together.\""
+    },
+    {
+      title: "Beat 4 — Gateway, the door (~75 sec)",
+      body: "<strong>The bridge concept.</strong> Two subnets on screen, gateway in the middle. <strong>Quick subnet mask aside (~10 sec):</strong> point at <code>255.255.255.0</code> under any device. \"That's the <em>subnet mask</em>. It tells your computer which part of the address identifies the subnet. Same prefix — same subnet. Different prefix — different subnet. <strong>The mask is what literally makes the subnet a subnet.</strong>\" Then the main beat: \"To reach a different subnet — or anywhere on the internet — traffic goes through this. <em>A gateway.</em> Your home router is a gateway. Your school has one. Every cloud network has one. <strong>Same job every time.</strong>\" <strong>Routing table (~15 sec):</strong> tap the purple box above the gateway. \"How does the gateway decide where to send things? It checks its <em>routing table</em>. Three rules here: <ul style='margin: 6px 0 0 18px; padding: 0;'><li>'192.168.1.0/24 — local' means <em>stays in this subnet, deliver direct.</em></li><li>'10.0.0.0/24 → ISP' is a specific route to a known remote network.</li><li>'0.0.0.0/0 → ISP' is the <strong>default route</strong> — <em>everything else, send it to my ISP and let them figure it out.</em></li></ul> That last one is the magic — every gateway has a default route, and that's how packets find their way across the whole internet, one gateway hop at a time.\" Mechanism in one sentence: \"The gateway looks up the destination in its table, forwards to the next hop.\" If asked how the table gets populated: \"Big topic — routing protocols. For an Azure VM, built in.\" Drop the plant: \"In Azure, it's just called a Gateway, and it has a route table that looks <em>exactly like this.</em>\""
+    },
+    {
+      title: "Beat 5 — The math under the mask (~75 sec)",
+      body: "<strong>The 'how' of subnet decisions. For the curious students who are wondering: how does the gateway actually compute this?</strong> Open with: \"We said the mask tells the gateway which bits are the subnet. Here's the actual math.\" <strong>Truth table (~10 sec):</strong> tap the small box top-right. \"Bitwise AND. Two bits in, one bit out. <code>1 AND 1 = 1</code>. <code>1 AND 0 = 0</code>. <code>0 AND 0 = 0</code>. That's the whole rule.\" <strong>The worked example (~40 sec):</strong> \"On the left, the IP and mask in decimal — what we usually see. On the right, the same two numbers in <em>binary</em>. 32 bits each, in four octets matching the four decimal numbers.\" Point at the IP binary: \"<code>192</code> is <code>11000000</code>. <code>168</code> is <code>10101000</code>. And so on.\" Point at the highlighted first bit of the AND result: \"Look at the first bit. IP is <code>1</code>, mask is <code>1</code>, AND is <code>1</code>. The mask let it through.\" Then sweep across the dim result: \"Do this for all 32 bits — that's the rest of the row. The first 24 bits come through because the mask is all <code>1</code>s there. The last 8 bits all become <code>0</code> because the mask is <code>0</code>.\" <strong>The payoff (~15 sec):</strong> tap the result box at the bottom. \"The result, back in decimal: <code>192.168.1.0</code>. <strong>That's the network address of this subnet.</strong> Now the gateway can compare any destination to this network address — if it matches, local. If not, send to next hop.\" Then the CIDR reveal: \"And — count the ones in the mask. Twenty-four. That's why we also write it as <code>/24</code>. Same information, shorter.\" If the room is glazing, skip the CIDR line and move on."
+    },
+    {
+      title: "Beat 6 — Packet journey (~60 sec)",
+      body: "<strong>The 'this is how the internet works' beat.</strong> Sweep your finger across the diagram left to right. \"Your packet leaves your laptop. Goes to your home router. Your home router's routing table says <em>not local — send to ISP.</em>\" Tap the next box: \"ISP gateway looks at its own routing table — <em>I don't know this destination directly, send to backbone.</em>\" Tap the backbone: \"Backbone router — this is the internet's spine, undersea cables, fiber across continents — looks at <em>its</em> table: <em>this destination is in Azure's range, send to Azure's edge.</em>\" Then the divergence point — sweep up to the Minecraft branch: \"Or if you're playing Minecraft, the backbone sends it to the Minecraft server's edge router instead.\" <strong>The key sentence:</strong> point at any of the purple R.T. boxes. \"<em>Every one of these is a routing table — exactly like the one we saw two beats ago.</em> Each gateway looks up the destination, forwards to the next hop. That's it. <strong>The internet is just gateways with routing tables, handing packets along.</strong>\" If a student asks how long this takes: \"Milliseconds. The packet hops through 10-15 routers between you and YouTube, takes about 30ms.\""
+    },
+    {
+      title: "Beat 7 — Port, the mailbox slot (~80 sec)",
+      body: "<strong>Zoom into a building.</strong> \"One server can run many services at the same time — a web server, an SSH service, a database. How does a message arriving at the building know which one to deliver to?\" Pause briefly. Answer: \"<em>Ports.</em> Each service has a numbered mailbox slot.\" Walk the slots: <ul style='margin: 8px 0 0 18px; padding: 0;'><li>\"<code>:443</code> — always secure web. <em>Always.</em>\"</li><li>\"<code>:80</code> — always plain web.\"</li><li>\"<code>:22</code> — always SSH. The Linux remote-terminal port.\"</li><li>\"<code>:3389</code> — always Windows RDP.\"</li></ul> Then the key idea: \"Reaching a service = IP plus port. <code>10.0.0.4:443</code> means <em>this building, the secure-web slot.</em>\" <strong>Layer 7 plant:</strong> \"You don't have to memorize these. But when we deploy an Azure server later and I say <em>open port 22</em>, you'll know that's the SSH slot.\""
+    },
+    {
+      title: "Beat 8 — Firewall, the doorman (~80 sec)",
+      body: "<strong>The last piece.</strong> \"Every server has a doorman that checks visitors before letting them in. <em>A firewall.</em> And a firewall is just a list — three columns.\" Read the columns: \"<em>Port. From where. Allow or deny.</em> That's basically all a firewall is.\" Walk a few rules aloud: \"Anyone can reach the web on 443 — allow. SSH on 22 — only from my home IP. Everything else — deny.\" Tap the deny rules: \"This means RDP is blocked. Even though there's a slot for it on the server, the doorman won't let anyone through.\" Close with the Azure plant: \"In Azure, this exact list is called an NSG — Network Security Group. Same three columns. <strong>Port, source, action.</strong> When we deploy a server in Azure, configuring its NSG will be one of the steps.\""
+    },
+    {
+      title: "Beat 9 — Composite (~60 sec)",
+      body: "<strong>The reward beat.</strong> Sweep your finger across the diagram from left to right: \"Computers with IPs, grouped in subnets, exposing services on ports, protected by firewalls, reaching outside through gateways.\" Pause. Tap the diagram. Then deliver the keeper line slowly: <strong>\"You just designed a network.\"</strong> Let it land. Then preview the payoff: \"In about 40 minutes, when we deploy an Azure server, you'll see this exact shape on screen.\" Walk the Azure label box at the bottom briefly — the whole network is a <em>VNet</em>, groups inside are <em>Subnets</em>, the firewall is an <em>NSG</em>, the door out is a <em>Gateway</em>. Don't dwell — just point at each label. The recognition moment is coming in Layer 7."
+    },
+    {
+      title: "Beat 10 — Handoff to Layer 4 (~30 sec)",
+      body: "Empty stage. Deliver slowly. \"Two computers can talk. The network finds them, the firewall guards them, the gateway connects them.\" Pause. \"But this whole story assumes the <em>other</em> computer is built to handle thousands of these conversations at once.\" Pause again. \"<strong>What makes that computer different from your laptop? Layer 4.</strong>\" Click straight into the next module."
+    }
+  ];
+
+  const beats = document.querySelectorAll(".beat");
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+  const notesBtn = document.getElementById("notes-btn");
+  const resetBtn = document.getElementById("reset-btn");
+  const counter = document.getElementById("step-counter");
+  const notesEl = document.getElementById("notes");
+  const notesContent = document.getElementById("notes-content");
+
+  // ───── Timer + log elements ─────
+  const timerBlock = document.getElementById("timer-block");
+  const elapsedEl = document.getElementById("timer-elapsed");
+  const targetEl = document.getElementById("timer-target");
+  const deltaEl = document.getElementById("timer-delta");
+  const logBtn = document.getElementById("log-btn");
+  const logBadge = document.getElementById("log-badge");
+  const logPanel = document.getElementById("log-panel");
+  const logContent = document.getElementById("log-content");
+  const logMeta = document.getElementById("log-meta");
+  const logPauseBtn = document.getElementById("log-pause-btn");
+  const logDownloadBtn = document.getElementById("log-download-btn");
+  const logCopyBtn = document.getElementById("log-copy-btn");
+  const logClearBtn = document.getElementById("log-clear-btn");
+
+  // ───── Module config ─────
+  // Each module declares its layer number, end-of-module target (cumulative
+  // minutes through this layer in the 90-min budget), and beat labels for the log.
+  const MODULE = {
+    layer: 3,
+    name: "Networking",
+    targetSeconds: 34 * 60,          // end of this module = minute 34 (intro 5 + computer 8 + OS 10 + networking 11)
+    beatLabels: [
+      "Title",
+      "The problem (find a server out of billions)",
+      "IP address (the building's address)",
+      "Subnet (the neighborhood)",
+      "Gateway (the door between networks)",
+      "The math under the mask (bitwise AND)",
+      "Packet journey (Minecraft + Azure)",
+      "Port (the mailbox slot)",
+      "Firewall (the doorman)",
+      "Composite — you just designed a network",
+      "Handoff to Layer 4 (Server Computer)"
+    ]
+  };
+
+  // ───── localStorage keys (shared across all modules in this training) ─────
+  const LS_LOG       = "cloud_training_log";
+  const LS_START     = "cloud_training_start";
+  const LS_PAUSED_AT = "cloud_training_paused_at";
+  const LS_PAUSE_OFFSET = "cloud_training_pause_offset";
+
+  let idx = 0;
+  let notesOpen = false;
+  let logOpen = false;
+
+  // ───────────────────────── LOG ─────────────────────────
+
+  function getLog() {
+    try { return JSON.parse(localStorage.getItem(LS_LOG) || "[]"); }
+    catch (e) { return []; }
+  }
+
+  function saveLog(arr) { localStorage.setItem(LS_LOG, JSON.stringify(arr)); }
+
+  function fmtDuration(totalSeconds) {
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = Math.floor(totalSeconds % 60);
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+
+  function fmtMinSec(totalSeconds) {
+    const m = Math.floor(totalSeconds / 60);
+    const s = Math.floor(totalSeconds % 60);
+    return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+
+  function logEvent(arrow, label) {
+    const entries = getLog();
+    const elapsed = getElapsedSeconds();
+    entries.push({ t: elapsed, arrow, label });
+    saveLog(entries);
+    renderLog();
+  }
+
+  function renderLog() {
+    const entries = getLog();
+    logBadge.textContent = entries.length;
+    logMeta.textContent = `${entries.length} event${entries.length === 1 ? "" : "s"}`;
+    if (entries.length === 0) {
+      logContent.textContent = "No events yet. Click Next to begin.";
+    } else {
+      logContent.textContent = entries
+        .map(e => `[${fmtDuration(e.t)}]  ${e.arrow}  ${e.label}`)
+        .join("\n");
+      // Auto-scroll to bottom
+      logContent.scrollTop = logContent.scrollHeight;
+    }
+  }
+
+  // ──────────────────────── TIMER ────────────────────────
+
+  function getStart() {
+    const s = localStorage.getItem(LS_START);
+    return s ? parseInt(s, 10) : null;
+  }
+  function setStart(ms) { localStorage.setItem(LS_START, String(ms)); }
+
+  function getPauseOffset() {
+    return parseInt(localStorage.getItem(LS_PAUSE_OFFSET) || "0", 10);
+  }
+  function getPausedAt() {
+    const v = localStorage.getItem(LS_PAUSED_AT);
+    return v ? parseInt(v, 10) : null;
+  }
+  function isPaused() { return getPausedAt() !== null; }
+
+  function getElapsedSeconds() {
+    const start = getStart();
+    if (!start) return 0;
+    const offset = getPauseOffset();
+    const pausedAt = getPausedAt();
+    if (pausedAt) {
+      return Math.floor((pausedAt - start - offset) / 1000);
+    }
+    return Math.floor((Date.now() - start - offset) / 1000);
+  }
+
+  function ensureStarted() {
+    if (!getStart()) {
+      setStart(Date.now());
+      logEvent("⏵", `Session started — Layer ${MODULE.layer} ${MODULE.name}`);
+    }
+  }
+
+  function pauseTimer() {
+    if (isPaused()) return;
+    localStorage.setItem(LS_PAUSED_AT, String(Date.now()));
+    logEvent("⏸", "PAUSED");
+    updateTimerDisplay();
+  }
+
+  function resumeTimer() {
+    const pausedAt = getPausedAt();
+    if (!pausedAt) return;
+    const pauseDuration = Date.now() - pausedAt;
+    localStorage.setItem(LS_PAUSE_OFFSET, String(getPauseOffset() + pauseDuration));
+    localStorage.removeItem(LS_PAUSED_AT);
+    logEvent("▶", "resumed");
+    updateTimerDisplay();
+  }
+
+  function togglePause() {
+    if (isPaused()) resumeTimer();
+    else pauseTimer();
+  }
+
+  function updateTimerDisplay() {
+    const elapsed = getElapsedSeconds();
+    elapsedEl.textContent = fmtMinSec(elapsed);
+    targetEl.textContent = fmtMinSec(MODULE.targetSeconds);
+    const diff = MODULE.targetSeconds - elapsed; // positive = ahead
+    deltaEl.classList.remove("ahead", "behind", "on");
+    if (Math.abs(diff) <= 30) {
+      deltaEl.classList.add("on");
+      deltaEl.textContent = "on time";
+    } else if (diff > 0) {
+      deltaEl.classList.add("ahead");
+      deltaEl.textContent = `${fmtMinSec(diff)} ahead`;
+    } else {
+      deltaEl.classList.add("behind");
+      deltaEl.textContent = `${fmtMinSec(-diff)} behind`;
+    }
+    timerBlock.classList.toggle("paused", isPaused());
+    logPauseBtn.textContent = isPaused() ? "▶ Resume" : "⏸ Pause";
+  }
+
+  setInterval(updateTimerDisplay, 1000);
+
+  // ─────────────────────── ENGINE ────────────────────────
+
+  function render() {
+    beats.forEach((b, i) => b.classList.toggle("active", i === idx));
+    counter.textContent = `Beat ${idx + 1} of ${beats.length}`;
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === beats.length - 1;
+    nextBtn.textContent = idx === beats.length - 1 ? "End of Layer 3" : "Next →";
+
+    const n = NOTES[idx];
+    notesContent.innerHTML = `<strong>${n.title}</strong><br>${n.body}`;
+
+    // Layer 3 has no animated tables; no per-beat hooks needed
+  }
+
+  function next() {
+    if (idx < beats.length - 1) {
+      ensureStarted();
+      idx++;
+      render();
+      const label = MODULE.beatLabels[idx] || `Beat ${idx + 1}`;
+      logEvent("→", `L${MODULE.layer} · ${label}`);
+    }
+  }
+
+  function prev() {
+    if (idx > 0) {
+      idx--;
+      render();
+      const label = MODULE.beatLabels[idx] || `Beat ${idx + 1}`;
+      logEvent("←", `L${MODULE.layer} · back to ${label}`);
+    }
+  }
+
+  function reset() {
+    // Confirm before nuking session state if there's anything to nuke
+    const entries = getLog();
+    if (entries.length > 0) {
+      const elapsed = getElapsedSeconds();
+      if (!confirm(`Reset session? You've recorded ${entries.length} events across ${fmtMinSec(elapsed)}.`)) {
+        return;
+      }
+      localStorage.removeItem(LS_LOG);
+      localStorage.removeItem(LS_START);
+      localStorage.removeItem(LS_PAUSED_AT);
+      localStorage.removeItem(LS_PAUSE_OFFSET);
+    }
+    idx = 0;
+    render();
+    renderLog();
+    updateTimerDisplay();
+  }
+
+  function toggleNotes() {
+    notesOpen = !notesOpen;
+    notesEl.classList.toggle("show", notesOpen);
+    notesBtn.classList.toggle("primary", notesOpen);
+  }
+
+  function toggleLog() {
+    logOpen = !logOpen;
+    logPanel.classList.toggle("show", logOpen);
+    logBtn.classList.toggle("primary", logOpen);
+    if (logOpen) renderLog();
+  }
+
+  function downloadLog() {
+    const entries = getLog();
+    if (entries.length === 0) { alert("Log is empty — nothing to download."); return; }
+    const header = `# Cloud Training Session Log\n# Generated: ${new Date().toISOString()}\n# Layer ${MODULE.layer} (${MODULE.name}) — current module\n# Events: ${entries.length}\n\n`;
+    const body = entries
+      .map(e => `[${fmtDuration(e.t)}]\t${e.arrow}\t${e.label}`)
+      .join("\n");
+    const blob = new Blob([header + body], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+    a.download = `cloud_training_session_${stamp}.log`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function copyLog() {
+    const entries = getLog();
+    if (entries.length === 0) { alert("Log is empty."); return; }
+    const text = entries
+      .map(e => `[${fmtDuration(e.t)}]\t${e.arrow}\t${e.label}`)
+      .join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      logCopyBtn.textContent = "✓ Copied";
+      setTimeout(() => { logCopyBtn.textContent = "📋 Copy"; }, 1500);
+    } catch (e) {
+      alert("Couldn't copy automatically — select the text in the log panel manually.");
+    }
+  }
+
+  function clearLogOnly() {
+    if (!confirm("Clear the log? Timer keeps running. This is separate from Reset.")) return;
+    localStorage.removeItem(LS_LOG);
+    renderLog();
+  }
+
+  // ─────────────────── EVENT WIRING ────────────────────
+
+  nextBtn.addEventListener("click", next);
+  prevBtn.addEventListener("click", prev);
+  resetBtn.addEventListener("click", reset);
+  notesBtn.addEventListener("click", toggleNotes);
+  logBtn.addEventListener("click", toggleLog);
+  logPauseBtn.addEventListener("click", togglePause);
+  logDownloadBtn.addEventListener("click", downloadLog);
+  logCopyBtn.addEventListener("click", copyLog);
+  logClearBtn.addEventListener("click", clearLogOnly);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    if (e.code === "ArrowRight" || e.code === "Enter" || e.code === "Space") {
+      e.preventDefault();
+      next();
+    } else if (e.code === "ArrowLeft") {
+      e.preventDefault();
+      prev();
+    } else if (e.key === "n" || e.key === "N") {
+      toggleNotes();
+    } else if (e.key === "l" || e.key === "L") {
+      toggleLog();
+    } else if (e.key === "p" || e.key === "P") {
+      ensureStarted();
+      togglePause();
+    } else if (e.key === "r" || e.key === "R") {
+      reset();
+    }
+  });
+
+  // Initial render
+  render();
+  renderLog();
+  updateTimerDisplay();
+})();
+</script>
+
+</body>
+</html>

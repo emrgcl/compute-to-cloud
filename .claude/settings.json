@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la 1_computer_assets/)",
+      "Bash(ls -la *computer*)",
+      "Bash(grep -n -i \"beat.*of\\\\|beatLabels\\\\|counter\\\\|of \\\\${\\\\|currentBeat\\\\|beatIndex\\\\|of \\\\\" +\\\\|beats.length\" lessons/1_computer/1_computer.html)",
+      "Bash(mv apple_ii_1977.jpg 1_beat2_apple_ii_1977.jpg)",
+      "Bash(mv ibm_pc_1981.jpg 1_beat2_ibm_pc_1981.jpg)",
+      "Bash(mv computer_exploded.png 1_beat3_computer_exploded.png)",
+      "Bash(mv timeline_full.svg 1_beat5_timeline_full.svg)",
+      "Bash(python build_release.py)",
+      "Bash(python -)",
+      "Bash(node --check _check.js)",
+      "Bash(rm _check.js)"
+    ]
+  }
+}

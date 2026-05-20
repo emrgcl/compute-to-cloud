@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Training — Operating System</title>
+<style>
+  :root {
+    --bg-page: #0e0e10;
+    --bg-surface: #1a1a1d;
+    --bg-muted: #2a2a2e;
+    --text-primary: #f3f1ea;
+    --text-secondary: #b0aea4;
+    --text-tertiary: #7a7872;
+    --border: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.25);
+
+    --blue-50:  #E6F1FB;
+    --blue-600: #4a9eed;
+    --blue-800: #185FA5;
+    --amber-50:  #FAEEDA;
+    --amber-600: #f59e0b;
+    --amber-800: #BA7517;
+    --green-600: #22c55e;
+    --purple-600: #8b5cf6;
+
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-page);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 20px 24px;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 14px;
+  }
+  h1 { font-size: 18px; font-weight: 500; margin: 0; color: var(--text-secondary); }
+  .module-tag {
+    font-size: 12px; color: var(--text-tertiary);
+    font-family: var(--font-mono);
+  }
+
+  .controls {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 16px; flex-wrap: wrap;
+  }
+
+  button {
+    font-family: inherit; font-size: 13px;
+    padding: 8px 16px;
+    background: var(--bg-surface); color: var(--text-primary);
+    border: 1px solid var(--border-strong); border-radius: 8px;
+    cursor: pointer; transition: background 120ms, transform 80ms;
+  }
+  button:hover:not(:disabled) { background: var(--bg-muted); }
+  button:active:not(:disabled) { transform: scale(0.98); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  button.primary {
+    font-weight: 500;
+    background: var(--blue-600);
+    color: #ffffff;
+    border-color: var(--blue-600);
+  }
+  button.primary:hover:not(:disabled) { background: #5fb0f5; }
+
+  .step-counter {
+    margin-left: 8px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+  }
+
+  .stage {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    min-height: 560px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+
+  .beat {
+    display: none;
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+    animation: fadein 480ms ease;
+  }
+  .beat.active { display: flex; }
+
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Beat 0 — title */
+  .beat-title {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .beat-title .big-title {
+    font-size: 48px;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    margin: 0 0 16px;
+  }
+  .beat-title .big-sub {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 640px;
+    line-height: 1.5;
+  }
+  .beat-title .timer {
+    margin-top: 32px;
+    font-family: var(--font-mono);
+    color: var(--text-tertiary);
+    font-size: 13px;
+  }
+
+  /* Beat 1 — hook */
+  .beat-hook {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+  }
+  .beat-hook .question {
+    font-size: 32px;
+    font-weight: 300;
+    text-align: center;
+    line-height: 1.4;
+    max-width: 880px;
+  }
+  .beat-hook .question .highlight {
+    color: var(--amber-600);
+    font-weight: 400;
+  }
+  .beat-hook .followup {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 760px;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* Beat 2 — phone-to-datacenter image */
+  .beat-bridge {
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+  }
+  .beat-bridge img {
+    max-width: 100%;
+    max-height: 460px;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-bridge .caption {
+    font-size: 18px;
+    color: var(--text-primary);
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-bridge .caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Beat 3 — datacenter aerial */
+  .beat-scale {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+  .beat-scale img {
+    max-width: 100%;
+    max-height: 380px;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-scale .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    width: 100%;
+    max-width: 980px;
+    margin-top: 8px;
+  }
+  @media (max-width: 800px) { .beat-scale .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat {
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 320ms ease, transform 320ms ease;
+  }
+  .stat.show { opacity: 1; transform: translateY(0); }
+  .stat .num {
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--amber-600);
+    font-family: var(--font-mono);
+    line-height: 1.1;
+  }
+  .stat .lbl {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    line-height: 1.35;
+  }
+
+  /* Beat 4 — punchline */
+  .beat-punch {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+  }
+  .beat-punch .lead {
+    font-size: 26px;
+    line-height: 1.4;
+    max-width: 880px;
+    color: var(--text-primary);
+    font-weight: 300;
+  }
+  .beat-punch .lead .hl {
+    color: var(--purple-600);
+    font-weight: 500;
+  }
+  .beat-punch .teaser {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 720px;
+    line-height: 1.5;
+    padding: 16px 24px;
+    border-left: 3px solid var(--purple-600);
+    background: rgba(139, 92, 246, 0.08);
+    border-radius: 0 8px 8px 0;
+    text-align: left;
+  }
+  .beat-punch .teaser .pin {
+    color: var(--purple-600);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Beat 5 — roadmap */
+  .beat-roadmap {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .beat-roadmap .roadmap-intro {
+    font-size: 18px;
+    color: var(--text-secondary);
+    text-align: center;
+    max-width: 880px;
+    line-height: 1.5;
+  }
+  .beat-roadmap .roadmap-wrap {
+    background: transparent;
+    border-radius: 10px;
+    padding: 0;
+    width: 100%;
+    max-width: 900px;
+    max-height: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .beat-roadmap .roadmap-wrap img,
+  .beat-roadmap .roadmap-wrap object {
+    width: 100%;
+    height: auto;
+    max-height: 620px;
+  }
+
+  /* Beat 6 — through-line */
+  .beat-throughline {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 28px;
+  }
+  .beat-throughline .promise {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 720px;
+    line-height: 1.5;
+  }
+  .beat-throughline .sentence {
+    font-size: 24px;
+    line-height: 1.5;
+    max-width: 920px;
+    font-weight: 300;
+    color: var(--text-primary);
+    padding: 28px 36px;
+    background: linear-gradient(135deg, rgba(74, 158, 237, 0.10), rgba(139, 92, 246, 0.10));
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .beat-throughline .sentence strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+  .beat-throughline .footnote {
+    color: var(--text-tertiary);
+    font-size: 14px;
+    font-style: italic;
+    max-width: 640px;
+  }
+
+  /* Beat — ancestors (dual photo: Apple II + IBM PC side by side) */
+  .beat-ancestors {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .beat-ancestors .photo-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    width: 100%;
+    max-width: 980px;
+    align-items: end;
+  }
+  .beat-ancestors .photo-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .beat-ancestors .photo-year {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--amber-600);
+    letter-spacing: 1px;
+  }
+  .beat-ancestors .photo-name {
+    font-size: 16px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .beat-ancestors img {
+    max-width: 100%;
+    max-height: 320px;
+    border-radius: 8px;
+    background: #fafaf7;
+    padding: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-ancestors .ancestors-caption {
+    font-size: 17px;
+    color: var(--text-primary);
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.55;
+    margin-top: 8px;
+  }
+  .beat-ancestors .ancestors-caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Spec strip — small mono-font specs displayed under each ancestor photo */
+  .spec-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .spec-strip .spec-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .spec-strip .spec-key {
+    color: var(--text-tertiary);
+  }
+  .spec-strip .spec-val {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  /* Beat 2 "today's monster" — spec comparison strip below the exploded view */
+  .monster-specs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    width: 100%;
+    max-width: 920px;
+    margin-top: 10px;
+  }
+  @media (max-width: 720px) {
+    .monster-specs { grid-template-columns: 1fr; }
+  }
+  .monster-spec {
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .monster-spec .spec-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .monster-spec .spec-value {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .monster-spec .spec-multiplier {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Beat — timeline (SVG embed sized for the 3-card mini-timeline) */
+  .beat-timeline {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .beat-timeline .timeline-intro {
+    font-size: 17px;
+    color: var(--text-secondary);
+    text-align: center;
+    max-width: 880px;
+    line-height: 1.5;
+  }
+  .beat-timeline .timeline-wrap {
+    width: 100%;
+    max-width: 880px;
+    max-height: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .beat-timeline .timeline-wrap object {
+    width: 100%;
+    height: auto;
+    max-height: 620px;
+  }
+
+  /* Beat — exploded view of a computer (large photo, single caption) */
+  .beat-exploded {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .beat-exploded .monster-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+  .beat-exploded .monster-year {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--amber-600);
+    letter-spacing: 1px;
+  }
+  .beat-exploded .monster-name {
+    font-size: 22px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .beat-exploded img {
+    max-width: 100%;
+    max-height: 440px;
+    border-radius: 8px;
+    background: #fafaf7;
+    padding: 6px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-exploded .exploded-caption {
+    font-size: 17px;
+    color: var(--text-primary);
+    max-width: 920px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-exploded .exploded-caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Beat — roles (4-row table, animated row-by-row reveal) */
+  .beat-roles {
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+  }
+  .beat-roles .roles-lead {
+    font-size: 20px;
+    color: var(--text-primary);
+    text-align: center;
+    max-width: 880px;
+    line-height: 1.4;
+    font-weight: 300;
+  }
+  .beat-roles .roles-lead .hl {
+    color: var(--purple-600);
+    font-weight: 500;
+  }
+  .beat-roles .role-table {
+    width: 100%;
+    max-width: 880px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+  }
+  .beat-roles .role-table th {
+    text-align: left;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    color: var(--text-tertiary);
+    letter-spacing: 0.5px;
+    padding: 0 18px 4px;
+    text-transform: uppercase;
+  }
+  .beat-roles .role-table tr.role-row {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 360ms ease, transform 360ms ease;
+  }
+  .beat-roles .role-table tr.role-row.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .beat-roles .role-table td {
+    padding: 14px 18px;
+    background: var(--bg-muted);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .beat-roles .role-table td:first-child {
+    border-left: 1px solid var(--border);
+    border-radius: 8px 0 0 8px;
+    width: 22%;
+  }
+  .beat-roles .role-table td:last-child {
+    border-right: 1px solid var(--border);
+    border-radius: 0 8px 8px 0;
+    width: 22%;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .beat-roles .role-name {
+    color: var(--amber-600);
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .beat-roles .role-desc {
+    color: var(--text-primary);
+    font-size: 15px;
+  }
+  .beat-roles .roles-teaser {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 760px;
+    text-align: center;
+    line-height: 1.5;
+    padding: 14px 22px;
+    border-left: 3px solid var(--purple-600);
+    background: rgba(139, 92, 246, 0.08);
+    border-radius: 0 8px 8px 0;
+    margin-top: 4px;
+  }
+  .beat-roles .roles-teaser .pin {
+    color: var(--purple-600);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== Layer 2 beat styles ===== */
+
+  /* Beat — problem: single image + caption */
+  .beat-problem {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .beat-problem .problem-wrap {
+    width: 100%;
+    max-width: 880px;
+    max-height: 460px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .beat-problem .problem-wrap object {
+    width: 100%;
+    height: auto;
+    max-height: 460px;
+  }
+  .beat-problem .problem-caption {
+    font-size: 18px;
+    color: var(--text-primary);
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-problem .problem-caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Code blocks — shared by beat-heart and beat-wall */
+  .code-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    width: 100%;
+    max-width: 940px;
+  }
+  .code-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .code-col-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .code-block {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.55;
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--text-secondary);
+    white-space: pre;
+    overflow-x: auto;
+    margin: 0;
+  }
+  .code-block .tok-kw    { color: var(--amber-600);   }
+  .code-block .tok-str   { color: #6ee7a8; }
+  .code-block .tok-num   { color: var(--purple-600); }
+  .code-block .tok-com   { color: var(--text-tertiary); font-style: italic; }
+  .code-block .tok-instr { color: var(--text-primary); font-weight: 500; }
+  .code-block .tok-reg   { color: #7fc7f5; }
+  .code-block .tok-dim   { color: #6a6862; font-style: italic; }
+  .code-block .tok-call  { color: #8b5cf6; font-weight: 500; }  /* function calls + system calls */
+  .code-block .tok-hl    { background: rgba(139, 92, 246, 0.18); border-radius: 3px; padding: 0 2px; }
+
+  /* Beat — heart: top diagram + bottom code comparison */
+  .beat-heart {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .beat-heart .heart-intro {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 920px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-heart .heart-intro strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+  .beat-heart .heart-wrap {
+    width: 100%;
+    max-width: 820px;
+    max-height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .beat-heart .heart-wrap object {
+    width: 100%;
+    height: auto;
+    max-height: 380px;
+  }
+
+  /* Beat — wall: code comparison with the unreadable explosion */
+  .beat-wall {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .beat-wall .wall-intro {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 920px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-wall .wall-intro strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+  .beat-wall .wall-closer {
+    font-size: 14px;
+    color: var(--text-tertiary);
+    max-width: 920px;
+    text-align: center;
+    line-height: 1.5;
+    font-family: var(--font-mono);
+    margin-top: 6px;
+  }
+  .beat-wall .wall-closer strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Beat — four jobs table */
+  .beat-jobs {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .beat-jobs .jobs-intro {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-jobs .jobs-intro strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .beat-jobs .jobs-table {
+    width: 100%;
+    max-width: 900px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+  }
+  .beat-jobs .jobs-table th {
+    text-align: left;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    color: var(--text-tertiary);
+    letter-spacing: 0.5px;
+    padding: 0 18px 4px;
+    text-transform: uppercase;
+  }
+  .beat-jobs .jobs-table tr.jobs-row {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 360ms ease, transform 360ms ease;
+  }
+  .beat-jobs .jobs-table tr.jobs-row.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .beat-jobs .jobs-table td {
+    padding: 14px 18px;
+    background: var(--bg-muted);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .beat-jobs .jobs-table td:first-child {
+    border-left: 1px solid var(--border);
+    border-radius: 8px 0 0 8px;
+    width: 16%;
+    color: var(--amber-600);
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .beat-jobs .jobs-table td:nth-child(2) {
+    width: 28%;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 14px;
+  }
+  .beat-jobs .jobs-table td:last-child {
+    border-right: 1px solid var(--border);
+    border-radius: 0 8px 8px 0;
+    color: var(--text-primary);
+    font-size: 14px;
+  }
+  .beat-jobs .jobs-table td:last-child strong {
+    color: var(--purple-600);
+    font-weight: 500;
+  }
+
+  /* Beat — EKG: large screenshot + caption */
+  .beat-ekg {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .beat-ekg .ekg-wrap {
+    max-width: 940px;
+    max-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-ekg .ekg-wrap object,
+  .beat-ekg .ekg-wrap img {
+    max-width: 100%;
+    max-height: 480px;
+    width: auto;
+    height: auto;
+    display: block;
+  }
+  .beat-ekg .ekg-caption {
+    font-size: 17px;
+    color: var(--text-primary);
+    max-width: 920px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-ekg .ekg-caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Beat — policy machine: 2-column comparison + PIN */
+  .beat-policy {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .beat-policy .policy-banner {
+    font-size: 20px;
+    color: var(--text-primary);
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.4;
+    font-weight: 300;
+  }
+  .beat-policy .policy-banner .hl {
+    color: var(--purple-600);
+    font-weight: 500;
+  }
+  .beat-policy .policy-table {
+    width: 100%;
+    max-width: 900px;
+    border-collapse: separate;
+    border-spacing: 8px 6px;
+  }
+  .beat-policy .policy-table th {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    padding: 8px 14px;
+    text-align: left;
+  }
+  .beat-policy .policy-table th:first-child {
+    color: var(--text-secondary);
+  }
+  .beat-policy .policy-table th:last-child {
+    color: var(--purple-600);
+  }
+  .beat-policy .policy-table td {
+    padding: 10px 14px;
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.4;
+  }
+  .beat-policy .policy-table td:last-child {
+    color: var(--purple-600);
+    font-weight: 500;
+  }
+  .beat-policy .policy-teaser {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 760px;
+    text-align: center;
+    line-height: 1.5;
+    padding: 14px 22px;
+    border-left: 3px solid var(--purple-600);
+    background: rgba(139, 92, 246, 0.08);
+    border-radius: 0 8px 8px 0;
+    margin-top: 4px;
+  }
+  .beat-policy .policy-teaser .pin {
+    color: var(--purple-600);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  /* speaker notes */
+  .notes {
+    margin-top: 14px;
+    padding: 14px 18px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber-600);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    display: none;
+  }
+  .notes.show { display: block; }
+  .notes strong { color: var(--text-primary); font-weight: 500; }
+  .notes-label {
+    color: var(--amber-600);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .footer-hint {
+    margin-top: 14px;
+    color: var(--text-tertiary);
+    font-size: 12px;
+    text-align: center;
+  }
+  .footer-hint code {
+    font-family: var(--font-mono);
+    background: var(--bg-muted);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* Session timer */
+  .timer-block {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 6px 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .timer-block.paused { opacity: 0.5; }
+  .timer-elapsed {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .timer-target { color: var(--text-tertiary); }
+  .timer-delta { font-weight: 500; }
+  .timer-delta.ahead  { color: var(--green-600); }
+  .timer-delta.behind { color: var(--amber-600); }
+  .timer-delta.on     { color: var(--text-tertiary); }
+
+  .log-badge {
+    margin-left: 4px;
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  /* Log panel — slides up from bottom when open */
+  .log-panel {
+    margin-top: 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: none;
+  }
+  .log-panel.show { display: block; }
+  .log-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .log-panel-title {
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .log-panel-meta {
+    color: var(--text-tertiary);
+    font-size: 12px;
+    font-family: var(--font-mono);
+  }
+  .log-panel-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .log-panel-actions button {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+  .log-content {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-height: 240px;
+    overflow-y: auto;
+    background: var(--bg-page);
+    border-radius: 6px;
+    padding: 10px 12px;
+    white-space: pre;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Cloud Training Roadmap — Operating System</h1>
+    <span class="module-tag">Layer 2 · 10 minutes</span>
+  </header>
+
+  <div class="controls">
+    <button id="prev-btn">&larr; Back</button>
+    <button id="next-btn" class="primary">Next &rarr;</button>
+    <button id="notes-btn">Speaker notes</button>
+    <button id="log-btn">📋 Log <span class="log-badge" id="log-badge">0</span></button>
+    <button id="reset-btn">Reset</button>
+    <span id="step-counter" class="step-counter">Beat 1 of 9</span>
+    <div class="timer-block" id="timer-block">
+      <span><span class="timer-elapsed" id="timer-elapsed">00:00</span> elapsed</span>
+      <span>target <span class="timer-target" id="timer-target">05:00</span></span>
+      <span class="timer-delta on" id="timer-delta">on time</span>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+
+    <!-- Beat 0: Title -->
+    <div class="beat beat-title active" data-beat="0">
+      <h2 class="big-title">The coordinator you've never met</h2>
+      <p class="big-sub">The invisible thing keeping your computer alive — and the trick that makes virtualization possible.</p>
+      <p class="timer">Layer 2 · OS · 10 min</p>
+    </div>
+
+    <!-- Beat 1: The problem — who decides which program runs? -->
+    <div class="beat beat-problem" data-beat="1">
+      <div class="problem-wrap">
+        <object data="2_operating_system_assets/2_beat1_programs_to_cpu.svg" type="image/svg+xml" aria-label="Many programs all competing for an 8-core CPU"></object>
+      </div>
+      <p class="problem-caption">
+        Right now your laptop has YouTube, Discord, Spotify, a game downloading, and a hundred tabs all wanting to run. Your CPU has 8 cores. <strong>Who decides which program gets a core, and for how long?</strong>
+      </p>
+    </div>
+
+    <!-- Beat 2: The CPU vocabulary — what the chip actually sees -->
+    <div class="beat beat-heart" data-beat="2">
+      <p class="heart-intro">
+        The CPU only speaks one language — about <strong>1,500 instructions</strong> burned into the silicon at the factory. <em>Add, move, jump, compare.</em> That's the entire vocabulary. Forever.
+      </p>
+      <div class="code-pair">
+        <div class="code-col">
+          <div class="code-col-label">C — what you write</div>
+<pre class="code-block"><span class="tok-kw">int</span> main() {
+    <span class="tok-kw">int</span> a = <span class="tok-num">5</span>;
+    <span class="tok-kw">int</span> b = <span class="tok-num">3</span>;
+    <span class="tok-kw">return</span> a + b;
+}</pre>
+        </div>
+        <div class="code-col">
+          <div class="code-col-label">Assembly — what the CPU sees</div>
+<pre class="code-block">main:
+    <span class="tok-instr">mov</span>  <span class="tok-reg">eax</span>, <span class="tok-num">5</span>
+    <span class="tok-instr">mov</span>  <span class="tok-reg">ebx</span>, <span class="tok-num">3</span>
+    <span class="tok-instr">add</span>  <span class="tok-reg">eax</span>, <span class="tok-reg">ebx</span>
+    <span class="tok-instr">ret</span></pre>
+        </div>
+      </div>
+      <p class="heart-intro" style="margin-top: 4px;">
+        Five C lines on the left. Five CPU instructions on the right. <strong>The compiler did the translation</strong> — turned your code into the chip's vocabulary.
+      </p>
+    </div>
+
+    <!-- Beat 3: The heart — kernel + system call + privilege boundary -->
+    <div class="beat beat-heart" data-beat="3">
+      <p class="heart-intro">
+        But there's a catch. <strong>Programs aren't allowed to touch the hardware directly.</strong> Not the screen, not the disk, not the network. They run in a sandbox.
+      </p>
+      <div class="heart-wrap">
+        <object data="2_operating_system_assets/2_beat3_kernel_heart.svg" type="image/svg+xml" aria-label="Flow: your program asks the kernel via a system call, the kernel talks to the hardware"></object>
+      </div>
+      <p class="heart-intro" style="margin-top: 4px;">
+        So how does anything get done? <strong>The program asks the kernel</strong> — through a <span style="color: var(--purple-600); font-weight: 500;">system call</span>. The kernel checks, the kernel acts, the kernel hands the result back. And the CPU itself enforces the rule — programs <em>physically can't</em> skip the kernel. <strong>Stop your heart, you die. Stop the kernel, your computer freezes.</strong>
+      </p>
+    </div>
+
+    <!-- Beat 4: The wall — printf explodes into 50 lines -->
+    <div class="beat beat-wall" data-beat="4">
+      <p class="wall-intro">
+        Same compiler, slightly bigger program — <em>hello world</em>. <strong>And it explodes.</strong>
+      </p>
+      <div class="code-pair">
+        <div class="code-col">
+          <div class="code-col-label">C — 4 lines</div>
+<pre class="code-block"><span class="tok-kw">#include</span> <span class="tok-str">&lt;stdio.h&gt;</span>
+<span class="tok-kw">int</span> main() {
+    <span class="tok-call">printf</span>(<span class="tok-str">"Hello, world!\n"</span>);
+    <span class="tok-kw">return</span> <span class="tok-num">0</span>;
+}</pre>
+        </div>
+        <div class="code-col">
+          <div class="code-col-label">Assembly — ~50 lines</div>
+<pre class="code-block">main:
+    <span class="tok-instr">push</span>    <span class="tok-reg">rbp</span>
+    <span class="tok-instr">mov</span>     <span class="tok-reg">rbp</span>, <span class="tok-reg">rsp</span>
+    <span class="tok-instr">sub</span>     <span class="tok-reg">rsp</span>, <span class="tok-num">16</span>
+    <span class="tok-instr">lea</span>     <span class="tok-reg">rax</span>, [<span class="tok-reg">rip</span>+.LC0]
+    <span class="tok-instr">mov</span>     <span class="tok-reg">rdi</span>, <span class="tok-reg">rax</span>
+    <span class="tok-instr">call</span>    <span class="tok-call">printf</span>@PLT
+<span class="tok-dim">    ...                  ; ~40 more lines like this
+    ...                  ; (libc, stack frame, calling convention)</span>
+    <span class="tok-instr">mov</span>     <span class="tok-reg">eax</span>, <span class="tok-num">0</span>
+    <span class="tok-instr">leave</span>
+    <span class="tok-instr">ret</span></pre>
+        </div>
+      </div>
+      <p class="wall-intro" style="margin-top: 6px;">
+        And here's the kicker — <code style="font-family: var(--font-mono); color: var(--purple-600);">printf</code> isn't even a system call. It's a <em>library function</em> that <strong>eventually calls a real system call:</strong>
+      </p>
+      <div class="code-pair" style="max-width: 940px;">
+        <div class="code-col">
+          <div class="code-col-label">printf you wrote</div>
+<pre class="code-block"><span class="tok-call">printf</span>(<span class="tok-str">"Hello, world!\n"</span>);</pre>
+        </div>
+        <div class="code-col">
+          <div class="code-col-label">what's underneath</div>
+<pre class="code-block"><span class="tok-hl tok-call">write</span>(<span class="tok-num">1</span>, <span class="tok-str">"Hello, world!\n"</span>, <span class="tok-num">14</span>);  <span class="tok-com">// ← system call</span></pre>
+        </div>
+      </div>
+      <p class="wall-closer">
+        Your Windows kernel: <strong>~30 MB</strong> of compiled code. Chrome: <strong>~180 MB</strong>. <em>Cyberpunk 2077</em>: <strong>~80 GB</strong>. All instructions like these — just more of them.
+      </p>
+    </div>
+
+    <!-- Beat 5: The four jobs — animated table, callback to Layer 1's roles -->
+    <div class="beat beat-jobs" data-beat="5">
+      <p class="jobs-intro">
+        Four jobs. Every operating system does these. <strong>The kernel sits in the middle of every single one.</strong>
+      </p>
+      <table class="jobs-table">
+        <thead>
+          <tr>
+            <th>Resource</th>
+            <th>Role (Layer 1)</th>
+            <th>What the kernel does</th>
+          </tr>
+        </thead>
+        <tbody id="jobs-rows">
+          <tr class="jobs-row" data-delay="0">
+            <td>CPU</td>
+            <td>The worker</td>
+            <td><strong>Scheduling</strong> — slices CPU time among hundreds of programs</td>
+          </tr>
+          <tr class="jobs-row" data-delay="320">
+            <td>RAM</td>
+            <td>The desk</td>
+            <td><strong>Memory management</strong> — assigns each program its own area</td>
+          </tr>
+          <tr class="jobs-row" data-delay="640">
+            <td>Storage</td>
+            <td>The filing cabinet</td>
+            <td><strong>File system</strong> — every read and write goes through here</td>
+          </tr>
+          <tr class="jobs-row" data-delay="960">
+            <td>Network</td>
+            <td>The phone line</td>
+            <td><strong>Networking</strong> — every packet in or out</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Beat 6: EKG — Task Manager / Activity Monitor as the visible kernel -->
+    <div class="beat beat-ekg" data-beat="6">
+      <div class="ekg-wrap">
+        <img src="2_operating_system_assets/2_beat5_activity_monitor.png" alt="Windows Task Manager showing dozens of running processes with CPU, memory, disk, and network columns">
+      </div>
+      <p class="ekg-caption">
+        You've all opened this when something froze. <strong>This is your computer's EKG</strong> — the kernel showing you its work. Every row is a program. Every column is one of the four jobs.
+      </p>
+    </div>
+
+    <!-- Beat 7: Policy machine — same heart, different bodies -->
+    <div class="beat beat-policy" data-beat="7">
+      <p class="policy-banner">
+        Same heart, <span class="hl">different bodies</span>. The kernel is a policy machine — same four jobs, different defaults.
+      </p>
+      <table class="policy-table">
+        <thead>
+          <tr>
+            <th>Configured for you (a human)</th>
+            <th>Configured for something else</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GUI on by default</td>
+            <td>Could run with no screen at all</td>
+          </tr>
+          <tr>
+            <td>Sleeps when idle</td>
+            <td>Could stay awake for years</td>
+          </tr>
+          <tr>
+            <td>One user at a time</td>
+            <td>Could serve thousands at once</td>
+          </tr>
+          <tr>
+            <td>Programs run when you double-click</td>
+            <td>Programs run automatically in the background</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="policy-teaser">
+        <span class="pin">PIN THIS</span>
+        The right column doesn't have a name yet. <strong>By Layer 5, it will.</strong> What kind of computer would you configure that way?
+      </div>
+    </div>
+
+    <!-- Beat 8: Handoff to Layer 3 (Networking) -->
+    <div class="beat beat-throughline" data-beat="8">
+      <p class="promise">
+        The kernel manages compute. Memory. Storage.
+      </p>
+      <p class="sentence">
+        And <strong>one more thing</strong> — the network connection.
+      </p>
+      <p class="footnote">
+        That last one turns out to be bigger than it sounds. Two computers, talking. Layer 3.
+      </p>
+    </div>
+
+  </div>
+
+  <div id="notes" class="notes">
+    <span class="notes-label">SPEAKER NOTES</span>
+    <div id="notes-content"></div>
+  </div>
+
+  <div id="log-panel" class="log-panel">
+    <div class="log-panel-header">
+      <span class="log-panel-title">Session log</span>
+      <span class="log-panel-meta" id="log-meta">0 events</span>
+      <div class="log-panel-actions">
+        <button id="log-pause-btn">⏸ Pause</button>
+        <button id="log-download-btn">⬇ Download</button>
+        <button id="log-copy-btn">📋 Copy</button>
+        <button id="log-clear-btn">🗑 Clear</button>
+      </div>
+    </div>
+    <div class="log-content" id="log-content">No events yet. Click Next to begin.</div>
+  </div>
+
+  <p class="footer-hint">
+    <code>&larr;</code> / <code>&rarr;</code> to navigate &middot; <code>N</code> notes &middot; <code>L</code> log &middot; <code>P</code> pause &middot; <code>R</code> reset
+  </p>
+</div>
+
+<script>
+(function() {
+  const NOTES = [
+    {
+      title: "Beat 0 — Title (~15 sec)",
+      body: "Brief landing. Read the subtitle: \"the invisible thing keeping your computer alive — and the trick that makes virtualization possible.\" The first half describes today. The second half is the promise that pays off in Layer 6. Click Next."
+    },
+    {
+      title: "Beat 1 — The problem (~75 sec)",
+      body: "<strong>Pause after the question on the slide.</strong> Wait. Let them think. Most have <em>never</em> asked this. Then deliver the answer: \"It's not the programs — they can't even see each other. It's the operating system. Specifically a piece of it called the kernel.\" The whole point of this beat is to make the kernel feel <em>necessary</em> before you describe what it is. <strong>Question first, answer next beat.</strong>"
+    },
+    {
+      title: "Beat 2 — The CPU vocabulary (~90 sec)",
+      body: "<strong>Start with the chip reveal.</strong> \"The CPU only speaks one language — about 1,500 instructions burned into the silicon at the factory. <em>Add, move, jump, compare.</em> That's the entire vocabulary. Forever.\" Pause. Let it land. Then walk the code: <ul style='margin: 8px 0 0 18px; padding: 0;'><li>Point at the C side: \"Five lines you'd actually write.\"</li><li>Point at the assembly: \"<em>That's</em> what the CPU sees. <code>mov eax, 5</code> — put 5 in a slot called <code>eax</code>. <code>add eax, ebx</code> — add the slots.\"</li><li>Connect them: \"The compiler did this translation. Every program ever — eventually becomes a list like this.\"</li></ul> Don't dwell on registers. The point is: <strong>human code → CPU instructions, mechanically done by the compiler.</strong> Sets up the next beat — \"but here's the catch.\""
+    },
+    {
+      title: "Beat 3 — The heart (~105 sec)",
+      body: "<strong>This is the philosophical beat.</strong> Three landing moments:<ol style='margin: 8px 0 0 18px; padding: 0;'><li><strong>The sandbox reveal</strong> — \"Programs aren't allowed to touch hardware. Not the screen. Not the disk. Not the network. They run in a private sandbox.\" Pause. Let the \"wait, really?\" form.</li><li><strong>The system call</strong> — \"So how does anything get done? <em>The program asks the kernel.</em> Every time it needs something real — display text, read a file, send a packet — it makes a <strong>system call</strong>. The kernel checks, the kernel acts, the kernel hands the result back.\" Walk the diagram top to bottom while you say it.</li><li><strong>The CPU enforces it</strong> — \"Can't a bad program just skip the kernel? <em>No.</em> When a program runs, the CPU is in a restricted mode that physically refuses hardware instructions. The chip enforces the rule.\"</li></ol> Close with the line they'll remember: <strong>\"Stop your heart, you die. Stop the kernel, your computer freezes.\"</strong> Slow delivery. This is the keeper line of the module."
+    },
+    {
+      title: "Beat 4 — The wall (~70 sec)",
+      body: "<strong>Hit them with the explosion.</strong> Four lines of C on the left. Roughly 50 lines of assembly on the right. <em>\"And most of those aren't from your code — they're from the system library your program had to bring along just to print to a screen.\"</em> Then the system call reveal: \"See <code>printf</code> here? It's <em>not</em> a system call — it's a library function. <strong>The actual system call is <code>write</code>.</strong>\" Point at it. \"That's the line that crosses into the kernel. Beat 3 said programs ask the kernel through system calls. <em>This is what one looks like.</em>\" Quick acknowledgment of the arguments: \"The <code>1</code> means terminal. The <code>14</code> is the string length. Don't worry about them — what matters is <code>write</code> enters the kernel.\" Close with the size escalation: \"Your Windows kernel: 30 MB of this. Chrome: 180 MB. Cyberpunk 2077: 80 GB.\""
+    },
+    {
+      title: "Beat 5 — The four jobs (~120 sec)",
+      body: "<strong>Callback to Layer 1 explicitly.</strong> \"Remember the four roles from Layer 1 — compute, memory, storage, network? Here's what the kernel <em>does</em> for each.\" The rows fade in one by one — pause between each. <ul style='margin: 8px 0 0 18px; padding: 0;'><li>CPU: <strong>scheduling</strong>. \"Hundreds of programs want the CPU. The kernel decides who gets a slice and when.\"</li><li>RAM: <strong>memory management</strong>. \"Each program thinks it owns the whole RAM. It doesn't. The kernel gives it a slice and walls it off.\"</li><li>Storage: <strong>file system</strong>. \"Every time your program reads a file — system call. The kernel finds the bytes on disk.\"</li><li>Network: <strong>networking</strong>. \"Every packet in or out. Same thing — system calls all the way down.\"</li></ul> Closing transition: \"You think you've never seen the kernel doing this. You have. You opened it the last time something froze.\""
+    },
+    {
+      title: "Beat 6 — Your computer's EKG (~75 sec)",
+      body: "<strong>The invisible becomes visible — and this is YOUR Task Manager.</strong> Open with: \"This is from my own laptop, right now. Twenty-one apps. Look what's running.\" Then walk through specific rows: <ul style='margin: 8px 0 0 18px; padding: 0;'><li>Microsoft Edge: \"1.2 gigabytes of RAM the kernel assigned to it.\"</li><li>Claude (13 processes!): \"One app, but the kernel sees thirteen separate things to manage.\"</li><li>Spotify Premium: \"Playing music in the background — the kernel keeps it alive while I do other work.\"</li><li>The number at top — 16% CPU, 54% memory: \"That's the kernel doing the math, every second.\"</li></ul> Then the three-OS line: \"Windows calls this Task Manager. Mac: Activity Monitor. Linux: type <code>top</code> in a terminal. Different names, same thing — the kernel showing its work.\""
+    },
+    {
+      title: "Beat 7 — Policy machine (~50 sec)",
+      body: "<strong>Plant Layer 5 explicitly.</strong> Don't go deep. \"Your laptop's OS is configured for <em>you</em> — a human in front of a screen. But that's a choice, not a law. Same kernel concept. Same four jobs. Different defaults.\" Walk through the two columns quickly. Then tap the right column: <strong>\"The right column doesn't have a name yet. By Layer 5, it will.\"</strong> Read the PIN box slowly. This is the bookmark students should carry — \"what kind of computer would you configure for the right column?\""
+    },
+    {
+      title: "Beat 8 — Handoff to Layer 3 (~30 sec)",
+      body: "Empty stage, just words. Deliver slowly. Pause between \"manages compute, memory, storage\" and \"and <strong>one more thing</strong>\" — makes networking feel like a <em>deferred reveal</em>, not just the next bullet. Then: \"That last one turns out to be bigger than it sounds. Two computers, talking. Layer 3.\" Click straight into the next module."
+    }
+  ];
+
+  const beats = document.querySelectorAll(".beat");
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+  const notesBtn = document.getElementById("notes-btn");
+  const resetBtn = document.getElementById("reset-btn");
+  const counter = document.getElementById("step-counter");
+  const notesEl = document.getElementById("notes");
+  const notesContent = document.getElementById("notes-content");
+
+  // ───── Timer + log elements ─────
+  const timerBlock = document.getElementById("timer-block");
+  const elapsedEl = document.getElementById("timer-elapsed");
+  const targetEl = document.getElementById("timer-target");
+  const deltaEl = document.getElementById("timer-delta");
+  const logBtn = document.getElementById("log-btn");
+  const logBadge = document.getElementById("log-badge");
+  const logPanel = document.getElementById("log-panel");
+  const logContent = document.getElementById("log-content");
+  const logMeta = document.getElementById("log-meta");
+  const logPauseBtn = document.getElementById("log-pause-btn");
+  const logDownloadBtn = document.getElementById("log-download-btn");
+  const logCopyBtn = document.getElementById("log-copy-btn");
+  const logClearBtn = document.getElementById("log-clear-btn");
+
+  // ───── Module config ─────
+  // Each module declares its layer number, end-of-module target (cumulative
+  // minutes through this layer in the 90-min budget), and beat labels for the log.
+  const MODULE = {
+    layer: 2,
+    name: "OS",
+    targetSeconds: 23 * 60,          // end of this module = minute 23 (5+8+10)
+    beatLabels: [
+      "Title",
+      "The problem (who decides?)",
+      "The CPU vocabulary (1,500 instructions)",
+      "The heart (kernel + system call)",
+      "The wall (printf explosion)",
+      "The four jobs (Layer 1 callback)",
+      "EKG (Task Manager)",
+      "Policy machine (Layer 5 plant)",
+      "Handoff to Layer 3 (Networking)"
+    ]
+  };
+
+  // ───── localStorage keys (shared across all modules in this training) ─────
+  const LS_LOG       = "cloud_training_log";
+  const LS_START     = "cloud_training_start";
+  const LS_PAUSED_AT = "cloud_training_paused_at";
+  const LS_PAUSE_OFFSET = "cloud_training_pause_offset";
+
+  let idx = 0;
+  let notesOpen = false;
+  let logOpen = false;
+
+  // ───────────────────────── LOG ─────────────────────────
+
+  function getLog() {
+    try { return JSON.parse(localStorage.getItem(LS_LOG) || "[]"); }
+    catch (e) { return []; }
+  }
+
+  function saveLog(arr) { localStorage.setItem(LS_LOG, JSON.stringify(arr)); }
+
+  function fmtDuration(totalSeconds) {
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = Math.floor(totalSeconds % 60);
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+
+  function fmtMinSec(totalSeconds) {
+    const m = Math.floor(totalSeconds / 60);
+    const s = Math.floor(totalSeconds % 60);
+    return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+
+  function logEvent(arrow, label) {
+    const entries = getLog();
+    const elapsed = getElapsedSeconds();
+    entries.push({ t: elapsed, arrow, label });
+    saveLog(entries);
+    renderLog();
+  }
+
+  function renderLog() {
+    const entries = getLog();
+    logBadge.textContent = entries.length;
+    logMeta.textContent = `${entries.length} event${entries.length === 1 ? "" : "s"}`;
+    if (entries.length === 0) {
+      logContent.textContent = "No events yet. Click Next to begin.";
+    } else {
+      logContent.textContent = entries
+        .map(e => `[${fmtDuration(e.t)}]  ${e.arrow}  ${e.label}`)
+        .join("\n");
+      // Auto-scroll to bottom
+      logContent.scrollTop = logContent.scrollHeight;
+    }
+  }
+
+  // ──────────────────────── TIMER ────────────────────────
+
+  function getStart() {
+    const s = localStorage.getItem(LS_START);
+    return s ? parseInt(s, 10) : null;
+  }
+  function setStart(ms) { localStorage.setItem(LS_START, String(ms)); }
+
+  function getPauseOffset() {
+    return parseInt(localStorage.getItem(LS_PAUSE_OFFSET) || "0", 10);
+  }
+  function getPausedAt() {
+    const v = localStorage.getItem(LS_PAUSED_AT);
+    return v ? parseInt(v, 10) : null;
+  }
+  function isPaused() { return getPausedAt() !== null; }
+
+  function getElapsedSeconds() {
+    const start = getStart();
+    if (!start) return 0;
+    const offset = getPauseOffset();
+    const pausedAt = getPausedAt();
+    if (pausedAt) {
+      return Math.floor((pausedAt - start - offset) / 1000);
+    }
+    return Math.floor((Date.now() - start - offset) / 1000);
+  }
+
+  function ensureStarted() {
+    if (!getStart()) {
+      setStart(Date.now());
+      logEvent("⏵", `Session started — Layer ${MODULE.layer} ${MODULE.name}`);
+    }
+  }
+
+  function pauseTimer() {
+    if (isPaused()) return;
+    localStorage.setItem(LS_PAUSED_AT, String(Date.now()));
+    logEvent("⏸", "PAUSED");
+    updateTimerDisplay();
+  }
+
+  function resumeTimer() {
+    const pausedAt = getPausedAt();
+    if (!pausedAt) return;
+    const pauseDuration = Date.now() - pausedAt;
+    localStorage.setItem(LS_PAUSE_OFFSET, String(getPauseOffset() + pauseDuration));
+    localStorage.removeItem(LS_PAUSED_AT);
+    logEvent("▶", "resumed");
+    updateTimerDisplay();
+  }
+
+  function togglePause() {
+    if (isPaused()) resumeTimer();
+    else pauseTimer();
+  }
+
+  function updateTimerDisplay() {
+    const elapsed = getElapsedSeconds();
+    elapsedEl.textContent = fmtMinSec(elapsed);
+    targetEl.textContent = fmtMinSec(MODULE.targetSeconds);
+    const diff = MODULE.targetSeconds - elapsed; // positive = ahead
+    deltaEl.classList.remove("ahead", "behind", "on");
+    if (Math.abs(diff) <= 30) {
+      deltaEl.classList.add("on");
+      deltaEl.textContent = "on time";
+    } else if (diff > 0) {
+      deltaEl.classList.add("ahead");
+      deltaEl.textContent = `${fmtMinSec(diff)} ahead`;
+    } else {
+      deltaEl.classList.add("behind");
+      deltaEl.textContent = `${fmtMinSec(-diff)} behind`;
+    }
+    timerBlock.classList.toggle("paused", isPaused());
+    logPauseBtn.textContent = isPaused() ? "▶ Resume" : "⏸ Pause";
+  }
+
+  setInterval(updateTimerDisplay, 1000);
+
+  // ─────────────────────── ENGINE ────────────────────────
+
+  function render() {
+    beats.forEach((b, i) => b.classList.toggle("active", i === idx));
+    counter.textContent = `Beat ${idx + 1} of ${beats.length}`;
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === beats.length - 1;
+    nextBtn.textContent = idx === beats.length - 1 ? "End of Layer 2" : "Next →";
+
+    const n = NOTES[idx];
+    notesContent.innerHTML = `<strong>${n.title}</strong><br>${n.body}`;
+
+    // Beat 5: jobs-row fade-in for the four-jobs table
+    if (idx === 5) {
+      const rows = beats[5].querySelectorAll(".jobs-row");
+      rows.forEach(r => r.classList.remove("show"));
+      rows.forEach(r => {
+        const delay = parseInt(r.dataset.delay || "0", 10);
+        setTimeout(() => r.classList.add("show"), delay + 60);
+      });
+    }
+  }
+
+  function next() {
+    if (idx < beats.length - 1) {
+      ensureStarted();
+      idx++;
+      render();
+      const label = MODULE.beatLabels[idx] || `Beat ${idx + 1}`;
+      logEvent("→", `L${MODULE.layer} · ${label}`);
+    }
+  }
+
+  function prev() {
+    if (idx > 0) {
+      idx--;
+      render();
+      const label = MODULE.beatLabels[idx] || `Beat ${idx + 1}`;
+      logEvent("←", `L${MODULE.layer} · back to ${label}`);
+    }
+  }
+
+  function reset() {
+    // Confirm before nuking session state if there's anything to nuke
+    const entries = getLog();
+    if (entries.length > 0) {
+      const elapsed = getElapsedSeconds();
+      if (!confirm(`Reset session? You've recorded ${entries.length} events across ${fmtMinSec(elapsed)}.`)) {
+        return;
+      }
+      localStorage.removeItem(LS_LOG);
+      localStorage.removeItem(LS_START);
+      localStorage.removeItem(LS_PAUSED_AT);
+      localStorage.removeItem(LS_PAUSE_OFFSET);
+    }
+    idx = 0;
+    render();
+    renderLog();
+    updateTimerDisplay();
+  }
+
+  function toggleNotes() {
+    notesOpen = !notesOpen;
+    notesEl.classList.toggle("show", notesOpen);
+    notesBtn.classList.toggle("primary", notesOpen);
+  }
+
+  function toggleLog() {
+    logOpen = !logOpen;
+    logPanel.classList.toggle("show", logOpen);
+    logBtn.classList.toggle("primary", logOpen);
+    if (logOpen) renderLog();
+  }
+
+  function downloadLog() {
+    const entries = getLog();
+    if (entries.length === 0) { alert("Log is empty — nothing to download."); return; }
+    const header = `# Cloud Training Session Log\n# Generated: ${new Date().toISOString()}\n# Layer ${MODULE.layer} (${MODULE.name}) — current module\n# Events: ${entries.length}\n\n`;
+    const body = entries
+      .map(e => `[${fmtDuration(e.t)}]\t${e.arrow}\t${e.label}`)
+      .join("\n");
+    const blob = new Blob([header + body], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+    a.download = `cloud_training_session_${stamp}.log`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function copyLog() {
+    const entries = getLog();
+    if (entries.length === 0) { alert("Log is empty."); return; }
+    const text = entries
+      .map(e => `[${fmtDuration(e.t)}]\t${e.arrow}\t${e.label}`)
+      .join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      logCopyBtn.textContent = "✓ Copied";
+      setTimeout(() => { logCopyBtn.textContent = "📋 Copy"; }, 1500);
+    } catch (e) {
+      alert("Couldn't copy automatically — select the text in the log panel manually.");
+    }
+  }
+
+  function clearLogOnly() {
+    if (!confirm("Clear the log? Timer keeps running. This is separate from Reset.")) return;
+    localStorage.removeItem(LS_LOG);
+    renderLog();
+  }
+
+  // ─────────────────── EVENT WIRING ────────────────────
+
+  nextBtn.addEventListener("click", next);
+  prevBtn.addEventListener("click", prev);
+  resetBtn.addEventListener("click", reset);
+  notesBtn.addEventListener("click", toggleNotes);
+  logBtn.addEventListener("click", toggleLog);
+  logPauseBtn.addEventListener("click", togglePause);
+  logDownloadBtn.addEventListener("click", downloadLog);
+  logCopyBtn.addEventListener("click", copyLog);
+  logClearBtn.addEventListener("click", clearLogOnly);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    if (e.code === "ArrowRight" || e.code === "Enter" || e.code === "Space") {
+      e.preventDefault();
+      next();
+    } else if (e.code === "ArrowLeft") {
+      e.preventDefault();
+      prev();
+    } else if (e.key === "n" || e.key === "N") {
+      toggleNotes();
+    } else if (e.key === "l" || e.key === "L") {
+      toggleLog();
+    } else if (e.key === "p" || e.key === "P") {
+      ensureStarted();
+      togglePause();
+    } else if (e.key === "r" || e.key === "R") {
+      reset();
+    }
+  });
+
+  // Initial render
+  render();
+  renderLog();
+  updateTimerDisplay();
+})();
+</script>
+
+</body>
+</html>

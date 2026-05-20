@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 630" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+<title>How we got here — virtualization, server OS, and the cloud from 1960s to today</title>
+<desc>A vertical timeline of nine milestones from IBM mainframes (1960s) to AI-dominated cloud workloads (2020s), with virtualization milestones in purple, server-OS milestones in green, and cloud milestones in blue.</desc>
+
+<rect x="0" y="0" width="680" height="630" fill="#1a1a1d"/>
+
+<!-- Vertical axis -->
+<line x1="120" y1="40" x2="120" y2="590" stroke="#3a3a3e" stroke-width="1"/>
+
+<!-- ============================================
+  ITEM 1 — 1960s — IBM mainframes (virt, purple)
+============================================ -->
+<text x="40" y="74" fill="#9a9888" font-size="12" text-anchor="start" dominant-baseline="central">1960s</text>
+<circle cx="120" cy="70" r="5" fill="#534AB7"/>
+<g>
+  <rect x="150" y="46" width="490" height="56" rx="8" fill="#1a1346" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="166" y="68" fill="#cec5f5" font-size="14" font-weight="600" dominant-baseline="central">1960s — IBM mainframes</text>
+  <text x="166" y="88" fill="#9a9888" font-size="12" font-style="italic" dominant-baseline="central">one big computer, many users — virtualization is born</text>
+</g>
+
+<!-- ============================================
+  ITEM 2 — 1969 — Unix (server OS, green)
+============================================ -->
+<text x="40" y="139" fill="#9a9888" font-size="12" text-anchor="start" dominant-baseline="central">1969</text>
+<circle cx="120" cy="135" r="5" fill="#3B6D11"/>
+<g>
+  <rect x="150" y="111" width="490" height="56" rx="8" fill="#0d2e1a" stroke="#3B6D11" stroke-width="0.5"/>
+  <text x="166" y="133" fill="#c4f0d4" font-size="14" font-weight="600" dominant-baseline="central">1969 — Unix at Bell Labs</text>
+  <text x="166" y="153" fill="#9a9888" font-size="12" font-style="italic" dominant-baseline="central">the ancestor of every Linux server on the internet today</text>
+</g>
+
+<!-- ============================================
+  ITEM 3 — 1991 — Linux (server OS, green)
+============================================ -->
+<text x="40" y="204" fill="#9a9888" font-size="12" text-anchor="start" dominant-baseline="central">1991</text>
+<circle cx="120" cy="200" r="5" fill="#3B6D11"/>
+<g>
+  <rect x="150" y="176" width="490" height="56" rx="8" fill="#0d2e1a" stroke="#3B6D11" stroke-width="0.5"/>
+  <text x="166" y="198" fill="#c4f0d4" font-size="14" font-weight="600" dominant-baseline="central">1991 — Linux launches</text>
+  <text x="166" y="218" fill="#9a9888" font-size="12" font-style="italic" dominant-baseline="central">free, open-source server OS — anyone can run it</text>
+</g>
+
+<!-- ============================================
+  ITEM 4 — 1999 — VMware (virt, purple)
+============================================ -->
+<text x="40" y="269" fill="#9a9888" font-size="12" text-anchor="start" dominant-baseline="central">1999</text>
+<circle cx="120" cy="265" r="5" fill="#534AB7"/>
+<g>
+  <rect x="150" y="241" width="490" height="56" rx="8" fill="#1a1346" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="166" y="263" fill="#cec5f5" font-size="14" font-weight="600" dominant-baseline="central">1999 — VMware founded</text>
+  <text x="166" y="283" fill="#9a9888" font-size="12" font-style="italic" dominant-baseline="central">virtualization escapes mainframes — comes to x86 PCs</text>
+</g>
+
+<!-- ============================================
+  ITEM 5 — 2003 — Microsoft Virtual Server (virt, purple)
+============================================ -->
+<text x="40" y="334" fill="#9a9888" font-size="12" text-anchor="start" dominant-baseline="central">2003</text>
+<circle cx="120" cy="330" r="5" fill="#534AB7"/>
+<g>
+  <rect x="150" y="306" width="490" height="56" rx="8" fill="#1a1346" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="166" y="328" fill="#cec5f5" font-size="14" font-weight="600" dominant-baseline="central">2003 — Microsoft Virtual Server</text>
+  <text x="166" y="348" fill="#9a9888" font-size="12" font-style="italic" dominant-baseline="central">Microsoft enters x86 virtualization (acquired from Connectix)</text>
+</g>
+
+<!-- ============================================
+  ITEM 6 — 2006 — AWS EC2 (cloud, blue)
+============================================ -->
+<text x="40" y="399" fill="#9a9888" font-size="12" text-anchor="start" dominant-baseline="central">2006</text>
+<circle cx="120" cy="395" r="5" fill="#185FA5"/>
+<g>
+  <rect x="150" y="371" width="490" height="56" rx="8" fill="#0d2240" stroke="#185FA5" stroke-width="0.5"/>
+  <text x="166" y="393" fill="#dbe9f7" font-size="14" font-weight="600" dominant-baseline="central">2006 — AWS EC2 launches</text>
+  <text x="166" y="413" fill="#9a9888" font-size="12" font-style="italic" dominant-baseline="central">rent a server by the hour — the cloud begins</text>
+</g>
+
+<!-- ============================================
+  ITEM 7 — 2008 — Hyper-V (virt, purple)
+============================================ -->
+<text x="40" y="464" fill="#9a9888" font-size="12" text-anchor="start" dominant-baseline="central">2008</text>
+<circle cx="120" cy="460" r="5" fill="#534AB7"/>
+<g>
+  <rect x="150" y="436" width="490" height="56" rx="8" fill="#1a1346" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="166" y="458" fill="#cec5f5" font-size="14" font-weight="600" dominant-baseline="central">2008 — Hyper-V ships in Windows Server</text>
+  <text x="166" y="478" fill="#9a9888" font-size="12" font-style="italic" dominant-baseline="central">hypervisor built into Windows itself — the one in our screenshot</text>
+</g>
+
+<!-- ============================================
+  ITEM 8 — 2010 — Azure (cloud, blue)
+============================================ -->
+<text x="40" y="529" fill="#9a9888" font-size="12" text-anchor="start" dominant-baseline="central">2010</text>
+<circle cx="120" cy="525" r="5" fill="#185FA5"/>
+<g>
+  <rect x="150" y="501" width="490" height="56" rx="8" fill="#0d2240" stroke="#185FA5" stroke-width="0.5"/>
+  <text x="166" y="523" fill="#dbe9f7" font-size="14" font-weight="600" dominant-baseline="central">2010 — Microsoft Azure launches</text>
+  <text x="166" y="543" fill="#9a9888" font-size="12" font-style="italic" dominant-baseline="central">Microsoft enters the cloud business</text>
+</g>
+
+<!-- ============================================
+  ITEM 9 — 2020s — AI workloads (cloud, blue)
+============================================ -->
+<text x="40" y="594" fill="#9a9888" font-size="12" text-anchor="start" dominant-baseline="central">2020s</text>
+<circle cx="120" cy="590" r="5" fill="#185FA5"/>
+<g>
+  <rect x="150" y="566" width="490" height="56" rx="8" fill="#0d2240" stroke="#185FA5" stroke-width="0.5"/>
+  <text x="166" y="588" fill="#dbe9f7" font-size="14" font-weight="600" dominant-baseline="central">2020s — AI workloads dominate cloud</text>
+  <text x="166" y="608" fill="#9a9888" font-size="12" font-style="italic" dominant-baseline="central">cloud growth driven by training and serving AI models</text>
+</g>
+
+</svg>

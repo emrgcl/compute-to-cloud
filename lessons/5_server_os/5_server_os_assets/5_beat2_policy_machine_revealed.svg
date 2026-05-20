@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 500" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <rect x="0" y="0" width="920" height="500" fill="#1a1a1d"/>
+
+  <!-- Title across the top -->
+  <text x="460" y="32" text-anchor="middle" fill="#fde68a" font-size="18" font-weight="500">Same heart. Different bodies.</text>
+  <text x="460" y="54" text-anchor="middle" fill="#9a9888" font-size="13" font-style="italic">the kernel concept from Layer 2 — now with the right column filled in</text>
+
+  <!-- Central kernel symbol -->
+  <g transform="translate(460, 240)">
+    <!-- Heart-like kernel symbol -->
+    <circle cx="0" cy="0" r="44" fill="#5c1a1a" stroke="#e88080" stroke-width="2.5"/>
+    <text x="0" y="-2" text-anchor="middle" fill="#f5cfcf" font-size="13" font-weight="600">KERNEL</text>
+    <text x="0" y="15" text-anchor="middle" fill="#fda4a4" font-size="10" font-style="italic">same heart</text>
+  </g>
+
+  <!-- LEFT COLUMN: Desktop OS (already filled in from Layer 2) -->
+  <g transform="translate(40, 100)">
+    <rect x="0" y="0" width="320" height="320" rx="14" fill="none" stroke="#7fc7f5" stroke-width="2"/>
+    <text x="160" y="32" text-anchor="middle" fill="#7fc7f5" font-size="13" font-weight="600" letter-spacing="0.8">DESKTOP OS</text>
+    <text x="160" y="50" text-anchor="middle" fill="#5a9cdf" font-size="11" font-style="italic">Windows · macOS · your laptop</text>
+
+    <!-- Properties of desktop OS -->
+    <text x="20" y="90" fill="#9a9888" font-size="10" letter-spacing="0.5">REQUIREMENTS</text>
+    <text x="20" y="115" fill="#dbe9f7" font-size="13">📺 has a screen</text>
+    <text x="20" y="140" fill="#dbe9f7" font-size="13">👤 one user (you)</text>
+    <text x="20" y="165" fill="#dbe9f7" font-size="13">▶️ apps you launch &amp; quit</text>
+    <text x="20" y="190" fill="#dbe9f7" font-size="13">🔌 turns off at night</text>
+
+    <text x="20" y="225" fill="#9a9888" font-size="10" letter-spacing="0.5">SHAPED FOR</text>
+    <text x="20" y="248" fill="#a5d8ff" font-size="13" font-style="italic">interactive use</text>
+    <text x="20" y="268" fill="#a5d8ff" font-size="13" font-style="italic">one human at the keyboard</text>
+    <text x="20" y="288" fill="#a5d8ff" font-size="13" font-style="italic">comfort, pretty, easy</text>
+  </g>
+
+  <!-- RIGHT COLUMN: Server OS (THE PAYOFF) -->
+  <g transform="translate(560, 100)">
+    <rect x="0" y="0" width="320" height="320" rx="14" fill="none" stroke="#7fcfa0" stroke-width="2.5"/>
+
+    <!-- The "name reveal" effect -->
+    <rect x="62" y="14" width="196" height="32" rx="6" fill="#1a4d2e" stroke="#fde68a" stroke-width="1.5"/>
+    <text x="160" y="35" text-anchor="middle" fill="#fde68a" font-size="14" font-weight="700" letter-spacing="0.8">SERVER OS</text>
+
+    <text x="160" y="60" text-anchor="middle" fill="#5a9c75" font-size="11" font-style="italic">Linux · Windows Server</text>
+
+    <!-- Properties of server OS -->
+    <text x="20" y="95" fill="#9a9888" font-size="10" letter-spacing="0.5">REQUIREMENTS</text>
+    <text x="20" y="120" fill="#c4f0d4" font-size="13">⊘ no screen</text>
+    <text x="20" y="145" fill="#c4f0d4" font-size="13">👥 thousands of users</text>
+    <text x="20" y="170" fill="#c4f0d4" font-size="13">∞ services that never stop</text>
+    <text x="20" y="195" fill="#c4f0d4" font-size="13">🌐 controlled remotely</text>
+
+    <text x="20" y="230" fill="#9a9888" font-size="10" letter-spacing="0.5">SHAPED FOR</text>
+    <text x="20" y="253" fill="#7fcfa0" font-size="13" font-style="italic">the network</text>
+    <text x="20" y="273" fill="#7fcfa0" font-size="13" font-style="italic">nobody at the keyboard</text>
+    <text x="20" y="293" fill="#7fcfa0" font-size="13" font-style="italic">uptime, speed, scriptability</text>
+  </g>
+
+  <!-- Connector lines from kernel to each column -->
+  <line x1="416" y1="240" x2="365" y2="240" stroke="#e88080" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="504" y1="240" x2="555" y2="240" stroke="#e88080" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+  <!-- Bottom takeaway -->
+  <text x="460" y="465" text-anchor="middle" fill="#fde68a" font-size="14" font-style="italic">Change the requirements, the OS changes shape.</text>
+  <text x="460" y="486" text-anchor="middle" fill="#9a9888" font-size="12" font-style="italic">Same kernel idea. Different shape on top.</text>
+</svg>

@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 520" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <defs>
+    <marker id="arrFail" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0 0, 8 5, 0 10" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="880" height="520" fill="#1a1a1d"/>
+
+  <!-- Title -->
+  <text x="440" y="30" text-anchor="middle" fill="#9a9888" font-size="14" letter-spacing="1">ONE SERVER — BUILT TO KEEP RUNNING THROUGH FAILURE</text>
+
+  <!-- Outer server box -->
+  <rect x="60" y="55" width="760" height="350" rx="14" fill="none" stroke="#7fcfa0" stroke-width="2"/>
+
+  <!-- ===== PSU PAIR ===== -->
+  <text x="80" y="95" fill="#7fcfa0" font-size="12" font-weight="600" letter-spacing="0.5">POWER SUPPLIES</text>
+  <rect x="80" y="105" width="180" height="60" rx="6" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1.5"/>
+  <circle cx="100" cy="135" r="6" fill="#5dca8a"/>
+  <text x="115" y="139" fill="#c4f0d4" font-size="13" font-weight="500">PSU 1 · live</text>
+
+  <rect x="80" y="175" width="180" height="60" rx="6" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1.5"/>
+  <circle cx="100" cy="205" r="6" fill="#5dca8a"/>
+  <text x="115" y="209" fill="#c4f0d4" font-size="13" font-weight="500">PSU 2 · live</text>
+
+  <!-- Failover arrow between PSUs -->
+  <line x1="270" y1="135" x2="290" y2="205" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#arrFail)"/>
+  <line x1="290" y1="135" x2="270" y2="205" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#arrFail)"/>
+  <text x="305" y="170" fill="#fde68a" font-size="11" font-style="italic">either alone</text>
+  <text x="305" y="184" fill="#fde68a" font-size="11" font-style="italic">can power the server</text>
+
+  <!-- ===== NIC PAIR ===== -->
+  <text x="490" y="95" fill="#7fcfa0" font-size="12" font-weight="600" letter-spacing="0.5">NETWORK CARDS</text>
+  <rect x="490" y="105" width="180" height="60" rx="6" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1.5"/>
+  <circle cx="510" cy="135" r="6" fill="#5dca8a"/>
+  <text x="525" y="139" fill="#c4f0d4" font-size="13" font-weight="500">NIC 1 · active</text>
+
+  <rect x="490" y="175" width="180" height="60" rx="6" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1.5"/>
+  <circle cx="510" cy="205" r="6" fill="none" stroke="#5dca8a" stroke-width="1.5"/>
+  <text x="525" y="209" fill="#c4f0d4" font-size="13" font-weight="500">NIC 2 · standby</text>
+
+  <!-- Failover arrow between NICs -->
+  <line x1="680" y1="135" x2="700" y2="205" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#arrFail)"/>
+  <text x="715" y="170" fill="#fde68a" font-size="11" font-style="italic">if one fails,</text>
+  <text x="715" y="184" fill="#fde68a" font-size="11" font-style="italic">the other takes over</text>
+
+  <!-- ===== RAID DISKS ===== -->
+  <text x="80" y="280" fill="#7fcfa0" font-size="12" font-weight="600" letter-spacing="0.5">DISKS · RAID</text>
+  <g transform="translate(80, 290)">
+    <rect x="0" y="0" width="80" height="48" rx="4" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1.5"/>
+    <circle cx="14" cy="24" r="4" fill="#5dca8a"/>
+    <text x="50" y="28" text-anchor="middle" fill="#c4f0d4" font-size="11" font-weight="500">D1</text>
+
+    <rect x="90" y="0" width="80" height="48" rx="4" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1.5"/>
+    <circle cx="104" cy="24" r="4" fill="#5dca8a"/>
+    <text x="140" y="28" text-anchor="middle" fill="#c4f0d4" font-size="11" font-weight="500">D2</text>
+
+    <rect x="180" y="0" width="80" height="48" rx="4" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1.5"/>
+    <circle cx="194" cy="24" r="4" fill="#5dca8a"/>
+    <text x="230" y="28" text-anchor="middle" fill="#c4f0d4" font-size="11" font-weight="500">D3</text>
+
+    <rect x="270" y="0" width="80" height="48" rx="4" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1.5"/>
+    <circle cx="284" cy="24" r="4" fill="#5dca8a"/>
+    <text x="320" y="28" text-anchor="middle" fill="#c4f0d4" font-size="11" font-weight="500">D4</text>
+
+    <!-- D5: simulated failed disk -->
+    <rect x="360" y="0" width="80" height="48" rx="4" fill="#2e0d0d" stroke="#ef4444" stroke-width="1.5"/>
+    <text x="374" y="28" text-anchor="middle" fill="#ef4444" font-size="13">✗</text>
+    <text x="410" y="28" text-anchor="middle" fill="#fda4a4" font-size="11" font-weight="500">D5</text>
+
+    <rect x="450" y="0" width="80" height="48" rx="4" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1.5"/>
+    <circle cx="464" cy="24" r="4" fill="#5dca8a"/>
+    <text x="500" y="28" text-anchor="middle" fill="#c4f0d4" font-size="11" font-weight="500">D6</text>
+  </g>
+  <text x="620" y="320" fill="#fde68a" font-size="11" font-style="italic">D5 failed —</text>
+  <text x="620" y="334" fill="#fde68a" font-size="11" font-style="italic">data still safe on D1-D4, D6.</text>
+  <text x="620" y="348" fill="#fde68a" font-size="11" font-style="italic">RAID rebuilds when replaced.</text>
+
+  <!-- ===== ECC RAM ===== -->
+  <rect x="80" y="370" width="760" height="0" stroke="none"/>
+  <rect x="80" y="375" width="640" height="20" rx="4" fill="#1a103e" stroke="#a89df5" stroke-width="1"/>
+  <text x="95" y="389" fill="#cec5f5" font-size="12" font-weight="500">ECC RAM</text>
+  <text x="180" y="389" fill="#a89df5" font-size="11" font-style="italic">every bit checked + corrected · errors logged · system keeps running</text>
+
+  <!-- ===== TAKEAWAY BOX ===== -->
+  <rect x="60" y="425" width="760" height="80" rx="10" fill="#2a2520" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="80" y="450" fill="#fde68a" font-size="13" font-weight="600" letter-spacing="0.5">AT SCALE, FAILURE IS CONSTANT</text>
+  <text x="80" y="475" fill="#c2c0b6" font-size="13">Microsoft runs ~4 million servers × 8 disks each = ~32 million disks.</text>
+  <text x="80" y="495" fill="#c2c0b6" font-size="13">Even at 0.5% annual failure → <tspan fill="#fde68a" font-weight="500">~438 disks fail every day at Microsoft alone.</tspan></text>
+</svg>

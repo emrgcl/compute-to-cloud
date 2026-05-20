@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 920" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+      <polygon points="0 0, 8 5, 0 10" fill="rgba(176,174,164,0.5)"/>
+    </marker>
+  </defs>
+
+  <!-- Dark background matching the HTML stage -->
+  <rect x="0" y="0" width="680" height="920" fill="#1a1a1d"/>
+
+  <title>Cloud Training Roadmap — 7 layers from Computer to Azure</title>
+
+  <!-- ============ Layer 1 — Computer (gray, personal) ============ -->
+  <rect x="60" y="40" width="560" height="86" rx="10" fill="rgb(68, 68, 65)" stroke="rgb(180, 178, 169)" stroke-width="1"/>
+  <text x="78" y="65" fill="#f3f1ea" font-size="18px" font-weight="600">1 — Computer</text>
+  <text x="78" y="88" fill="#f3f1ea" font-size="15px" font-weight="400">CPU · RAM · Storage · Motherboard · Power supply</text>
+  <text x="78" y="110" fill="#b0aea4" font-size="14px" font-weight="400" font-style="italic">Physical hardware that executes instructions</text>
+
+  <path d="M 340 132 L 340 152" stroke="rgba(176,174,164,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="354" y="148" fill="#7a7872" font-size="13px">runs</text>
+
+  <!-- ============ Layer 2 — Operating System (gray, personal) ============ -->
+  <rect x="60" y="158" width="560" height="86" rx="10" fill="rgb(68, 68, 65)" stroke="rgb(180, 178, 169)" stroke-width="1"/>
+  <text x="78" y="183" fill="#f3f1ea" font-size="18px" font-weight="600">2 — Operating System</text>
+  <text x="78" y="206" fill="#f3f1ea" font-size="15px" font-weight="400">Kernel · Processes · Memory management · File system · CLI</text>
+  <text x="78" y="228" fill="#b0aea4" font-size="14px" font-weight="400" font-style="italic">Software layer that manages hardware resources</text>
+
+  <path d="M 340 250 L 340 270" stroke="rgba(176,174,164,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="354" y="266" fill="#7a7872" font-size="13px">talks to</text>
+
+  <!-- ============ Layer 3 — Networking (green, bridge to enterprise) ============ -->
+  <rect x="60" y="276" width="560" height="86" rx="10" fill="rgb(8, 80, 65)" stroke="rgb(93, 202, 165)" stroke-width="1"/>
+  <text x="78" y="301" fill="#f3f1ea" font-size="18px" font-weight="600">3 — Networking</text>
+  <text x="78" y="324" fill="#f3f1ea" font-size="15px" font-weight="400">IP · Subnet · Port · Public vs Private · Firewall</text>
+  <text x="78" y="346" fill="#a8e6c8" font-size="14px" font-weight="400" font-style="italic">How computers find and talk to each other</text>
+
+  <path d="M 340 368 L 340 388" stroke="rgba(176,174,164,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="354" y="384" fill="#7a7872" font-size="13px">scale up</text>
+
+  <!-- ============ Layer 4 — Server Computer (green, enterprise) ============ -->
+  <rect x="60" y="394" width="560" height="86" rx="10" fill="rgb(8, 80, 65)" stroke="rgb(93, 202, 165)" stroke-width="1"/>
+  <text x="78" y="419" fill="#f3f1ea" font-size="18px" font-weight="600">4 — Server Computer</text>
+  <text x="78" y="442" fill="#f3f1ea" font-size="15px" font-weight="400">Rack units · Redundant PSU · ECC RAM · Multiple NICs · RAID</text>
+  <text x="78" y="464" fill="#a8e6c8" font-size="14px" font-weight="400" font-style="italic">Purpose-built hardware for continuous, multi-user workloads</text>
+
+  <path d="M 340 486 L 340 506" stroke="rgba(176,174,164,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="354" y="502" fill="#7a7872" font-size="13px">runs</text>
+
+  <!-- ============ Layer 5 — Server OS (green, enterprise) ============ -->
+  <rect x="60" y="512" width="560" height="86" rx="10" fill="rgb(8, 80, 65)" stroke="rgb(93, 202, 165)" stroke-width="1"/>
+  <text x="78" y="537" fill="#f3f1ea" font-size="18px" font-weight="600">5 — Server OS</text>
+  <text x="78" y="560" fill="#f3f1ea" font-size="15px" font-weight="400">Windows Server · Active Directory · DNS · IIS · Linux server</text>
+  <text x="78" y="582" fill="#a8e6c8" font-size="14px" font-weight="400" font-style="italic">OS roles and services that enable shared infrastructure</text>
+
+  <path d="M 340 604 L 340 624" stroke="rgba(176,174,164,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="354" y="620" fill="#7a7872" font-size="13px">abstracts</text>
+
+  <!-- ============ Layer 6 — Virtualization (purple, the hinge) ============ -->
+  <rect x="60" y="630" width="560" height="86" rx="10" fill="rgb(60, 52, 137)" stroke="rgb(175, 169, 236)" stroke-width="1"/>
+  <text x="78" y="655" fill="#f3f1ea" font-size="18px" font-weight="600">6 — Virtualization</text>
+  <text x="78" y="678" fill="#f3f1ea" font-size="15px" font-weight="400">Hypervisor Type 1/2 · VMs · Hyper-V / VMware · Containers</text>
+  <text x="78" y="700" fill="#c7c1ed" font-size="14px" font-weight="400" font-style="italic">One physical server → many isolated virtual machines</text>
+
+  <path d="M 340 722 L 340 742" stroke="rgba(176,174,164,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="354" y="738" fill="#7a7872" font-size="13px">at scale</text>
+
+  <!-- ============ Layer 7 — Azure (blue, payoff) ============ -->
+  <rect x="60" y="748" width="560" height="86" rx="10" fill="rgb(12, 68, 124)" stroke="rgb(133, 183, 235)" stroke-width="1"/>
+  <text x="78" y="773" fill="#f3f1ea" font-size="18px" font-weight="600">7 — Azure</text>
+  <text x="78" y="796" fill="#f3f1ea" font-size="15px" font-weight="400">IaaS · Azure VM · Regions &amp; AZs · VNet · NSG · Portal</text>
+  <text x="78" y="818" fill="#b3d4f5" font-size="14px" font-weight="400" font-style="italic">Virtualization at hyperscale, delivered as a managed service</text>
+
+  <!-- ============ Legend ============ -->
+  <rect x="60" y="858" width="560" height="42" rx="8" fill="none" stroke="rgba(222, 220, 209, 0.15)" stroke-width="0.5" stroke-dasharray="4 3"/>
+  <rect x="80" y="874" width="12" height="12" rx="2" fill="rgb(68, 68, 65)" stroke="rgb(180, 178, 169)" stroke-width="0"/>
+  <text x="100" y="884" fill="#c2c0b6" font-size="14px" font-weight="400" opacity="0.75">Personal computing</text>
+  <rect x="260" y="874" width="12" height="12" rx="2" fill="rgb(8, 80, 65)" stroke="rgb(93, 202, 165)" stroke-width="0"/>
+  <text x="280" y="884" fill="#c2c0b6" font-size="14px" font-weight="400" opacity="0.75">Networking &amp; servers</text>
+  <rect x="460" y="874" width="12" height="12" rx="2" fill="rgb(60, 52, 137)" stroke="rgb(175, 169, 236)" stroke-width="0"/>
+  <rect x="478" y="874" width="12" height="12" rx="2" fill="rgb(12, 68, 124)" stroke="rgb(133, 183, 235)" stroke-width="0"/>
+  <text x="500" y="884" fill="#c2c0b6" font-size="14px" font-weight="400" opacity="0.75">Virt + Cloud</text>
+
+</svg>

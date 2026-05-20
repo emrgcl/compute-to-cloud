@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <defs>
+    <marker id="arr2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0 0, 8 5, 0 10" fill="#b0aea4"/>
+    </marker>
+    <marker id="arrPurple" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0 0, 8 5, 0 10" fill="#a89df5"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="560" fill="#1a1a1d"/>
+
+  <!-- Top: user program -->
+  <rect x="280" y="40" width="240" height="60" rx="10" fill="#1e3a5f" stroke="#7fc7f5" stroke-width="1.5"/>
+  <text x="400" y="68" text-anchor="middle" fill="#dbe9f7" font-size="16" font-weight="500">Your program</text>
+  <text x="400" y="88" text-anchor="middle" fill="#a5c3e0" font-size="13" font-style="italic">running on the CPU (user mode)</text>
+
+  <!-- arrow down to syscall -->
+  <line x1="400" y1="105" x2="400" y2="148" stroke="#a89df5" stroke-width="2" marker-end="url(#arrPurple)"/>
+  <text x="412" y="132" fill="#a89df5" font-size="14" font-weight="500" font-style="italic">"I need to print something"</text>
+
+  <!-- System call boundary -->
+  <rect x="180" y="155" width="440" height="50" rx="8" fill="#2d1b69" stroke="#a89df5" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="400" y="178" text-anchor="middle" fill="#cec5f5" font-size="15" font-weight="600">SYSTEM CALL</text>
+  <text x="400" y="196" text-anchor="middle" fill="#a89df5" font-size="12" font-style="italic">the doorway — CPU flips into kernel mode</text>
+
+  <!-- arrow down to kernel -->
+  <line x1="400" y1="210" x2="400" y2="248" stroke="#b0aea4" stroke-width="2" marker-end="url(#arr2)"/>
+
+  <!-- Kernel - the heart -->
+  <rect x="220" y="255" width="360" height="100" rx="14" fill="#5c1a1a" stroke="#ef4444" stroke-width="2.5"/>
+  <text x="400" y="288" text-anchor="middle" fill="#fda4a4" font-size="22" font-weight="600">KERNEL</text>
+  <text x="400" y="312" text-anchor="middle" fill="#f3f1ea" font-size="14">the heart — runs in kernel mode</text>
+  <text x="400" y="334" text-anchor="middle" fill="#e0a4a4" font-size="13" font-style="italic">checks permissions · talks to hardware · returns result</text>
+
+  <!-- arrow down to hardware -->
+  <line x1="400" y1="360" x2="400" y2="398" stroke="#b0aea4" stroke-width="2" marker-end="url(#arr2)"/>
+
+  <!-- Hardware -->
+  <rect x="80" y="405" width="640" height="70" rx="10" fill="#1a4d2e" stroke="#7fcfa0" stroke-width="1.5"/>
+  <text x="400" y="430" text-anchor="middle" fill="#c4f0d4" font-size="16" font-weight="500">Hardware</text>
+  <text x="400" y="453" text-anchor="middle" fill="#a0d8b6" font-size="13">Screen · Disk · Network · everything physical</text>
+
+  <!-- Callout box at bottom -->
+  <rect x="80" y="500" width="640" height="46" rx="8" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="5 3"/>
+  <text x="400" y="529" text-anchor="middle" fill="#fde68a" font-size="14" font-weight="500" font-style="italic">The CPU itself enforces the rule — programs can't touch hardware directly</text>
+
+</svg>

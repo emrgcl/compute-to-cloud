@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 500" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect x="0" y="0" width="880" height="500" fill="#1a1a1d"/>
+
+  <!-- Title hint at top -->
+  <text x="440" y="35" text-anchor="middle" fill="#9a9888" font-size="14" letter-spacing="1">EVERY COMPUTER HAS AN ADDRESS</text>
+
+  <!-- Building 1 - your laptop (private IP) -->
+  <rect x="120" y="180" width="150" height="180" rx="6" fill="#1e3a5f" stroke="#7fc7f5" stroke-width="2"/>
+  <polygon points="115,180 195,130 275,180" fill="#1e3a5f" stroke="#7fc7f5" stroke-width="2"/>
+  <rect x="140" y="220" width="30" height="40" fill="#0d2240" stroke="#5a8fcc" stroke-width="1"/>
+  <rect x="180" y="220" width="30" height="40" fill="#0d2240" stroke="#5a8fcc" stroke-width="1"/>
+  <rect x="220" y="220" width="30" height="40" fill="#0d2240" stroke="#5a8fcc" stroke-width="1"/>
+  <rect x="140" y="280" width="30" height="40" fill="#0d2240" stroke="#5a8fcc" stroke-width="1"/>
+  <rect x="180" y="280" width="50" height="80" fill="#0d2240" stroke="#5a8fcc" stroke-width="1"/>
+  <text x="195" y="395" text-anchor="middle" fill="#dbe9f7" font-size="13">Your laptop</text>
+  <text x="195" y="416" text-anchor="middle" fill="#fde68a" font-size="14" font-family="ui-monospace, monospace" font-weight="500">192.168.1.5</text>
+  <text x="195" y="436" text-anchor="middle" fill="#7a7872" font-size="11" font-style="italic">private</text>
+
+  <!-- Building 2 - Azure VM -->
+  <rect x="370" y="180" width="150" height="180" rx="6" fill="#1a4d2e" stroke="#7fcfa0" stroke-width="2"/>
+  <polygon points="365,180 445,130 525,180" fill="#1a4d2e" stroke="#7fcfa0" stroke-width="2"/>
+  <rect x="390" y="220" width="30" height="40" fill="#0d2e1a" stroke="#4ba377" stroke-width="1"/>
+  <rect x="430" y="220" width="30" height="40" fill="#0d2e1a" stroke="#4ba377" stroke-width="1"/>
+  <rect x="470" y="220" width="30" height="40" fill="#0d2e1a" stroke="#4ba377" stroke-width="1"/>
+  <rect x="390" y="280" width="30" height="40" fill="#0d2e1a" stroke="#4ba377" stroke-width="1"/>
+  <rect x="430" y="280" width="50" height="80" fill="#0d2e1a" stroke="#4ba377" stroke-width="1"/>
+  <text x="445" y="395" text-anchor="middle" fill="#c4f0d4" font-size="13">An Azure VM</text>
+  <text x="445" y="416" text-anchor="middle" fill="#fde68a" font-size="14" font-family="ui-monospace, monospace" font-weight="500">52.114.128.10</text>
+  <text x="445" y="436" text-anchor="middle" fill="#7fcfa0" font-size="11" font-style="italic">public</text>
+
+  <!-- Building 3 - YouTube server -->
+  <rect x="620" y="180" width="150" height="180" rx="6" fill="#5c1a1a" stroke="#e88080" stroke-width="2"/>
+  <polygon points="615,180 695,130 775,180" fill="#5c1a1a" stroke="#e88080" stroke-width="2"/>
+  <rect x="640" y="220" width="30" height="40" fill="#2e0d0d" stroke="#a04545" stroke-width="1"/>
+  <rect x="680" y="220" width="30" height="40" fill="#2e0d0d" stroke="#a04545" stroke-width="1"/>
+  <rect x="720" y="220" width="30" height="40" fill="#2e0d0d" stroke="#a04545" stroke-width="1"/>
+  <rect x="640" y="280" width="30" height="40" fill="#2e0d0d" stroke="#a04545" stroke-width="1"/>
+  <rect x="680" y="280" width="50" height="80" fill="#2e0d0d" stroke="#a04545" stroke-width="1"/>
+  <text x="695" y="395" text-anchor="middle" fill="#f5cfcf" font-size="13">YouTube server</text>
+  <text x="695" y="416" text-anchor="middle" fill="#fde68a" font-size="14" font-family="ui-monospace, monospace" font-weight="500">142.250.80.46</text>
+  <text x="695" y="436" text-anchor="middle" fill="#e88080" font-size="11" font-style="italic">public</text>
+
+  <!-- DNS sidebar at bottom -->
+  <rect x="120" y="463" width="650" height="30" rx="5" fill="none" stroke="#9a9888" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="445" y="483" text-anchor="middle" fill="#9a9888" font-size="13" font-style="italic">You type <tspan font-family="ui-monospace, monospace" fill="#c4f0d4">youtube.com</tspan> — DNS translates it to <tspan font-family="ui-monospace, monospace" fill="#fde68a">142.250.80.46</tspan> behind the scenes</text>
+</svg>

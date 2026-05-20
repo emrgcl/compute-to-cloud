@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 500" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <rect x="0" y="0" width="920" height="500" fill="#1a1a1d"/>
+
+  <!-- Title -->
+  <text x="460" y="35" text-anchor="middle" fill="#fde68a" font-size="18" font-weight="500">Four things the hardware demands</text>
+  <text x="460" y="56" text-anchor="middle" fill="#9a9888" font-size="13" font-style="italic">every requirement maps to a property from Layer 4</text>
+
+  <!-- 2x2 grid of requirements -->
+
+  <!-- Top-left: No screen -->
+  <g transform="translate(60, 90)">
+    <rect x="0" y="0" width="380" height="170" rx="12" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1.5"/>
+    <text x="20" y="35" fill="#fde68a" font-size="28">⊘</text>
+    <text x="65" y="38" fill="#c4f0d4" font-size="16" font-weight="600">No screen</text>
+    <text x="20" y="75" fill="#9a9888" font-size="11" letter-spacing="0.5">FROM LAYER 4</text>
+    <text x="20" y="95" fill="#a5c3e0" font-size="12" font-style="italic">"no monitor, no keyboard"</text>
+    <text x="20" y="120" fill="#9a9888" font-size="11" letter-spacing="0.5">SO THE OS NEEDS</text>
+    <text x="20" y="142" fill="#f3f1ea" font-size="13">a text interface — CLI</text>
+    <text x="20" y="160" fill="#f3f1ea" font-size="13">no GUI overhead</text>
+  </g>
+
+  <!-- Top-right: Runs forever -->
+  <g transform="translate(480, 90)">
+    <rect x="0" y="0" width="380" height="170" rx="12" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1.5"/>
+    <text x="20" y="38" fill="#fde68a" font-size="28">∞</text>
+    <text x="65" y="38" fill="#c4f0d4" font-size="16" font-weight="600">Runs forever</text>
+    <text x="20" y="75" fill="#9a9888" font-size="11" letter-spacing="0.5">FROM LAYER 4</text>
+    <text x="20" y="95" fill="#a5c3e0" font-size="12" font-style="italic">"redundant PSUs, ECC RAM, RAID disks"</text>
+    <text x="20" y="120" fill="#9a9888" font-size="11" letter-spacing="0.5">SO THE OS NEEDS</text>
+    <text x="20" y="142" fill="#f3f1ea" font-size="13">services that auto-start</text>
+    <text x="20" y="160" fill="#f3f1ea" font-size="13">live patching, no reboots</text>
+  </g>
+
+  <!-- Bottom-left: Many users -->
+  <g transform="translate(60, 280)">
+    <rect x="0" y="0" width="380" height="170" rx="12" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1.5"/>
+    <text x="20" y="38" fill="#fde68a" font-size="28">👥</text>
+    <text x="65" y="38" fill="#c4f0d4" font-size="16" font-weight="600">Many users at once</text>
+    <text x="20" y="75" fill="#9a9888" font-size="11" letter-spacing="0.5">FROM LAYER 4</text>
+    <text x="20" y="95" fill="#a5c3e0" font-size="12" font-style="italic">"96 cores, 1 TB RAM, multi-NIC"</text>
+    <text x="20" y="120" fill="#9a9888" font-size="11" letter-spacing="0.5">SO THE OS NEEDS</text>
+    <text x="20" y="142" fill="#f3f1ea" font-size="13">strong process isolation</text>
+    <text x="20" y="160" fill="#f3f1ea" font-size="13">fair scheduling for thousands</text>
+  </g>
+
+  <!-- Bottom-right: Controlled remotely -->
+  <g transform="translate(480, 280)">
+    <rect x="0" y="0" width="380" height="170" rx="12" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1.5"/>
+    <text x="20" y="38" fill="#fde68a" font-size="28">🌐</text>
+    <text x="65" y="38" fill="#c4f0d4" font-size="16" font-weight="600">Controlled remotely</text>
+    <text x="20" y="75" fill="#9a9888" font-size="11" letter-spacing="0.5">FROM LAYER 4</text>
+    <text x="20" y="95" fill="#a5c3e0" font-size="12" font-style="italic">"SSH, RDP, BMC"</text>
+    <text x="20" y="120" fill="#9a9888" font-size="11" letter-spacing="0.5">SO THE OS NEEDS</text>
+    <text x="20" y="142" fill="#f3f1ea" font-size="13">network services on boot</text>
+    <text x="20" y="160" fill="#f3f1ea" font-size="13">scriptable everything</text>
+  </g>
+
+</svg>

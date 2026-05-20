@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 500" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <defs>
+    <marker id="arrIn" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0 0, 8 5, 0 10" fill="#7fcfa0"/>
+    </marker>
+    <marker id="arrBmc" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0 0, 8 5, 0 10" fill="#a89df5"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="880" height="500" fill="#1a1a1d"/>
+
+  <!-- Title -->
+  <text x="440" y="30" text-anchor="middle" fill="#9a9888" font-size="14" letter-spacing="1">NO MONITOR, NO KEYBOARD — EVERYTHING OVER THE NETWORK</text>
+
+  <!-- ===== Server outer box ===== -->
+  <rect x="230" y="70" width="420" height="240" rx="14" fill="none" stroke="#7fcfa0" stroke-width="2"/>
+  <text x="250" y="95" fill="#7fcfa0" font-size="13" font-weight="600" letter-spacing="0.5">ONE SERVER</text>
+
+  <!-- Main OS chip (larger) -->
+  <rect x="270" y="115" width="340" height="100" rx="8" fill="#0d2e1a" stroke="#7fcfa0" stroke-width="1.5"/>
+  <text x="440" y="145" text-anchor="middle" fill="#c4f0d4" font-size="14" font-weight="600">Main CPU + OS</text>
+  <text x="440" y="167" text-anchor="middle" fill="#9a9888" font-size="11" font-style="italic">runs when the server is on</text>
+  <text x="440" y="195" text-anchor="middle" fill="#fde68a" font-size="11" font-family="ui-monospace, monospace">listens on :22 (SSH) · :3389 (RDP)</text>
+
+  <!-- The + plus symbol between -->
+  <text x="440" y="240" text-anchor="middle" fill="#7a7872" font-size="20">+</text>
+
+  <!-- BMC chip (smaller, distinct color) -->
+  <rect x="320" y="255" width="240" height="48" rx="8" fill="#1a103e" stroke="#a89df5" stroke-width="1.5"/>
+  <text x="440" y="276" text-anchor="middle" fill="#cec5f5" font-size="13" font-weight="600">BMC · the server inside the server</text>
+  <text x="440" y="294" text-anchor="middle" fill="#a89df5" font-size="10" font-style="italic">separate chip · own power · own network · runs even when main server is off</text>
+
+  <!-- ===== Three arrows coming IN to the server ===== -->
+  <!-- arrow 1: SSH :22 -->
+  <line x1="120" y1="400" x2="280" y2="220" stroke="#7fcfa0" stroke-width="2" marker-end="url(#arrIn)"/>
+  <text x="155" y="345" fill="#fde68a" font-size="11" font-family="ui-monospace, monospace" font-weight="500">SSH :22</text>
+  <text x="135" y="360" fill="#9a9888" font-size="10" font-style="italic">Linux remote terminal</text>
+
+  <!-- arrow 2: RDP :3389 -->
+  <line x1="440" y1="430" x2="440" y2="320" stroke="#7fcfa0" stroke-width="2" marker-end="url(#arrIn)"/>
+  <text x="455" y="380" fill="#fde68a" font-size="11" font-family="ui-monospace, monospace" font-weight="500">RDP :3389</text>
+  <text x="455" y="395" fill="#9a9888" font-size="10" font-style="italic">Windows remote desktop</text>
+
+  <!-- arrow 3: BMC :443 -->
+  <line x1="760" y1="400" x2="600" y2="290" stroke="#a89df5" stroke-width="2" marker-end="url(#arrBmc)"/>
+  <text x="685" y="345" fill="#cec5f5" font-size="11" font-family="ui-monospace, monospace" font-weight="500">BMC web :443</text>
+  <text x="660" y="360" fill="#a89df5" font-size="10" font-style="italic">power on/off, install OS, console</text>
+
+  <!-- ===== Admin laptop below ===== -->
+  <g transform="translate(380, 425)">
+    <rect x="0" y="0" width="120" height="45" rx="4" fill="#1e3a5f" stroke="#7fc7f5" stroke-width="1.5"/>
+    <rect x="8" y="6" width="104" height="32" rx="2" fill="#0d2240"/>
+  </g>
+  <text x="440" y="487" text-anchor="middle" fill="#9a9888" font-size="11" font-style="italic">Admin's laptop · somewhere else</text>
+</svg>

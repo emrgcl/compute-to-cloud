@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Training — Intro</title>
+<style>
+  :root {
+    --bg-page: #0e0e10;
+    --bg-surface: #1a1a1d;
+    --bg-muted: #2a2a2e;
+    --text-primary: #f3f1ea;
+    --text-secondary: #b0aea4;
+    --text-tertiary: #7a7872;
+    --border: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.25);
+
+    --blue-50:  #E6F1FB;
+    --blue-600: #4a9eed;
+    --blue-800: #185FA5;
+    --amber-50:  #FAEEDA;
+    --amber-600: #f59e0b;
+    --amber-800: #BA7517;
+    --green-600: #22c55e;
+    --purple-600: #8b5cf6;
+
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-page);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 20px 24px;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 14px;
+  }
+  h1 { font-size: 18px; font-weight: 500; margin: 0; color: var(--text-secondary); }
+  .module-tag {
+    font-size: 12px; color: var(--text-tertiary);
+    font-family: var(--font-mono);
+  }
+
+  .controls {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 16px; flex-wrap: wrap;
+  }
+
+  button {
+    font-family: inherit; font-size: 13px;
+    padding: 8px 16px;
+    background: var(--bg-surface); color: var(--text-primary);
+    border: 1px solid var(--border-strong); border-radius: 8px;
+    cursor: pointer; transition: background 120ms, transform 80ms;
+  }
+  button:hover:not(:disabled) { background: var(--bg-muted); }
+  button:active:not(:disabled) { transform: scale(0.98); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  button.primary {
+    font-weight: 500;
+    background: var(--blue-600);
+    color: #ffffff;
+    border-color: var(--blue-600);
+  }
+  button.primary:hover:not(:disabled) { background: #5fb0f5; }
+
+  .step-counter {
+    margin-left: 8px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+  }
+
+  .stage {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    min-height: 560px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+
+  .beat {
+    display: none;
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+    animation: fadein 480ms ease;
+  }
+  .beat.active { display: flex; }
+
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Beat 0 — title */
+  .beat-title {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .beat-title .big-title {
+    font-size: 48px;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    margin: 0 0 16px;
+  }
+  .beat-title .big-sub {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 640px;
+    line-height: 1.5;
+  }
+  .beat-title .timer {
+    margin-top: 32px;
+    font-family: var(--font-mono);
+    color: var(--text-tertiary);
+    font-size: 13px;
+  }
+
+  /* Beat 1 — hook */
+  .beat-hook {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+  }
+  .beat-hook .question {
+    font-size: 32px;
+    font-weight: 300;
+    text-align: center;
+    line-height: 1.4;
+    max-width: 880px;
+  }
+  .beat-hook .question .highlight {
+    color: var(--amber-600);
+    font-weight: 400;
+  }
+  .beat-hook .followup {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 760px;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* Beat 2 — phone-to-datacenter image */
+  .beat-bridge {
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+  }
+  .beat-bridge img {
+    max-width: 100%;
+    max-height: 460px;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-bridge .caption {
+    font-size: 18px;
+    color: var(--text-primary);
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-bridge .caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Beat 3 — datacenter aerial */
+  .beat-scale {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+  .beat-scale img {
+    max-width: 100%;
+    max-height: 380px;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-scale .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    width: 100%;
+    max-width: 980px;
+    margin-top: 8px;
+  }
+  @media (max-width: 800px) { .beat-scale .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat {
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 320ms ease, transform 320ms ease;
+  }
+  .stat.show { opacity: 1; transform: translateY(0); }
+  .stat .num {
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--amber-600);
+    font-family: var(--font-mono);
+    line-height: 1.1;
+  }
+  .stat .lbl {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    line-height: 1.35;
+  }
+
+  /* Beat 4 — punchline */
+  .beat-punch {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+  }
+  .beat-punch .lead {
+    font-size: 26px;
+    line-height: 1.4;
+    max-width: 880px;
+    color: var(--text-primary);
+    font-weight: 300;
+  }
+  .beat-punch .lead .hl {
+    color: var(--purple-600);
+    font-weight: 500;
+  }
+  .beat-punch .teaser {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 720px;
+    line-height: 1.5;
+    padding: 16px 24px;
+    border-left: 3px solid var(--purple-600);
+    background: rgba(139, 92, 246, 0.08);
+    border-radius: 0 8px 8px 0;
+    text-align: left;
+  }
+  .beat-punch .teaser .pin {
+    color: var(--purple-600);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Beat 5 — roadmap */
+  .beat-roadmap {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .beat-roadmap .roadmap-intro {
+    font-size: 18px;
+    color: var(--text-secondary);
+    text-align: center;
+    max-width: 880px;
+    line-height: 1.5;
+  }
+  .beat-roadmap .roadmap-wrap {
+    background: transparent;
+    border-radius: 10px;
+    padding: 0;
+    width: 100%;
+    max-width: 900px;
+    max-height: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .beat-roadmap .roadmap-wrap img,
+  .beat-roadmap .roadmap-wrap object {
+    width: 100%;
+    height: auto;
+    max-height: 620px;
+  }
+
+  /* Beat 6 — through-line */
+  .beat-throughline {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 28px;
+  }
+  .beat-throughline .promise {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 720px;
+    line-height: 1.5;
+  }
+  .beat-throughline .sentence {
+    font-size: 24px;
+    line-height: 1.5;
+    max-width: 920px;
+    font-weight: 300;
+    color: var(--text-primary);
+    padding: 28px 36px;
+    background: linear-gradient(135deg, rgba(74, 158, 237, 0.10), rgba(139, 92, 246, 0.10));
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .beat-throughline .sentence strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+  .beat-throughline .footnote {
+    color: var(--text-tertiary);
+    font-size: 14px;
+    font-style: italic;
+    max-width: 640px;
+  }
+
+  /* speaker notes */
+  .notes {
+    margin-top: 14px;
+    padding: 14px 18px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber-600);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    display: none;
+  }
+  .notes.show { display: block; }
+  .notes strong { color: var(--text-primary); font-weight: 500; }
+  .notes-label {
+    color: var(--amber-600);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .footer-hint {
+    margin-top: 14px;
+    color: var(--text-tertiary);
+    font-size: 12px;
+    text-align: center;
+  }
+  .footer-hint code {
+    font-family: var(--font-mono);
+    background: var(--bg-muted);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Cloud Training Roadmap — Intro</h1>
+    <span class="module-tag">Layer 0 · 5 minutes</span>
+  </header>
+
+  <div class="controls">
+    <button id="prev-btn">&larr; Back</button>
+    <button id="next-btn" class="primary">Next &rarr;</button>
+    <button id="notes-btn">Speaker notes</button>
+    <button id="reset-btn">Reset</button>
+    <span id="step-counter" class="step-counter">Beat 1 of 7</span>
+  </div>
+
+  <div class="stage" id="stage">
+
+    <!-- Beat 0: Title slide -->
+    <div class="beat beat-title active" data-beat="0">
+      <h2 class="big-title">From your computer to the cloud</h2>
+      <p class="big-sub">A 90-minute journey through the six ideas that power every cloud service you use.</p>
+      <p class="timer">Layer 0 · Intro · 5 min</p>
+    </div>
+
+    <!-- Beat 1: Hook -->
+    <div class="beat beat-hook" data-beat="1">
+      <p class="question">
+        Quick show of hands.<br>
+        Who used <span class="highlight">ChatGPT</span> this week?<br>
+        Who plays <span class="highlight">Minecraft</span>?
+      </p>
+      <p class="followup">
+        When you asked ChatGPT to help with homework, it didn't run on your phone. When you joined a Minecraft Realm, the world wasn't on your device. Both ran on a computer <em>somewhere else</em>. Where? Whose? How many?
+      </p>
+    </div>
+
+    <!-- Beat 2: The bridge image -->
+    <div class="beat beat-bridge" data-beat="2">
+      <img src="0_intro_assets/phone_to_datacenter.png" alt="Phone playing a block game connected to a server hall by a glowing fiber-optic trace">
+      <p class="caption">
+        Your screen is here. <strong>The computer doing the work is over there</strong> — maybe in another country. Today we follow that thread, from one end to the other.
+      </p>
+    </div>
+
+    <!-- Beat 3: Scale reveal with aerial -->
+    <div class="beat beat-scale" data-beat="3">
+      <img src="0_intro_assets/datacenter_campus.png" alt="Aerial view of a hyperscale data center campus at golden hour">
+      <div class="stats">
+        <div class="stat" data-delay="0">
+          <div class="num">~400</div>
+          <div class="lbl">Microsoft data centers worldwide</div>
+        </div>
+        <div class="stat" data-delay="280">
+          <div class="num">~70</div>
+          <div class="lbl">Azure regions across the globe</div>
+        </div>
+        <div class="stat" data-delay="560">
+          <div class="num">~100K</div>
+          <div class="lbl">Physical servers in a single building</div>
+        </div>
+        <div class="stat" data-delay="840">
+          <div class="num">20–100</div>
+          <div class="lbl">Virtual computers per physical server</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Beat 4: Punchline -->
+    <div class="beat beat-punch" data-beat="4">
+      <p class="lead">
+        One physical computer can pretend to be <span class="hl">20 to 100 separate computers</span> at the same time.<br>
+        That's how thousands of Minecraft worlds and millions of ChatGPT conversations happen in parallel.
+      </p>
+      <div class="teaser">
+        <span class="pin">PIN THIS QUESTION</span>
+        That last sentence is the whole reason this lesson exists. By <strong>minute 70</strong>, you'll know exactly what "virtual computer" means and how that trick works.
+      </div>
+    </div>
+
+    <!-- Beat 5: Roadmap -->
+    <div class="beat beat-roadmap" data-beat="5">
+      <p class="roadmap-intro">
+        Here's the route. We start with something you already know — a computer. By the end, we're at Azure. Seven steps, each one adding one idea.
+      </p>
+      <div class="roadmap-wrap">
+        <object data="0_intro_assets/roadmap.svg" type="image/svg+xml" aria-label="Six-layer roadmap from Computer to Azure"></object>
+      </div>
+      <p class="roadmap-intro" style="font-size: 15px; color: var(--text-tertiary);">
+        If at any point you feel lost — point at the roadmap and ask which layer we're on. We'll find our way back.
+      </p>
+    </div>
+
+    <!-- Beat 6: Through-line -->
+    <div class="beat beat-throughline" data-beat="6">
+      <p class="promise">
+        By minute 85, you'll be able to explain to a friend what "the cloud" actually is. Here's the spoiler — and we'll come back to this sentence at the end:
+      </p>
+      <p class="sentence">
+        Azure isn't magic. It's the same computer you have at home, plus <strong>five ideas</strong> stacked on top: a stronger version of it, an OS that runs without a screen, <strong>a way to talk to other computers</strong>, a way to slice one into many, and someone else owning the building.
+      </p>
+      <p class="footnote">
+        You won't fully get this yet. That's the point. Let's go to Layer 1.
+      </p>
+    </div>
+
+  </div>
+
+  <div id="notes" class="notes">
+    <span class="notes-label">SPEAKER NOTES</span>
+    <div id="notes-content"></div>
+  </div>
+
+  <p class="footer-hint">
+    <code>&larr;</code> / <code>&rarr;</code> to navigate &middot; <code>N</code> toggles notes &middot; <code>R</code> resets
+  </p>
+</div>
+
+<script>
+(function() {
+  const NOTES = [
+    {
+      title: "Title slide",
+      body: "Hold here for ~10 seconds while everyone settles. Make eye contact with the back row. Then click Next."
+    },
+    {
+      title: "The hook (~60 sec)",
+      body: "<strong>Pause after each question.</strong> Wait for hands. Some students won't raise their hand even if they game/use AI — that's fine. The point is energy, not data. If the room is dead, add: \"Be honest — no judgment, this is a CS class.\" Then deliver the followup as one connected thought, don't pause inside it."
+    },
+    {
+      title: "Phone-to-datacenter bridge (~60 sec)",
+      body: "<strong>Let the image breathe for 5 seconds before speaking.</strong> Then deliver the caption verbatim, emphasizing \"over there.\" If you can, gesture — point to your phone, then to the far wall. The physical gesture makes the abstraction land. Mention casually: \"Could be Ireland. Could be the Netherlands. We'll find out where Turkey's cloud servers actually live in Layer 6.\""
+    },
+    {
+      title: "Scale reveal (~90 sec)",
+      body: "Stats appear one at a time as the beat loads. Don't read all four numbers in sequence — that's boring. Instead: <ol style='margin: 8px 0 0 18px; padding: 0;'><li>400 datacenters: \"More than there are McDonald's in Turkey.\"</li><li>70 regions: \"One of them is in Europe — you've probably used it without knowing.\"</li><li>100K servers: \"Imagine your school's computer lab. Now imagine a thousand of them. In one building.\"</li><li>20–100 VMs: <em>Slow down here.</em> This is the setup for the next beat.</li></ol>"
+    },
+    {
+      title: "The punchline (~60 sec)",
+      body: "<strong>This is the most important slide in the intro.</strong> The whole talk hinges on planting the question \"how does one computer pretend to be many.\" Read the teaser box aloud slowly. Tap your watch when you say \"minute 70\" — make it a promise. Some students will write down the question. That's exactly what you want."
+    },
+    {
+      title: "Roadmap (~60 sec)",
+      body: "Don't read every box. Trace the path with your finger / cursor: \"We start here (Layer 1, computer you already know), we end here (Layer 6, Azure). Each arrow adds one new idea.\" Then deliver the bottom line: \"If you get lost, point at the roadmap.\" This gives anxious students <em>permission to interrupt</em> — that's its real job."
+    },
+    {
+      title: "Through-line (~50 sec)",
+      body: "<strong>Don't explain the sentence.</strong> Just read it. Pause after \"four ideas\" — that's the structural backbone they'll feel filling in over the next 85 minutes. The footnote (\"You won't fully get this yet\") is permission to be confused. Then transition cleanly: \"Layer 1. The computer. You know this one — but probably not as well as you think.\""
+    }
+  ];
+
+  const beats = document.querySelectorAll(".beat");
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+  const notesBtn = document.getElementById("notes-btn");
+  const resetBtn = document.getElementById("reset-btn");
+  const counter = document.getElementById("step-counter");
+  const notesEl = document.getElementById("notes");
+  const notesContent = document.getElementById("notes-content");
+
+  let idx = 0;
+  let notesOpen = false;
+
+  function render() {
+    beats.forEach((b, i) => b.classList.toggle("active", i === idx));
+    counter.textContent = `Beat ${idx + 1} of ${beats.length}`;
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === beats.length - 1;
+    nextBtn.textContent = idx === beats.length - 1 ? "End of intro" : "Next →";
+
+    // Speaker notes content
+    const n = NOTES[idx];
+    notesContent.innerHTML = `<strong>${n.title}</strong><br>${n.body}`;
+
+    // Re-trigger stat fade-ins for the scale beat
+    if (idx === 3) {
+      const stats = beats[3].querySelectorAll(".stat");
+      stats.forEach(s => s.classList.remove("show"));
+      stats.forEach(s => {
+        const delay = parseInt(s.dataset.delay || "0", 10);
+        setTimeout(() => s.classList.add("show"), delay + 60);
+      });
+    }
+  }
+
+  function next() { if (idx < beats.length - 1) { idx++; render(); } }
+  function prev() { if (idx > 0) { idx--; render(); } }
+  function reset() { idx = 0; render(); }
+  function toggleNotes() {
+    notesOpen = !notesOpen;
+    notesEl.classList.toggle("show", notesOpen);
+    notesBtn.classList.toggle("primary", notesOpen);
+  }
+
+  nextBtn.addEventListener("click", next);
+  prevBtn.addEventListener("click", prev);
+  resetBtn.addEventListener("click", reset);
+  notesBtn.addEventListener("click", toggleNotes);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    if (e.code === "ArrowRight" || e.code === "Enter" || e.code === "Space") {
+      e.preventDefault();
+      next();
+    } else if (e.code === "ArrowLeft") {
+      e.preventDefault();
+      prev();
+    } else if (e.key === "n" || e.key === "N") {
+      toggleNotes();
+    } else if (e.key === "r" || e.key === "R") {
+      reset();
+    }
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>

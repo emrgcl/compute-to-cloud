@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Training — Computer</title>
+<style>
+  :root {
+    --bg-page: #0e0e10;
+    --bg-surface: #1a1a1d;
+    --bg-muted: #2a2a2e;
+    --text-primary: #f3f1ea;
+    --text-secondary: #b0aea4;
+    --text-tertiary: #7a7872;
+    --border: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.25);
+
+    --blue-50:  #E6F1FB;
+    --blue-600: #4a9eed;
+    --blue-800: #185FA5;
+    --amber-50:  #FAEEDA;
+    --amber-600: #f59e0b;
+    --amber-800: #BA7517;
+    --green-600: #22c55e;
+    --purple-600: #8b5cf6;
+
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-page);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 20px 24px;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 14px;
+  }
+  h1 { font-size: 18px; font-weight: 500; margin: 0; color: var(--text-secondary); }
+  .module-tag {
+    font-size: 12px; color: var(--text-tertiary);
+    font-family: var(--font-mono);
+  }
+
+  .controls {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 16px; flex-wrap: wrap;
+  }
+
+  button {
+    font-family: inherit; font-size: 13px;
+    padding: 8px 16px;
+    background: var(--bg-surface); color: var(--text-primary);
+    border: 1px solid var(--border-strong); border-radius: 8px;
+    cursor: pointer; transition: background 120ms, transform 80ms;
+  }
+  button:hover:not(:disabled) { background: var(--bg-muted); }
+  button:active:not(:disabled) { transform: scale(0.98); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  button.primary {
+    font-weight: 500;
+    background: var(--blue-600);
+    color: #ffffff;
+    border-color: var(--blue-600);
+  }
+  button.primary:hover:not(:disabled) { background: #5fb0f5; }
+
+  .step-counter {
+    margin-left: 8px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+  }
+
+  .stage {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    min-height: 560px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+
+  .beat {
+    display: none;
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+    animation: fadein 480ms ease;
+  }
+  .beat.active { display: flex; }
+
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Beat 0 — title */
+  .beat-title {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .beat-title .big-title {
+    font-size: 48px;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    margin: 0 0 16px;
+  }
+  .beat-title .big-sub {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 640px;
+    line-height: 1.5;
+  }
+  .beat-title .timer {
+    margin-top: 32px;
+    font-family: var(--font-mono);
+    color: var(--text-tertiary);
+    font-size: 13px;
+  }
+
+  /* Beat 1 — hook */
+  .beat-hook {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+  }
+  .beat-hook .question {
+    font-size: 32px;
+    font-weight: 300;
+    text-align: center;
+    line-height: 1.4;
+    max-width: 880px;
+  }
+  .beat-hook .question .highlight {
+    color: var(--amber-600);
+    font-weight: 400;
+  }
+  .beat-hook .followup {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 760px;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* Beat 2 — phone-to-datacenter image */
+  .beat-bridge {
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+  }
+  .beat-bridge img {
+    max-width: 100%;
+    max-height: 460px;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-bridge .caption {
+    font-size: 18px;
+    color: var(--text-primary);
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-bridge .caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Beat 3 — datacenter aerial */
+  .beat-scale {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+  .beat-scale img {
+    max-width: 100%;
+    max-height: 380px;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-scale .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    width: 100%;
+    max-width: 980px;
+    margin-top: 8px;
+  }
+  @media (max-width: 800px) { .beat-scale .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat {
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 320ms ease, transform 320ms ease;
+  }
+  .stat.show { opacity: 1; transform: translateY(0); }
+  .stat .num {
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--amber-600);
+    font-family: var(--font-mono);
+    line-height: 1.1;
+  }
+  .stat .lbl {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    line-height: 1.35;
+  }
+
+  /* Beat 4 — punchline */
+  .beat-punch {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+  }
+  .beat-punch .lead {
+    font-size: 26px;
+    line-height: 1.4;
+    max-width: 880px;
+    color: var(--text-primary);
+    font-weight: 300;
+  }
+  .beat-punch .lead .hl {
+    color: var(--purple-600);
+    font-weight: 500;
+  }
+  .beat-punch .teaser {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 720px;
+    line-height: 1.5;
+    padding: 16px 24px;
+    border-left: 3px solid var(--purple-600);
+    background: rgba(139, 92, 246, 0.08);
+    border-radius: 0 8px 8px 0;
+    text-align: left;
+  }
+  .beat-punch .teaser .pin {
+    color: var(--purple-600);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Beat 5 — roadmap */
+  .beat-roadmap {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .beat-roadmap .roadmap-intro {
+    font-size: 18px;
+    color: var(--text-secondary);
+    text-align: center;
+    max-width: 880px;
+    line-height: 1.5;
+  }
+  .beat-roadmap .roadmap-wrap {
+    background: transparent;
+    border-radius: 10px;
+    padding: 0;
+    width: 100%;
+    max-width: 900px;
+    max-height: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .beat-roadmap .roadmap-wrap img,
+  .beat-roadmap .roadmap-wrap object {
+    width: 100%;
+    height: auto;
+    max-height: 620px;
+  }
+
+  /* Beat 6 — through-line */
+  .beat-throughline {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 28px;
+  }
+  .beat-throughline .promise {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 720px;
+    line-height: 1.5;
+  }
+  .beat-throughline .sentence {
+    font-size: 24px;
+    line-height: 1.5;
+    max-width: 920px;
+    font-weight: 300;
+    color: var(--text-primary);
+    padding: 28px 36px;
+    background: linear-gradient(135deg, rgba(74, 158, 237, 0.10), rgba(139, 92, 246, 0.10));
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .beat-throughline .sentence strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+  .beat-throughline .footnote {
+    color: var(--text-tertiary);
+    font-size: 14px;
+    font-style: italic;
+    max-width: 640px;
+  }
+
+  /* Beat — ancestors (dual photo: Apple II + IBM PC side by side) */
+  .beat-ancestors {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .beat-ancestors .photo-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    width: 100%;
+    max-width: 980px;
+    align-items: end;
+  }
+  .beat-ancestors .photo-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .beat-ancestors .photo-year {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--amber-600);
+    letter-spacing: 1px;
+  }
+  .beat-ancestors .photo-name {
+    font-size: 16px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .beat-ancestors img {
+    max-width: 100%;
+    max-height: 320px;
+    border-radius: 8px;
+    background: #fafaf7;
+    padding: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-ancestors .ancestors-caption {
+    font-size: 17px;
+    color: var(--text-primary);
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.55;
+    margin-top: 8px;
+  }
+  .beat-ancestors .ancestors-caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Spec strip — small mono-font specs displayed under each ancestor photo */
+  .spec-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .spec-strip .spec-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .spec-strip .spec-key {
+    color: var(--text-tertiary);
+  }
+  .spec-strip .spec-val {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  /* Beat 2 "today's monster" — spec comparison strip below the exploded view */
+  .monster-specs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    width: 100%;
+    max-width: 920px;
+    margin-top: 10px;
+  }
+  @media (max-width: 720px) {
+    .monster-specs { grid-template-columns: 1fr; }
+  }
+  .monster-spec {
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .monster-spec .spec-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .monster-spec .spec-value {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .monster-spec .spec-multiplier {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Beat — timeline (SVG embed sized for the 3-card mini-timeline) */
+  .beat-timeline {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .beat-timeline .timeline-intro {
+    font-size: 17px;
+    color: var(--text-secondary);
+    text-align: center;
+    max-width: 880px;
+    line-height: 1.5;
+  }
+  .beat-timeline .timeline-wrap {
+    width: 100%;
+    max-width: 880px;
+    max-height: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .beat-timeline .timeline-wrap object {
+    width: 100%;
+    height: auto;
+    max-height: 620px;
+  }
+
+  /* Beat — exploded view of a computer (large photo, single caption) */
+  .beat-exploded {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .beat-exploded .monster-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+  .beat-exploded .monster-year {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--amber-600);
+    letter-spacing: 1px;
+  }
+  .beat-exploded .monster-name {
+    font-size: 22px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .beat-exploded img {
+    max-width: 100%;
+    max-height: 440px;
+    border-radius: 8px;
+    background: #fafaf7;
+    padding: 6px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .beat-exploded .exploded-caption {
+    font-size: 17px;
+    color: var(--text-primary);
+    max-width: 920px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .beat-exploded .exploded-caption strong {
+    color: var(--amber-600);
+    font-weight: 500;
+  }
+
+  /* Beat — roles (4-row table, animated row-by-row reveal) */
+  .beat-roles {
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+  }
+  .beat-roles .roles-lead {
+    font-size: 20px;
+    color: var(--text-primary);
+    text-align: center;
+    max-width: 880px;
+    line-height: 1.4;
+    font-weight: 300;
+  }
+  .beat-roles .roles-lead .hl {
+    color: var(--purple-600);
+    font-weight: 500;
+  }
+  .beat-roles .role-table {
+    width: 100%;
+    max-width: 880px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+  }
+  .beat-roles .role-table th {
+    text-align: left;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    color: var(--text-tertiary);
+    letter-spacing: 0.5px;
+    padding: 0 18px 4px;
+    text-transform: uppercase;
+  }
+  .beat-roles .role-table tr.role-row {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 360ms ease, transform 360ms ease;
+  }
+  .beat-roles .role-table tr.role-row.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .beat-roles .role-table td {
+    padding: 14px 18px;
+    background: var(--bg-muted);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .beat-roles .role-table td:first-child {
+    border-left: 1px solid var(--border);
+    border-radius: 8px 0 0 8px;
+    width: 22%;
+  }
+  .beat-roles .role-table td:last-child {
+    border-right: 1px solid var(--border);
+    border-radius: 0 8px 8px 0;
+    width: 22%;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .beat-roles .role-name {
+    color: var(--amber-600);
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .beat-roles .role-desc {
+    color: var(--text-primary);
+    font-size: 15px;
+  }
+  .beat-roles .roles-teaser {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 760px;
+    text-align: center;
+    line-height: 1.5;
+    padding: 14px 22px;
+    border-left: 3px solid var(--purple-600);
+    background: rgba(139, 92, 246, 0.08);
+    border-radius: 0 8px 8px 0;
+    margin-top: 4px;
+  }
+  .beat-roles .roles-teaser .pin {
+    color: var(--purple-600);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  /* speaker notes */
+  .notes {
+    margin-top: 14px;
+    padding: 14px 18px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber-600);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    display: none;
+  }
+  .notes.show { display: block; }
+  .notes strong { color: var(--text-primary); font-weight: 500; }
+  .notes-label {
+    color: var(--amber-600);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .footer-hint {
+    margin-top: 14px;
+    color: var(--text-tertiary);
+    font-size: 12px;
+    text-align: center;
+  }
+  .footer-hint code {
+    font-family: var(--font-mono);
+    background: var(--bg-muted);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* Session timer */
+  .timer-block {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 6px 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .timer-block.paused { opacity: 0.5; }
+  .timer-elapsed {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .timer-target { color: var(--text-tertiary); }
+  .timer-delta { font-weight: 500; }
+  .timer-delta.ahead  { color: var(--green-600); }
+  .timer-delta.behind { color: var(--amber-600); }
+  .timer-delta.on     { color: var(--text-tertiary); }
+
+  .log-badge {
+    margin-left: 4px;
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  /* Log panel — slides up from bottom when open */
+  .log-panel {
+    margin-top: 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: none;
+  }
+  .log-panel.show { display: block; }
+  .log-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .log-panel-title {
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .log-panel-meta {
+    color: var(--text-tertiary);
+    font-size: 12px;
+    font-family: var(--font-mono);
+  }
+  .log-panel-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .log-panel-actions button {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+  .log-content {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-height: 240px;
+    overflow-y: auto;
+    background: var(--bg-page);
+    border-radius: 6px;
+    padding: 10px 12px;
+    white-space: pre;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Cloud Training Roadmap — Computer</h1>
+    <span class="module-tag">Layer 1 · 8 minutes</span>
+  </header>
+
+  <div class="controls">
+    <button id="prev-btn">&larr; Back</button>
+    <button id="next-btn" class="primary">Next &rarr;</button>
+    <button id="notes-btn">Speaker notes</button>
+    <button id="log-btn">📋 Log <span class="log-badge" id="log-badge">0</span></button>
+    <button id="reset-btn">Reset</button>
+    <span id="step-counter" class="step-counter">Beat 1 of 6</span>
+    <div class="timer-block" id="timer-block">
+      <span><span class="timer-elapsed" id="timer-elapsed">00:00</span> elapsed</span>
+      <span>target <span class="timer-target" id="timer-target">05:00</span></span>
+      <span class="timer-delta on" id="timer-delta">on time</span>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+
+    <!-- Beat 0: Title -->
+    <div class="beat beat-title active" data-beat="0">
+      <h2 class="big-title">What is a computer, anyway?</h2>
+      <p class="big-sub">Forty-five years of computing in eight minutes. Same four jobs the whole time.</p>
+      <p class="timer">Layer 1 · Computer · 8 min</p>
+    </div>
+
+    <!-- Beat 1: The ancestors — Apple II + IBM PC side by side -->
+    <div class="beat beat-ancestors" data-beat="1">
+      <div class="photo-pair">
+        <div class="photo-card">
+          <span class="photo-year">1977</span>
+          <span class="photo-name">Apple II</span>
+          <img src="1_computer_assets/1_beat2_apple_ii_1977.jpg" alt="The Apple II personal computer from 1977, with monitor, two floppy drives, and integrated keyboard">
+          <div class="spec-strip">
+            <div class="spec-row"><span class="spec-key">CPU</span><span class="spec-val">1 MHz · 1 core</span></div>
+            <div class="spec-row"><span class="spec-key">RAM</span><span class="spec-val">4 KB</span></div>
+            <div class="spec-row"><span class="spec-key">Storage</span><span class="spec-val">cassette tape</span></div>
+            <div class="spec-row"><span class="spec-key">Price (1977 $)</span><span class="spec-val">$1,298</span></div>
+          </div>
+        </div>
+        <div class="photo-card">
+          <span class="photo-year">1981</span>
+          <span class="photo-name">IBM PC</span>
+          <img src="1_computer_assets/1_beat2_ibm_pc_1981.jpg" alt="The IBM 5150 Personal Computer from 1981, with separate monitor, system unit, and keyboard">
+          <div class="spec-strip">
+            <div class="spec-row"><span class="spec-key">CPU</span><span class="spec-val">4.77 MHz · 1 core</span></div>
+            <div class="spec-row"><span class="spec-key">RAM</span><span class="spec-val">16 KB</span></div>
+            <div class="spec-row"><span class="spec-key">Storage</span><span class="spec-val">160 KB floppy</span></div>
+            <div class="spec-row"><span class="spec-key">Price (1981 $)</span><span class="spec-val">$1,565</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="ancestors-caption">
+        Meet the ancestors. The first computer a <strong>family</strong> could buy, and the first computer a <strong>company</strong> could trust. Forty-five years later, your laptop is still doing the same things — just faster, smaller, more of everything.
+      </p>
+    </div>
+
+    <!-- Beat 2: Today's monster — exploded view of a modern PC -->
+    <div class="beat beat-exploded" data-beat="2">
+      <div class="monster-header">
+        <span class="monster-year">NOW · 2026</span>
+        <span class="monster-name">Today's monster</span>
+      </div>
+      <img src="1_computer_assets/1_beat3_computer_exploded.png" alt="Exploded view of a modern desktop PC showing case, motherboard, CPU, RAM, GPU, M.2 SSD, HDD, PSU, fans, and cables">
+      <p class="exploded-caption">
+        Forty-five years after the IBM PC, this is what's inside a desktop right now. Same jobs being done — but look at the parts.
+      </p>
+      <div class="monster-specs">
+        <div class="monster-spec">
+          <div class="spec-label">CPU</div>
+          <div class="spec-value">~5 GHz · 8 cores</div>
+          <div class="spec-multiplier">~8,000× faster than IBM PC</div>
+        </div>
+        <div class="monster-spec">
+          <div class="spec-label">RAM</div>
+          <div class="spec-value">32 GB</div>
+          <div class="spec-multiplier">~2,000,000× more than IBM PC</div>
+        </div>
+        <div class="monster-spec">
+          <div class="spec-label">Storage</div>
+          <div class="spec-value">2 TB NVMe SSD</div>
+          <div class="spec-multiplier">~12,500,000× more than IBM PC</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Beat 3: The four roles — animated table -->
+    <div class="beat beat-roles" data-beat="3">
+      <p class="roles-lead">
+        Every computer — IBM PC, today's monster, your phone, a cloud server — has the same <span class="hl">four roles</span>.
+      </p>
+      <table class="role-table">
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>What it does</th>
+            <th style="width:30%;">Hardware today</th>
+          </tr>
+        </thead>
+        <tbody id="role-rows">
+          <tr class="role-row" data-delay="0">
+            <td class="role-name">Compute</td>
+            <td class="role-desc">Does the thinking. Runs your code, runs your game, runs everything.</td>
+            <td>CPU</td>
+          </tr>
+          <tr class="role-row" data-delay="320">
+            <td class="role-name">Memory</td>
+            <td class="role-desc">Where work happens right now. Disappears when you reboot.</td>
+            <td>RAM</td>
+          </tr>
+          <tr class="role-row" data-delay="640">
+            <td class="role-name">Storage</td>
+            <td class="role-desc">What survives a reboot. Files, programs, photos, OS.</td>
+            <td>SSD / HDD</td>
+          </tr>
+          <tr class="role-row" data-delay="960">
+            <td class="role-name">Network</td>
+            <td class="role-desc">How it talks to other computers. The internet doesn't work without this.</td>
+            <td>NIC</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="roles-teaser">
+        <span class="pin">PIN THIS</span>
+        In Layer 6, we'll show how a <strong>virtual machine</strong> has all four of these too — even though it isn't really a machine. That's the trick the cloud is built on.
+      </div>
+    </div>
+
+    <!-- Beat 4: Eight milestones that got us from ancestors to monster -->
+    <div class="beat beat-timeline" data-beat="4">
+      <p class="timeline-intro">
+        So how did we get from beige boxes to that monster? Eight milestones did the work — <strong style="color: var(--amber-600);">three of them really matter</strong> for what we're building toward today.
+      </p>
+      <div class="timeline-wrap">
+        <object data="1_computer_assets/1_beat5_timeline_full.svg" type="image/svg+xml" aria-label="Eight hardware milestones from 1981 IBM PC to 2020 Apple Silicon"></object>
+      </div>
+    </div>
+
+    <!-- Beat 5: Handoff to Layer 2 -->
+    <div class="beat beat-throughline" data-beat="5">
+      <p class="promise">
+        Forty-five years, eight milestones, faster parts every decade.
+      </p>
+      <p class="sentence">
+        But here's what hasn't changed: <strong>none of this does anything by itself</strong>. The CPU, the RAM, the storage, the network — dead silicon without something to wake them up, coordinate them, and decide which program runs when.
+      </p>
+      <p class="footnote">
+        That coordinator is the operating system. Next layer.
+      </p>
+    </div>
+
+  </div>
+
+  <div id="notes" class="notes">
+    <span class="notes-label">SPEAKER NOTES</span>
+    <div id="notes-content"></div>
+  </div>
+
+  <div id="log-panel" class="log-panel">
+    <div class="log-panel-header">
+      <span class="log-panel-title">Session log</span>
+      <span class="log-panel-meta" id="log-meta">0 events</span>
+      <div class="log-panel-actions">
+        <button id="log-pause-btn">⏸ Pause</button>
+        <button id="log-download-btn">⬇ Download</button>
+        <button id="log-copy-btn">📋 Copy</button>
+        <button id="log-clear-btn">🗑 Clear</button>
+      </div>
+    </div>
+    <div class="log-content" id="log-content">No events yet. Click Next to begin.</div>
+  </div>
+
+  <p class="footer-hint">
+    <code>&larr;</code> / <code>&rarr;</code> to navigate &middot; <code>N</code> notes &middot; <code>L</code> log &middot; <code>P</code> pause &middot; <code>R</code> reset
+  </p>
+</div>
+
+<script>
+(function() {
+  const NOTES = [
+    {
+      title: "Beat 0 — Title (~15 sec)",
+      body: "Brief landing. Quick read of the subtitle to set the contract: \"45 years of computing, 8 minutes, same four jobs the whole time.\" That last bit is the promise. Click Next."
+    },
+    {
+      title: "Beat 1 — The ancestors (~110 sec)",
+      body: "<strong>Hold here. Let the room look.</strong> These beige boxes look <em>alien</em> to a 2026 high schooler — that's the lesson. Walk through the years and the specs: <ul style='margin: 8px 0 0 18px; padding: 0;'><li>\"1977. Apple II. <strong>1 megahertz, 4 kilobytes of RAM, no hard drive</strong> — programs loaded from cassette tape. Cost $1,298 — that's ~$7,000 in today's money.\"</li><li>\"1981. IBM PC. Four times faster, four times the RAM. A 160 KB floppy disk if you paid extra. $1,565 — about $5,500 today.\"</li><li>\"Together, these two invented what we mean by 'personal computer.'\"</li></ul> If the room is right, drop: \"Your <em>parents</em> used these. Their parents had a typewriter.\" Two generations is suddenly close. Don't compare features beyond the specs — the point is <strong>together they started it</strong>. Transition: \"Now let's see what's in a computer today —\""
+    },
+    {
+      title: "Beat 2 — Today's monster (~110 sec)",
+      body: "<strong>Hit them with the contrast.</strong> Beige boxes in the last beat, RGB monster in this one — same 45-year story arc. Say the \"Now meet today's monster\" line and pause to let them look. Then drop the multipliers — <strong>read them aloud, they're absurd</strong>: <ul style='margin: 8px 0 0 18px; padding: 0;'><li>\"CPU: about <strong>8,000 times</strong> faster than that 1981 box.\"</li><li>\"RAM: about <strong>2 million times</strong> more.\"</li><li>\"Storage: about <strong>12 million times</strong> more — and 5,000 times faster.\"</li><li>\"In 45 years. Same architecture. Same jobs. Wildly different scale.\"</li></ul> <strong>Do NOT read all 12 labels in the photo.</strong> The image is rich on purpose — let students explore visually. Point at only four parts to set up the next beat: <ol style='margin: 8px 0 0 18px; padding: 0;'><li>CPU — \"the worker\"</li><li>RAM — \"the desk\"</li><li>M.2 SSD — \"the filing cabinet\"</li><li>NIC built into the motherboard — \"the phone line, built in\"</li></ol> If a student asks about GPU/PSU/cooler: one-sentence answers and move on."
+    },
+    {
+      title: "Beat 3 — The four roles (~90 sec)",
+      body: "<strong>This is the punchline beat for Layer 1.</strong> The rows fade in one by one — pause between each. Read the role name aloud, give the plain-English description in your own words. The key move: connect it back. \"You just saw a CPU on that exploded view — that's compute. RAM sticks — that's memory. The SSD — that's storage. The motherboard's network port — that's network.\" Then read the teaser box slowly. <strong>Tap your watch on \"Layer 6.\"</strong> This is a promise you're making. Students should mentally bookmark this — \"a virtual computer has these four roles too, but it isn't really a machine.\" That question is what gets them to minute 50."
+    },
+    {
+      title: "Beat 4 — Eight milestones (~120 sec)",
+      body: "<strong>Don't narrate all eight.</strong> Let students see the full sweep — eight cards is the visual point (\"a lot has changed\"). Then zoom in on the three that earn deep narration: <ol style='margin: 8px 0 0 18px; padding: 0;'><li><strong>1981 IBM PC:</strong> \"Your laptop today is still this. Same architecture. That's the foundation.\"</li><li><strong>2006 multi-core:</strong> \"One CPU went from one worker to eight. <em>This is the move that makes virtual machines possible.</em> Layer 6 again.\"</li><li><strong>2010 SSDs:</strong> \"Storage was the bottleneck for 30 years. SSDs broke it. Hyperscale cloud storage only works because of this.\"</li></ol> For the other five (Intel 386, PCI/PnP, AMD64, USB, Apple Silicon), one-sentence acknowledgments or just sweep your cursor across them: \"All of these mattered. We'll come back to the full timeline at the very end of today, after the demo.\" That seeds the Layer 7 closer."
+    },
+    {
+      title: "Beat 5 — Handoff to Layer 2 (~30 sec)",
+      body: "Empty stage, just words. Deliver slowly. The phrase \"<strong>dead silicon</strong>\" should land — pause after it. The pedagogical move here: <em>even after 45 years of progress, the hardware still needs a coordinator.</em> That makes Layer 2 feel necessary, not bolted on. Transition cleanly: \"The OS is the coordinator. It's what wakes everything up. Layer 2.\" Click straight into the next module."
+    }
+  ];
+
+  const beats = document.querySelectorAll(".beat");
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+  const notesBtn = document.getElementById("notes-btn");
+  const resetBtn = document.getElementById("reset-btn");
+  const counter = document.getElementById("step-counter");
+  const notesEl = document.getElementById("notes");
+  const notesContent = document.getElementById("notes-content");
+
+  // ───── Timer + log elements ─────
+  const timerBlock = document.getElementById("timer-block");
+  const elapsedEl = document.getElementById("timer-elapsed");
+  const targetEl = document.getElementById("timer-target");
+  const deltaEl = document.getElementById("timer-delta");
+  const logBtn = document.getElementById("log-btn");
+  const logBadge = document.getElementById("log-badge");
+  const logPanel = document.getElementById("log-panel");
+  const logContent = document.getElementById("log-content");
+  const logMeta = document.getElementById("log-meta");
+  const logPauseBtn = document.getElementById("log-pause-btn");
+  const logDownloadBtn = document.getElementById("log-download-btn");
+  const logCopyBtn = document.getElementById("log-copy-btn");
+  const logClearBtn = document.getElementById("log-clear-btn");
+
+  // ───── Module config ─────
+  // Each module declares its layer number, end-of-module target (cumulative
+  // minutes through this layer in the 90-min budget), and beat labels for the log.
+  const MODULE = {
+    layer: 1,
+    name: "Computer",
+    targetSeconds: 13 * 60,          // end of this module = minute 13 (intro 5 + computer 8)
+    beatLabels: [
+      "Title",
+      "The ancestors (Apple II + IBM PC)",
+      "Today's monster (exploded view)",
+      "The four roles",
+      "Eight milestones (1981–2020)",
+      "Handoff to Layer 2 (OS)"
+    ]
+  };
+
+  // ───── localStorage keys (shared across all modules in this training) ─────
+  const LS_LOG       = "cloud_training_log";
+  const LS_START     = "cloud_training_start";
+  const LS_PAUSED_AT = "cloud_training_paused_at";
+  const LS_PAUSE_OFFSET = "cloud_training_pause_offset";
+
+  let idx = 0;
+  let notesOpen = false;
+  let logOpen = false;
+
+  // ───────────────────────── LOG ─────────────────────────
+
+  function getLog() {
+    try { return JSON.parse(localStorage.getItem(LS_LOG) || "[]"); }
+    catch (e) { return []; }
+  }
+
+  function saveLog(arr) { localStorage.setItem(LS_LOG, JSON.stringify(arr)); }
+
+  function fmtDuration(totalSeconds) {
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = Math.floor(totalSeconds % 60);
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+
+  function fmtMinSec(totalSeconds) {
+    const m = Math.floor(totalSeconds / 60);
+    const s = Math.floor(totalSeconds % 60);
+    return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+
+  function logEvent(arrow, label) {
+    const entries = getLog();
+    const elapsed = getElapsedSeconds();
+    entries.push({ t: elapsed, arrow, label });
+    saveLog(entries);
+    renderLog();
+  }
+
+  function renderLog() {
+    const entries = getLog();
+    logBadge.textContent = entries.length;
+    logMeta.textContent = `${entries.length} event${entries.length === 1 ? "" : "s"}`;
+    if (entries.length === 0) {
+      logContent.textContent = "No events yet. Click Next to begin.";
+    } else {
+      logContent.textContent = entries
+        .map(e => `[${fmtDuration(e.t)}]  ${e.arrow}  ${e.label}`)
+        .join("\n");
+      // Auto-scroll to bottom
+      logContent.scrollTop = logContent.scrollHeight;
+    }
+  }
+
+  // ──────────────────────── TIMER ────────────────────────
+
+  function getStart() {
+    const s = localStorage.getItem(LS_START);
+    return s ? parseInt(s, 10) : null;
+  }
+  function setStart(ms) { localStorage.setItem(LS_START, String(ms)); }
+
+  function getPauseOffset() {
+    return parseInt(localStorage.getItem(LS_PAUSE_OFFSET) || "0", 10);
+  }
+  function getPausedAt() {
+    const v = localStorage.getItem(LS_PAUSED_AT);
+    return v ? parseInt(v, 10) : null;
+  }
+  function isPaused() { return getPausedAt() !== null; }
+
+  function getElapsedSeconds() {
+    const start = getStart();
+    if (!start) return 0;
+    const offset = getPauseOffset();
+    const pausedAt = getPausedAt();
+    if (pausedAt) {
+      return Math.floor((pausedAt - start - offset) / 1000);
+    }
+    return Math.floor((Date.now() - start - offset) / 1000);
+  }
+
+  function ensureStarted() {
+    if (!getStart()) {
+      setStart(Date.now());
+      logEvent("⏵", `Session started — Layer ${MODULE.layer} ${MODULE.name}`);
+    }
+  }
+
+  function pauseTimer() {
+    if (isPaused()) return;
+    localStorage.setItem(LS_PAUSED_AT, String(Date.now()));
+    logEvent("⏸", "PAUSED");
+    updateTimerDisplay();
+  }
+
+  function resumeTimer() {
+    const pausedAt = getPausedAt();
+    if (!pausedAt) return;
+    const pauseDuration = Date.now() - pausedAt;
+    localStorage.setItem(LS_PAUSE_OFFSET, String(getPauseOffset() + pauseDuration));
+    localStorage.removeItem(LS_PAUSED_AT);
+    logEvent("▶", "resumed");
+    updateTimerDisplay();
+  }
+
+  function togglePause() {
+    if (isPaused()) resumeTimer();
+    else pauseTimer();
+  }
+
+  function updateTimerDisplay() {
+    const elapsed = getElapsedSeconds();
+    elapsedEl.textContent = fmtMinSec(elapsed);
+    targetEl.textContent = fmtMinSec(MODULE.targetSeconds);
+    const diff = MODULE.targetSeconds - elapsed; // positive = ahead
+    deltaEl.classList.remove("ahead", "behind", "on");
+    if (Math.abs(diff) <= 30) {
+      deltaEl.classList.add("on");
+      deltaEl.textContent = "on time";
+    } else if (diff > 0) {
+      deltaEl.classList.add("ahead");
+      deltaEl.textContent = `${fmtMinSec(diff)} ahead`;
+    } else {
+      deltaEl.classList.add("behind");
+      deltaEl.textContent = `${fmtMinSec(-diff)} behind`;
+    }
+    timerBlock.classList.toggle("paused", isPaused());
+    logPauseBtn.textContent = isPaused() ? "▶ Resume" : "⏸ Pause";
+  }
+
+  setInterval(updateTimerDisplay, 1000);
+
+  // ─────────────────────── ENGINE ────────────────────────
+
+  function render() {
+    beats.forEach((b, i) => b.classList.toggle("active", i === idx));
+    counter.textContent = `Beat ${idx + 1} of ${beats.length}`;
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === beats.length - 1;
+    nextBtn.textContent = idx === beats.length - 1 ? "End of Layer 1" : "Next →";
+
+    const n = NOTES[idx];
+    notesContent.innerHTML = `<strong>${n.title}</strong><br>${n.body}`;
+
+    // Beat 3: role-row fade-in for the four-roles table
+    if (idx === 3) {
+      const rows = beats[3].querySelectorAll(".role-row");
+      rows.forEach(r => r.classList.remove("show"));
+      rows.forEach(r => {
+        const delay = parseInt(r.dataset.delay || "0", 10);
+        setTimeout(() => r.classList.add("show"), delay + 60);
+      });
+    }
+  }
+
+  function next() {
+    if (idx < beats.length - 1) {
+      ensureStarted();
+      idx++;
+      render();
+      const label = MODULE.beatLabels[idx] || `Beat ${idx + 1}`;
+      logEvent("→", `L${MODULE.layer} · ${label}`);
+    }
+  }
+
+  function prev() {
+    if (idx > 0) {
+      idx--;
+      render();
+      const label = MODULE.beatLabels[idx] || `Beat ${idx + 1}`;
+      logEvent("←", `L${MODULE.layer} · back to ${label}`);
+    }
+  }
+
+  function reset() {
+    // Confirm before nuking session state if there's anything to nuke
+    const entries = getLog();
+    if (entries.length > 0) {
+      const elapsed = getElapsedSeconds();
+      if (!confirm(`Reset session? You've recorded ${entries.length} events across ${fmtMinSec(elapsed)}.`)) {
+        return;
+      }
+      localStorage.removeItem(LS_LOG);
+      localStorage.removeItem(LS_START);
+      localStorage.removeItem(LS_PAUSED_AT);
+      localStorage.removeItem(LS_PAUSE_OFFSET);
+    }
+    idx = 0;
+    render();
+    renderLog();
+    updateTimerDisplay();
+  }
+
+  function toggleNotes() {
+    notesOpen = !notesOpen;
+    notesEl.classList.toggle("show", notesOpen);
+    notesBtn.classList.toggle("primary", notesOpen);
+  }
+
+  function toggleLog() {
+    logOpen = !logOpen;
+    logPanel.classList.toggle("show", logOpen);
+    logBtn.classList.toggle("primary", logOpen);
+    if (logOpen) renderLog();
+  }
+
+  function downloadLog() {
+    const entries = getLog();
+    if (entries.length === 0) { alert("Log is empty — nothing to download."); return; }
+    const header = `# Cloud Training Session Log\n# Generated: ${new Date().toISOString()}\n# Layer ${MODULE.layer} (${MODULE.name}) — current module\n# Events: ${entries.length}\n\n`;
+    const body = entries
+      .map(e => `[${fmtDuration(e.t)}]\t${e.arrow}\t${e.label}`)
+      .join("\n");
+    const blob = new Blob([header + body], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+    a.download = `cloud_training_session_${stamp}.log`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function copyLog() {
+    const entries = getLog();
+    if (entries.length === 0) { alert("Log is empty."); return; }
+    const text = entries
+      .map(e => `[${fmtDuration(e.t)}]\t${e.arrow}\t${e.label}`)
+      .join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      logCopyBtn.textContent = "✓ Copied";
+      setTimeout(() => { logCopyBtn.textContent = "📋 Copy"; }, 1500);
+    } catch (e) {
+      alert("Couldn't copy automatically — select the text in the log panel manually.");
+    }
+  }
+
+  function clearLogOnly() {
+    if (!confirm("Clear the log? Timer keeps running. This is separate from Reset.")) return;
+    localStorage.removeItem(LS_LOG);
+    renderLog();
+  }
+
+  // ─────────────────── EVENT WIRING ────────────────────
+
+  nextBtn.addEventListener("click", next);
+  prevBtn.addEventListener("click", prev);
+  resetBtn.addEventListener("click", reset);
+  notesBtn.addEventListener("click", toggleNotes);
+  logBtn.addEventListener("click", toggleLog);
+  logPauseBtn.addEventListener("click", togglePause);
+  logDownloadBtn.addEventListener("click", downloadLog);
+  logCopyBtn.addEventListener("click", copyLog);
+  logClearBtn.addEventListener("click", clearLogOnly);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    if (e.code === "ArrowRight" || e.code === "Enter" || e.code === "Space") {
+      e.preventDefault();
+      next();
+    } else if (e.code === "ArrowLeft") {
+      e.preventDefault();
+      prev();
+    } else if (e.key === "n" || e.key === "N") {
+      toggleNotes();
+    } else if (e.key === "l" || e.key === "L") {
+      toggleLog();
+    } else if (e.key === "p" || e.key === "P") {
+      ensureStarted();
+      togglePause();
+    } else if (e.key === "r" || e.key === "R") {
+      reset();
+    }
+  });
+
+  // Initial render
+  render();
+  renderLog();
+  updateTimerDisplay();
+})();
+</script>
+
+</body>
+</html>
